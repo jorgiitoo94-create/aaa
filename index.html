@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Departamentos</title>
+<title>Alquilar Temporario</title>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <style>
 html, body {
@@ -14,41 +14,40 @@ html, body {
     background:#0f172a;
     color:white;
 }
-
-body {
-    padding:20px;
-    text-align:center;
-}
+body { padding:20px; text-align:center; }
 
 /* Titulos */
 h1,h2{
     text-align:center;
-    margin:15px 0;
+    margin:10px 0;
     font-weight:bold;
+    line-height:1.2em;
 }
-h1{
-    font-size:2.8em;
-    letter-spacing:1px;
-    color:#e0e0e0;
-}
-h2{
-    font-size:2.2em;
-    color:#cbd5e1;
-}
+h1{ font-size:3.2em; color:#e0e0e0; }
+h2{ font-size:3.2em; color:#cbd5e1; }
 
-/* Filtro */
-#filtroAmbientes{
-    width:95%;
-    max-width:800px;
-    padding:14px 20px;
-    margin:20px auto;
+/* Filtro ancho completo */
+.filtro-container{
+    width:100%;
+    max-width:none;
+    margin:0 auto 40px auto;
+    text-align:center;
+}
+.filtro-container label{
+    font-size:3em;
     display:block;
+    margin-bottom:10px;
+}
+#filtroAmbientes{
+    width:100%;
+    padding:22px 20px;
     border-radius:25px;
     border:none;
     background:#1e293b;
     color:white;
-    font-size:1.4em;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    font-size:3em; 
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
+    box-sizing:border-box;
 }
 
 /* Tarjetas de departamentos */
@@ -60,18 +59,20 @@ h2{
     padding:20px;
     margin-bottom:25px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    max-width:800px;
     width:95%;
+    max-width:95vw;
     align-items:center;
-    justify-content:center;
+    justify-content:flex-start;
     margin-left:auto;
     margin-right:auto;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
+    cursor:default;
 }
-.list-item:hover{
-    transform: translateY(-4px);
-    box-shadow: 0 14px 30px rgba(0,0,0,0.6);
+.list-item.selected{
+    border:3px solid #6366f1;
+    box-shadow:0 14px 30px rgba(99,102,241,0.7);
 }
+.list-item:hover{ transform: translateY(-4px); }
 
 .list-item img{
     width:180px;
@@ -82,11 +83,8 @@ h2{
     flex-shrink:0;
     transition: transform 0.3s;
 }
-.list-item img:hover{
-    transform: scale(1.05);
-}
+.list-item img:hover{ transform: scale(1.05); }
 
-/* Ajuste info de la tarjeta */
 .list-item .info{
     flex:1;
     margin-left:25px;
@@ -94,13 +92,11 @@ h2{
     flex-direction:column;
     align-items:flex-start;
 }
-
 .list-item .info h3{
     margin:0 0 5px 0;
     font-size:1.8em;
     color:#f0f0f0;
 }
-
 .list-item .info .ambientes{
     display:inline-block;
     background:#6366f1;
@@ -111,7 +107,6 @@ h2{
     font-size:1.2em;
     margin-left:6px;
 }
-
 .list-item .info .barrio{
     font-size:1.5em;
     font-weight:bold;
@@ -122,7 +117,6 @@ h2{
     text-align:left;
     width:100%;
 }
-
 .list-item .info .detalles{
     font-size:1.3em;
     margin:8px 0;
@@ -133,10 +127,9 @@ h2{
     font-style:italic;
     color:#d1d5db;
 }
-
 .btn-row{
     display:flex;
-    justify-content:center;
+    justify-content:flex-start;
     gap:10px;
     flex-wrap:wrap;
     margin-top:10px;
@@ -153,69 +146,51 @@ h2{
     font-size:1.2em;
     transition:0.3s;
 }
-.btn-whatsapp{
-    background: linear-gradient(90deg,#25D366,#1ebe57);
-    color:white;
-}
-.btn-whatsapp:hover{
-    transform: scale(1.05);
-}
-.btn-maps{
-    background: linear-gradient(90deg,#3b82f6,#2563eb);
-    color:white;
-}
-.btn-maps:hover{
-    transform: scale(1.05);
-}
-.btn-fotos{
-    background: linear-gradient(90deg,#f59e0b,#d97706);
-    color:white;
-}
-.btn-fotos:hover{
-    transform: scale(1.05);
-}
-.btn-consulta{
-    background: linear-gradient(90deg,#6366f1,#4f46e5);
-    color:white;
-}
-.btn-consulta:hover{
-    transform: scale(1.05);
-}
+.btn-whatsapp{ background: linear-gradient(90deg,#25D366,#1ebe57); color:white; }
+.btn-maps{ background: linear-gradient(90deg,#3b82f6,#2563eb); color:white; }
+.btn-fotos{ background: linear-gradient(90deg,#f59e0b,#d97706); color:white; }
+.btn-consulta{ background: linear-gradient(90deg,#6366f1,#4f46e5); color:white; }
 
 /* Formulario */
-form{
+form, #requisitos{
     margin-top:40px;
     background:linear-gradient(145deg,#1e293b,#1b263a);
-    padding:40px 30px; /* más padding para que inputs no toquen bordes */
+    padding:60px 40px;
     border-radius:25px;
     width:95%;
-    max-width:800px; /* mismo ancho que las tarjetas */
+    max-width:95vw;
     box-sizing:border-box;
     text-align:center;
     margin-left:auto;
     margin-right:auto;
     box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    font-size:3em;
+    transition: box-shadow 0.5s;
 }
+form.highlight{ box-shadow: 0 0 30px 6px #6366f1; }
+
 form label{
     display:block;
-    margin-bottom:8px;
+    margin-bottom:12px;
     font-weight:bold;
-    font-size:1.5em;
     color:#cbd5e1;
 }
 form input, form select{
     width:100%;
-    padding:16px 18px;
-    margin-bottom:18px;
-    border-radius:14px;
+    padding:20px 22px;
+    margin-bottom:24px;
+    border-radius:16px;
     border:none;
-    font-size:1.4em;
+    font-size:1em;
     text-align:center;
     background:#1f2937;
     color:white;
     box-sizing:border-box;
     box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
 }
+#requisitos{ display:none; text-align:left; font-size:1.6em; color:#f0f0f0; }
+#requisitos ul{ margin-left:25px; }
+#requisitos button{ margin-top:20px; font-size:1.2em; }
 
 /* Modal Carrusel scrolleable */
 .modal{
@@ -237,12 +212,12 @@ form input, form select{
     max-width:1000px;
     height:80%;
     margin:auto;
+    scroll-behavior: smooth;
 }
 .modal .carrusel img{
     flex:0 0 auto;
-    width:100%;
-    max-width:600px;
-    height:auto;
+    width:auto;
+    height:100%;
     object-fit:contain;
     scroll-snap-align: start;
     border-radius:12px;
@@ -251,37 +226,43 @@ form input, form select{
 
 /* Responsive */
 @media(max-width:600px){
-    .list-item{
-        flex-direction:column;
-        padding:15px;
-    }
-    .list-item img{
-        width:120px;
-        height:120px;
-        margin-bottom:10px;
-    }
+    h1,h2{ font-size:2.2em; }
+    .list-item img{ width:120px; height:120px; margin-bottom:10px; }
     .list-item .info h3,.list-item .info .barrio,.list-item .info .detalles,.list-item .info .ambientes,.list-item .info .incluye{
-        font-size:1.3em;
+        font-size:1.5em;
     }
-    form label, form input, form select{
-        font-size:1.4em;
-    }
+    form, #requisitos{ padding:40px 20px; font-size:2.2em; }
+    #filtroAmbientes{ font-size:2.2em; padding:16px; }
     .btn{font-size:1.2em;padding:12px 16px;}
 }
 </style>
 </head>
 <body>
 
-<h1>Departamentos</h1>
-<label>Filtrar por ambientes:</label>
-<select id="filtroAmbientes">
-    <option value="">Todos</option>
-</select>
+<h1>Alquilar temporario<br>Departamentos amoblados</h1>
+
+<div class="filtro-container">
+    <label for="filtroAmbientes">Filtrar por ambientes:</label>
+    <select id="filtroAmbientes">
+        <option value="">Todos</option>
+    </select>
+</div>
 
 <div id="contenedor"></div>
 
+<div id="requisitos">
+    <h2>Requisitos</h2>
+    <ul>
+        <li>DNI o pasaporte</li>
+        <li>Demostración de ingresos mensuales</li>
+        <li>Mes de adelanto, mes de depósito, mes de honorarios</li>
+        <li>Contrato de 3 a 12 meses según cada caso</li>
+    </ul>
+    <button onclick="aceptarRequisitos()">✅ Acepto los requisitos</button>
+</div>
+
 <h2>Formulario de Consulta</h2>
-<form id="consultaForm">
+<form id="consultaForm" style="display:none;">
     <input type="hidden" id="direccionForm">
     <input type="hidden" id="vendedorForm">
 
@@ -306,16 +287,14 @@ form input, form select{
     <button type="submit" class="btn btn-whatsapp">💬 Enviar WhatsApp</button>
 </form>
 
-<!-- Modal Carrusel -->
 <div id="modal" class="modal" onclick="cerrarModal()">
-    <div class="carrusel" onclick="event.stopPropagation()">
-        <!-- Imágenes se insertan desde JS -->
-    </div>
+    <div class="carrusel" onclick="event.stopPropagation()"></div>
 </div>
 
 <script>
 const csvURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2E7ECUfY-ps4Ok0_1TJxTR1UPoYl-_ZYkGNlvhk9eZWHBslhsWtoCiTaPfCjQJ38kojq9pJBeoGep/pub?output=csv";
 let departamentos = [];
+let departamentoSeleccionado = null;
 let currentFotos = [];
 
 Papa.parse(csvURL,{
@@ -358,6 +337,7 @@ function mostrarDepartamentos(lista){
 
         let item = document.createElement("div");
         item.className="list-item";
+        if(departamentoSeleccionado===row["Dirección"]) item.classList.add("selected");
         item.innerHTML=`
             <img src="${primera}" onclick="abrirModal(${index})">
             <div class="info">
@@ -366,7 +346,7 @@ function mostrarDepartamentos(lista){
                 <div class="detalles">Valor: ${row["Valor"] || "-"} | <span class="incluye">Incluye: ${row["Incluye"] || "-"}</span></div>
                 <div class="btn-row">
                     <button class="btn btn-fotos" onclick="abrirModal(${index})">📸 Ver Fotos</button>
-                    <button class="btn btn-consulta" onclick="seleccionarDepartamento('${row['Dirección']}','${row['Vendedor']}')">💼 Consulta</button>
+                    <button class="btn btn-consulta" onclick="seleccionarDepartamento('${row['Dirección']}','${row['Vendedor']}',this)">💼 Consulta</button>
                     <button class="btn btn-maps" onclick="verEnMaps('${row['Dirección']}')">🗺️ Maps</button>
                 </div>
             </div>
@@ -376,10 +356,33 @@ function mostrarDepartamentos(lista){
     });
 }
 
-function seleccionarDepartamento(direccion, vendedor){
+// Selección única
+function seleccionarDepartamento(direccion,vendedor,btn){
+    if(departamentoSeleccionado === direccion){
+        departamentoSeleccionado = null;
+        btn.closest(".list-item").classList.remove("selected");
+        document.getElementById("requisitos").style.display = "none";
+        document.getElementById("consultaForm").style.display = "none";
+        return;
+    }
+    departamentoSeleccionado = direccion;
+
+    document.querySelectorAll(".list-item").forEach(item => item.classList.remove("selected"));
+    btn.closest(".list-item").classList.add("selected");
+
+    // Guardar datos ocultos
     document.getElementById("direccionForm").value = direccion;
-    document.getElementById("vendedorForm").value = vendedor;
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    document.getElementById("vendedorForm").value = vendedor.startsWith('+') ? vendedor : '+'+vendedor;
+
+    // Mostrar requisitos
+    document.getElementById("requisitos").style.display = "block";
+    document.getElementById("requisitos").scrollIntoView({behavior:"smooth"});
+    document.getElementById("consultaForm").style.display = "none";
+}
+
+function aceptarRequisitos(){
+    document.getElementById("consultaForm").style.display = "block";
+    document.getElementById("consultaForm").scrollIntoView({behavior:"smooth"});
 }
 
 function verEnMaps(direccion){
