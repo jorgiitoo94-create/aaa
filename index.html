@@ -74,8 +74,9 @@ h2{ font-size:3.2em; color:#cbd5e1; }
 .list-item:hover{ transform: translateY(-4px); }
 
 .list-item img{
-    width:180px;
-    height:140px;
+    width:220px;
+    height:auto;
+    max-height:280px;
     object-fit:cover;
     border-radius:20px;
     cursor:pointer;
@@ -93,8 +94,8 @@ h2{ font-size:3.2em; color:#cbd5e1; }
 }
 .list-item .info h3{
     margin:0 0 5px 0;
-    font-size:1.8em;
-    color:#f0f0f0;
+    font-size:2em;
+    color:#ffffff;
 }
 .list-item .info .ambientes{
     display:inline-block;
@@ -107,12 +108,12 @@ h2{ font-size:3.2em; color:#cbd5e1; }
     margin-left:6px;
 }
 .list-item .info .barrio{
-    font-size:1.5em;
+    font-size:4.4em; /* el doble que antes */
     font-weight:bold;
     font-family: 'Georgia', serif;
     text-transform:uppercase;
     margin:6px 0 8px 0;
-    color:#a5b4fc;
+    color:#3b82f6; /* azul sólido */
     text-align:left;
     width:100%;
 }
@@ -134,27 +135,27 @@ h2{ font-size:3.2em; color:#cbd5e1; }
 .list-item .info .detalles .incluye{
     font-style:italic;
     color:#d1d5db;
-    font-size:1.2em;
+    font-size:1.4em;
     text-align:right;
 }
 
 .btn-row{
     display:flex;
     justify-content:flex-start;
-    gap:10px;
+    gap:20px;
     flex-wrap:wrap;
-    margin-top:10px;
+    margin-top:15px;
 }
 .btn{
-    padding:12px 18px;
+    padding:24px 36px;
     border:none;
     border-radius:16px;
     cursor:pointer;
     font-weight:bold;
     display:inline-flex;
     align-items:center;
-    gap:6px;
-    font-size:1.2em;
+    gap:12px;
+    font-size:2.4em;
     transition:0.3s;
 }
 .btn-whatsapp{ background: linear-gradient(90deg,#25D366,#1ebe57); color:white; }
@@ -221,6 +222,7 @@ form input, form select{
     align-items:center;
     z-index:1000;
     overflow:hidden;
+    flex-direction:column;
 }
 .modal .carrusel{
     display:flex;
@@ -240,6 +242,16 @@ form input, form select{
     scroll-snap-align: start;
     border-radius:12px;
     margin-right:20px;
+}
+.modal .close-btn{
+    background:#f87171;
+    color:white;
+    font-size:2em;
+    padding:10px 20px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    margin-top:10px;
 }
 
 /* Responsive */
@@ -307,8 +319,9 @@ form input, form select{
 
 <div id="mensajeSeleccion">Seleccionar depto con el botón Consulta</div>
 
-<div id="modal" class="modal" onclick="cerrarModal()">
+<div id="modal" class="modal">
     <div class="carrusel" onclick="event.stopPropagation()"></div>
+    <button class="close-btn" onclick="cerrarModal()">❌ Cerrar</button>
 </div>
 
 <script>
@@ -395,11 +408,9 @@ function seleccionarDepartamento(direccion,vendedor,btn){
     document.querySelectorAll(".list-item").forEach(item => item.classList.remove("selected"));
     btn.closest(".list-item").classList.add("selected");
 
-    // Guardar datos ocultos
     document.getElementById("direccionForm").value = direccion;
     document.getElementById("vendedorForm").value = '+5491168686694';
 
-    // Mostrar requisitos
     document.getElementById("requisitos").style.display = "block";
     document.getElementById("requisitos").scrollIntoView({behavior:"smooth"});
     document.getElementById("consultaForm").style.display = "none";
