@@ -158,8 +158,8 @@ h2{ font-size:3.2em; color:#cbd5e1; }
 .btn-fotos{ background: linear-gradient(90deg,#f59e0b,#d97706); color:white; }
 .btn-consulta{ background: linear-gradient(90deg,#6366f1,#4f46e5); color:white; }
 
-/* Formulario */
-form, #requisitos{
+/* Formulario siempre visible pero gris */
+form{
     margin-top:40px;
     background:linear-gradient(145deg,#1e293b,#1b263a);
     padding:60px 40px;
@@ -172,24 +172,14 @@ form, #requisitos{
     margin-right:auto;
     box-shadow: 0 10px 25px rgba(0,0,0,0.4);
     font-size:3em;
+    opacity:0.5;
+    pointer-events:none;
     transition: all 0.5s;
-    transform: translateY(-50px);
-    opacity:0;
 }
-form.show, #requisitos.show{
-    transform: translateY(0);
+form.enabled{
     opacity:1;
+    pointer-events:auto;
 }
-
-form.highlight{ 
-    box-shadow: 0 0 30px 6px #6366f1; 
-    animation: parpadeo 1s ease-in-out 3; 
-}
-@keyframes parpadeo {
-    0%,100%{ box-shadow: 0 0 30px 6px #6366f1; }
-    50%{ box-shadow: 0 0 30px 6px #ffffff; }
-}
-
 form label{
     display:block;
     margin-bottom:12px;
@@ -209,16 +199,28 @@ form input, form select{
     box-sizing:border-box;
     box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
 }
-#requisitos{ display:none; text-align:left; font-size:1.6em; color:#f0f0f0; }
-#requisitos ul{ margin-left:25px; }
-#requisitos button{ margin-top:20px; font-size:1.2em; }
 
-/* Mensaje bajo formulario */
-#mensajeSeleccion{
-    font-size:1.5em;
-    color:#a5b4fc;
-    margin-top:20px;
+/* Requisitos */
+#requisitos{
+    display:none;
+    text-align:left;
+    font-size:1.6em;
+    color:#f0f0f0;
+    background:linear-gradient(145deg,#1e293b,#1b263a);
+    padding:40px;
+    border-radius:25px;
+    margin-top:30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    transition: all 0.5s;
+    transform:translateY(-50px);
+    opacity:0;
 }
+#requisitos.show{
+    transform:translateY(0);
+    opacity:1;
+}
+#requisitos ul{ margin-left:25px; }
+#requisitos button{ margin-top:20px; font-size:1.2em; cursor:pointer; }
 
 /* Modal fotos */
 .modal{
@@ -274,19 +276,6 @@ form input, form select{
 }
 .modal .prev-btn{ left:-60px; }
 .modal .next-btn{ right:-60px; }
-
-/* Responsive */
-@media(max-width:600px){
-    h1,h2{ font-size:2.2em; }
-    .list-item img{ width:120px; height:120px; margin-bottom:10px; }
-    .list-item .info h3,.list-item .info .barrio,.list-item .info .detalles,.list-item .info .ambientes,.list-item .info .incluye{
-        font-size:1.5em;
-    }
-    form, #requisitos{ padding:40px 20px; font-size:2.2em; }
-    #filtroAmbientes{ font-size:2.2em; padding:16px; }
-    .btn{font-size:1.2em;padding:12px 16px;}
-    .modal .nav-btn{ left:0; right:0; top:auto; bottom:-50px; transform:none; }
-}
 </style>
 </head>
 <body>
@@ -302,6 +291,7 @@ form input, form select{
 
 <div id="contenedor"></div>
 
+<!-- Requisitos que aparecen al presionar Consulta -->
 <div id="requisitos">
     <h2>Requisitos</h2>
     <ul>
@@ -310,9 +300,10 @@ form input, form select{
         <li>Mes de adelanto, mes de depósito, mes de honorarios</li>
         <li>Contrato de 3 a 12 meses según cada caso</li>
     </ul>
-    <button onclick="aceptarRequisitos()">✅ Continuar Consulta</button>
+    <button onclick="aceptarRequisitos()">✅ Estoy de acuerdo</button>
 </div>
 
+<!-- Formulario siempre visible -->
 <h2>Formulario de Consulta</h2>
 <form id="consultaForm">
     <input type="hidden" id="direccionForm">
@@ -341,6 +332,7 @@ form input, form select{
 
 <div id="mensajeSeleccion">Seleccionar depto con el botón Consulta</div>
 
+<!-- Modal fotos -->
 <div id="modal" class="modal">
     <button class="close-btn" onclick="cerrarModal()">❌</button>
     <div class="carrusel">
@@ -431,16 +423,16 @@ function seleccionarDepartamento(direccion,vendedor,btn){
     req.style.display = "block";
     req.classList.add("show");
     req.scrollIntoView({behavior:"smooth"});
-    document.getElementById("consultaForm").style.display = "none";
+
+    const form = document.getElementById("consultaForm");
+    form.classList.remove("enabled");
     document.getElementById("mensajeSeleccion").style.display = "none";
 }
 
 function aceptarRequisitos(){
     const form = document.getElementById("consultaForm");
-    form.style.display = "block";
-    form.classList.add("show","highlight");
+    form.classList.add("enabled");
     form.scrollIntoView({behavior:"smooth"});
-    setTimeout(()=> form.classList.remove("highlight"), 3500);
 }
 
 function verEnMaps(direccion){
