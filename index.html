@@ -16,7 +16,6 @@ html, body {
 }
 body { padding:20px; text-align:center; }
 
-/* Titulos */
 h1,h2{
     text-align:center;
     margin:10px 0;
@@ -26,7 +25,6 @@ h1,h2{
 h1{ font-size:3.2em; color:#e0e0e0; }
 h2{ font-size:3.2em; color:#cbd5e1; }
 
-/* Filtro ancho completo */
 .filtro-container{
     width:100%;
     max-width:none;
@@ -50,7 +48,7 @@ h2{ font-size:3.2em; color:#cbd5e1; }
     box-sizing:border-box;
 }
 
-/* Tarjetas de departamentos */
+/* Tarjetas */
 .list-item{
     display:flex;
     flex-direction:row;
@@ -73,7 +71,6 @@ h2{ font-size:3.2em; color:#cbd5e1; }
 }
 .list-item:hover{ transform: translateY(-4px); }
 
-/* Foto 25% del ancho */
 .list-item img{
     width:25%;
     height:auto;
@@ -108,17 +105,15 @@ h2{ font-size:3.2em; color:#cbd5e1; }
     margin-left:6px;
 }
 .list-item .info .barrio{
-    font-size:4.4em; /* el doble que antes */
+    font-size:4.4em;
     font-weight:bold;
     font-family: 'Georgia', serif;
     text-transform:uppercase;
     margin:6px 0 8px 0;
-    color:#3b82f6; /* azul sólido */
+    color:#3b82f6;
     text-align:left;
     width:100%;
 }
-
-/* Detalles del depto */
 .list-item .info .detalles{
     display:flex;
     justify-content:space-between;
@@ -128,9 +123,9 @@ h2{ font-size:3.2em; color:#cbd5e1; }
     color:#e0e0e0;
 }
 .list-item .info .detalles .valor{
-    font-size:2.2em; /* destacado grande */
+    font-size:2.2em;
     font-weight:bold;
-    color:#facc15; /* amarillo */
+    color:#facc15;
 }
 .list-item .info .detalles .incluye{
     font-style:italic;
@@ -143,7 +138,7 @@ h2{ font-size:3.2em; color:#cbd5e1; }
     display:flex;
     justify-content:flex-start;
     gap:20px;
-    flex-wrap:nowrap; /* todos en una sola fila */
+    flex-wrap:nowrap;
     margin-top:15px;
 }
 .btn{
@@ -177,8 +172,15 @@ form, #requisitos{
     margin-right:auto;
     box-shadow: 0 10px 25px rgba(0,0,0,0.4);
     font-size:3em;
-    transition: box-shadow 0.5s;
+    transition: all 0.5s;
+    transform: translateY(-50px);
+    opacity:0;
 }
+form.show, #requisitos.show{
+    transform: translateY(0);
+    opacity:1;
+}
+
 form.highlight{ 
     box-shadow: 0 0 30px 6px #6366f1; 
     animation: parpadeo 1s ease-in-out 3; 
@@ -218,7 +220,7 @@ form input, form select{
     margin-top:20px;
 }
 
-/* Modal Carrusel scrolleable */
+/* Modal fotos */
 .modal{
     display:none;
     position:fixed;
@@ -229,28 +231,11 @@ form input, form select{
     align-items:center;
     z-index:1000;
     overflow:hidden;
-    flex-direction:column;
-}
-.modal .carrusel{
-    display:flex;
-    overflow-x:auto;
-    scroll-snap-type: x mandatory;
-    width:90%;
-    max-width:1000px;
-    height:80%;
-    margin:auto;
-    scroll-behavior: smooth;
-}
-.modal .carrusel img{
-    flex:0 0 auto;
-    width:auto;
-    height:100%;
-    object-fit:contain;
-    scroll-snap-align: start;
-    border-radius:12px;
-    margin-right:20px;
 }
 .modal .close-btn{
+    position:absolute;
+    top:15px;
+    right:20px;
     background:#f87171;
     color:white;
     font-size:2em;
@@ -258,8 +243,37 @@ form input, form select{
     border:none;
     border-radius:12px;
     cursor:pointer;
-    margin-top:10px;
 }
+.modal .carrusel{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:80%;
+    max-width:1000px;
+    height:70%;
+    margin:auto;
+    position:relative;
+}
+.modal .carrusel img{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+    border-radius:12px;
+}
+.modal .nav-btn{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    background:#6366f1;
+    border:none;
+    color:white;
+    font-size:2em;
+    padding:12px 18px;
+    border-radius:12px;
+    cursor:pointer;
+}
+.modal .prev-btn{ left:-60px; }
+.modal .next-btn{ right:-60px; }
 
 /* Responsive */
 @media(max-width:600px){
@@ -271,6 +285,7 @@ form input, form select{
     form, #requisitos{ padding:40px 20px; font-size:2.2em; }
     #filtroAmbientes{ font-size:2.2em; padding:16px; }
     .btn{font-size:1.2em;padding:12px 16px;}
+    .modal .nav-btn{ left:0; right:0; top:auto; bottom:-50px; transform:none; }
 }
 </style>
 </head>
@@ -295,11 +310,11 @@ form input, form select{
         <li>Mes de adelanto, mes de depósito, mes de honorarios</li>
         <li>Contrato de 3 a 12 meses según cada caso</li>
     </ul>
-    <button onclick="aceptarRequisitos()">✅ Acepto los requisitos</button>
+    <button onclick="aceptarRequisitos()">✅ Continuar Consulta</button>
 </div>
 
 <h2>Formulario de Consulta</h2>
-<form id="consultaForm" style="display:none;">
+<form id="consultaForm">
     <input type="hidden" id="direccionForm">
     <input type="hidden" id="vendedorForm">
 
@@ -327,8 +342,12 @@ form input, form select{
 <div id="mensajeSeleccion">Seleccionar depto con el botón Consulta</div>
 
 <div id="modal" class="modal">
-    <div class="carrusel" onclick="event.stopPropagation()"></div>
-    <button class="close-btn" onclick="cerrarModal()">❌ Cerrar</button>
+    <button class="close-btn" onclick="cerrarModal()">❌</button>
+    <div class="carrusel">
+        <button class="nav-btn prev-btn" onclick="prevFoto()">◀</button>
+        <img id="fotoModal" src="">
+        <button class="nav-btn next-btn" onclick="nextFoto()">▶</button>
+    </div>
 </div>
 
 <script>
@@ -336,6 +355,7 @@ const csvURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2E7ECUfY-ps4Ok0_
 let departamentos = [];
 let departamentoSeleccionado = null;
 let currentFotos = [];
+let fotoIndex = 0;
 
 Papa.parse(csvURL,{
     download:true,
@@ -400,37 +420,26 @@ function mostrarDepartamentos(lista){
 }
 
 function seleccionarDepartamento(direccion,vendedor,btn){
-    const mensajeSeleccion = document.getElementById("mensajeSeleccion");
-    const form = document.getElementById("consultaForm");
-
-    if(departamentoSeleccionado === direccion){
-        departamentoSeleccionado = null;
-        btn.closest(".list-item").classList.remove("selected");
-        document.getElementById("requisitos").style.display = "none";
-        form.style.display = "none";
-        mensajeSeleccion.style.display = "block";
-        return;
-    }
     departamentoSeleccionado = direccion;
-
     document.querySelectorAll(".list-item").forEach(item => item.classList.remove("selected"));
     btn.closest(".list-item").classList.add("selected");
 
     document.getElementById("direccionForm").value = direccion;
     document.getElementById("vendedorForm").value = '+5491168686694';
 
-    document.getElementById("requisitos").style.display = "block";
-    document.getElementById("requisitos").scrollIntoView({behavior:"smooth"});
-    form.style.display = "none";
-
-    mensajeSeleccion.style.display = "none";
+    const req = document.getElementById("requisitos");
+    req.style.display = "block";
+    req.classList.add("show");
+    req.scrollIntoView({behavior:"smooth"});
+    document.getElementById("consultaForm").style.display = "none";
+    document.getElementById("mensajeSeleccion").style.display = "none";
 }
 
 function aceptarRequisitos(){
     const form = document.getElementById("consultaForm");
     form.style.display = "block";
+    form.classList.add("show","highlight");
     form.scrollIntoView({behavior:"smooth"});
-    form.classList.add("highlight");
     setTimeout(()=> form.classList.remove("highlight"), 3500);
 }
 
@@ -439,26 +448,20 @@ function verEnMaps(direccion){
     window.open(url, "_blank");
 }
 
+// Modal fotos
 function abrirModal(index){
-    const modal = document.getElementById("modal");
-    const carrusel = modal.querySelector(".carrusel");
-    carrusel.innerHTML = "";
     currentFotos = departamentos[index].Fotos ? departamentos[index].Fotos.split(",").map(f=>f.trim()).map(link=>{
         let id = link.match(/[-\w]{25,}/);
         return id ? "https://lh3.googleusercontent.com/d/"+id[0] : null;
     }).filter(Boolean) : [];
     if(currentFotos.length===0) return;
-    currentFotos.forEach(f=>{
-        let img = document.createElement("img");
-        img.src = f;
-        carrusel.appendChild(img);
-    });
-    modal.style.display = "flex";
+    fotoIndex = 0;
+    document.getElementById("fotoModal").src = currentFotos[fotoIndex];
+    document.getElementById("modal").style.display = "flex";
 }
-
-function cerrarModal(){
-    document.getElementById("modal").style.display = "none";
-}
+function cerrarModal(){ document.getElementById("modal").style.display = "none"; }
+function prevFoto(){ if(fotoIndex>0){ fotoIndex--; document.getElementById("fotoModal").src=currentFotos[fotoIndex]; } }
+function nextFoto(){ if(fotoIndex<currentFotos.length-1){ fotoIndex++; document.getElementById("fotoModal").src=currentFotos[fotoIndex]; } }
 
 document.getElementById("consultaForm").addEventListener("submit", function(e){
     e.preventDefault();
