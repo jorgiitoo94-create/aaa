@@ -16,9 +16,6 @@ html, body {
 }
 body { padding:20px; text-align:center; }
 
-/* Contenedor principal con 80% ancho de pantalla */
-.main-container { width:80%; margin:0 auto; }
-
 /* Titulos */
 h1,h2{
     text-align:center;
@@ -29,57 +26,44 @@ h1,h2{
 h1{ font-size:3.2em; color:#e0e0e0; }
 h2{ font-size:3.2em; color:#cbd5e1; }
 
-/* Filtro */
+/* Filtro ancho completo */
 .filtro-container{
     width:100%;
+    max-width:none;
     margin:0 auto 40px auto;
     text-align:center;
 }
 .filtro-container label{
-    font-size:2.5em;
+    font-size:3em;
     display:block;
     margin-bottom:10px;
 }
 #filtroAmbientes{
     width:100%;
-    padding:20px 20px;
+    padding:22px 20px;
     border-radius:25px;
     border:none;
     background:#1e293b;
     color:white;
-    font-size:1.8em; 
+    font-size:3em; 
     box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
     box-sizing:border-box;
 }
 
-/* Carrusel full-width */
-.carousel-container {
-    display:flex;
-    overflow-x:auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    gap:20px;
-    padding-bottom:10px;
-    margin-bottom:30px;
-}
-.carousel-container::-webkit-scrollbar {
-    height:12px;
-}
-.carousel-container::-webkit-scrollbar-thumb {
-    background:#6366f1;
-    border-radius:6px;
-}
-
-/* Tarjetas de departamentos full-width */
+/* Tarjetas de departamentos */
 .list-item{
-    flex:0 0 100%; /* ocupa todo el ancho */
     display:flex;
-    flex-direction:column;
+    flex-direction:row;
     background:linear-gradient(145deg,#1e293b,#1b263a);
     border-radius:25px;
-    padding:25px;
+    padding:20px;
+    margin-bottom:25px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    scroll-snap-align: start;
+    max-width:calc(100% - 40px);
+    align-items:center;
+    justify-content:flex-start;
+    margin-left:auto;
+    margin-right:auto;
     transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
     cursor:default;
 }
@@ -90,54 +74,79 @@ h2{ font-size:3.2em; color:#cbd5e1; }
 .list-item:hover{ transform: translateY(-4px); }
 
 .list-item img{
-    width:100%;
-    height:auto;
-    object-fit:contain;
+    width:180px;
+    height:140px;
+    object-fit:cover;
     border-radius:20px;
     cursor:pointer;
+    flex-shrink:0;
     transition: transform 0.3s;
-    margin-bottom:15px;
 }
-.list-item img:hover{ transform: scale(1.02); }
+.list-item img:hover{ transform: scale(1.05); }
 
 .list-item .info{
     flex:1;
-    margin-top:15px;
+    margin-left:25px;
     display:flex;
     flex-direction:column;
     align-items:flex-start;
 }
+.list-item .info h3{
+    margin:0 0 5px 0;
+    font-size:1.8em;
+    color:#f0f0f0;
+}
+.list-item .info .ambientes{
+    display:inline-block;
+    background:#6366f1;
+    color:white;
+    padding:4px 12px;
+    border-radius:12px;
+    font-weight:bold;
+    font-size:1.2em;
+    margin-left:6px;
+}
 .list-item .info .barrio{
-    font-size:3.6em; 
+    font-size:1.5em;
     font-weight:bold;
     font-family: 'Georgia', serif;
     text-transform:uppercase;
-    margin:10px 0;
-    color:#facc15;
+    margin:6px 0 8px 0;
+    color:#a5b4fc;
     text-align:left;
     width:100%;
 }
-.list-item .info .direccion{
-    font-size:3em; 
-    font-weight:bold;
-    margin:0 0 10px 0;
-}
+
+/* Detalles del depto */
 .list-item .info .detalles{
-    font-size:2.6em; 
-    margin:0 0 20px 0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:1.3em;
+    margin:8px 0;
     color:#e0e0e0;
 }
+.list-item .info .detalles .valor{
+    font-size:2.2em; /* destacado grande */
+    font-weight:bold;
+    color:#facc15; /* amarillo */
+}
+.list-item .info .detalles .incluye{
+    font-style:italic;
+    color:#d1d5db;
+    font-size:1.2em;
+    text-align:right;
+}
 
-/* Botones siempre abajo */
 .btn-row{
     display:flex;
     justify-content:flex-start;
     gap:10px;
     flex-wrap:wrap;
-    margin-top:auto;
+    margin-top:10px;
 }
 .btn{
-    padding:14px 20px;
+    padding:12px 18px;
     border:none;
     border-radius:16px;
     cursor:pointer;
@@ -159,13 +168,14 @@ form, #requisitos{
     background:linear-gradient(145deg,#1e293b,#1b263a);
     padding:60px 40px;
     border-radius:25px;
-    width:100%;
+    width:95%;
+    max-width:95vw;
     box-sizing:border-box;
     text-align:center;
     margin-left:auto;
     margin-right:auto;
     box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    font-size:2.2em;
+    font-size:3em;
     transition: box-shadow 0.5s;
 }
 form.highlight{ box-shadow: 0 0 30px 6px #6366f1; }
@@ -200,7 +210,7 @@ form input, form select{
     margin-top:20px;
 }
 
-/* Modal Carrusel */
+/* Modal Carrusel scrolleable */
 .modal{
     display:none;
     position:fixed;
@@ -210,20 +220,16 @@ form input, form select{
     justify-content:center;
     align-items:center;
     z-index:1000;
-}
-.modal .carrusel-container{
-    position:relative;
-    width:90%;
-    max-width:1000px;
-    height:80%;
-    margin:auto;
+    overflow:hidden;
 }
 .modal .carrusel{
     display:flex;
     overflow-x:auto;
     scroll-snap-type: x mandatory;
-    width:100%;
-    height:100%;
+    width:90%;
+    max-width:1000px;
+    height:80%;
+    margin:auto;
     scroll-behavior: smooth;
 }
 .modal .carrusel img{
@@ -235,26 +241,13 @@ form input, form select{
     border-radius:12px;
     margin-right:20px;
 }
-.modal .close-btn{
-    position:absolute;
-    top:10px;
-    right:10px;
-    background:#6366f1;
-    color:white;
-    border:none;
-    border-radius:12px;
-    padding:10px 16px;
-    cursor:pointer;
-    font-size:1.5em;
-    z-index:1001;
-}
 
 /* Responsive */
-@media(max-width:900px){ .main-container{ width:95%; } }
 @media(max-width:600px){
     h1,h2{ font-size:2.2em; }
-    .list-item .info .barrio,.list-item .info .direccion,.list-item .info .detalles{
-        font-size:1.8em;
+    .list-item img{ width:120px; height:120px; margin-bottom:10px; }
+    .list-item .info h3,.list-item .info .barrio,.list-item .info .detalles,.list-item .info .ambientes,.list-item .info .incluye{
+        font-size:1.5em;
     }
     form, #requisitos{ padding:40px 20px; font-size:2.2em; }
     #filtroAmbientes{ font-size:2.2em; padding:16px; }
@@ -263,7 +256,7 @@ form input, form select{
 </style>
 </head>
 <body>
-<div class="main-container">
+
 <h1>Alquilar temporario<br>Departamentos amoblados</h1>
 
 <div class="filtro-container">
@@ -273,7 +266,7 @@ form input, form select{
     </select>
 </div>
 
-<div class="carousel-container" id="contenedor"></div>
+<div id="contenedor"></div>
 
 <div id="requisitos">
     <h2>Requisitos</h2>
@@ -290,34 +283,35 @@ form input, form select{
 <form id="consultaForm" style="display:none;">
     <input type="hidden" id="direccionForm">
     <input type="hidden" id="vendedorForm">
+
     <label>Nombre:</label>
     <input type="text" id="nombreForm" placeholder="Tu nombre" required>
+
     <label>Fecha de ingreso:</label>
     <input type="date" id="fechaForm" required>
+
     <label>Tiempo a alquilar (meses):</label>
     <input type="number" id="tiempoForm" min="1" required>
+
     <label>Cantidad de personas:</label>
     <input type="number" id="personasForm" min="1" required>
+
     <label>¿Tienen mascotas?</label>
     <select id="mascotasForm" required>
         <option value="No">No</option>
         <option value="Sí">Sí</option>
     </select>
+
     <button type="submit" class="btn btn-whatsapp">💬 Enviar WhatsApp</button>
 </form>
 
 <div id="mensajeSeleccion">Seleccionar depto con el botón Consulta</div>
-</div>
 
 <div id="modal" class="modal" onclick="cerrarModal()">
-    <div class="carrusel-container" onclick="event.stopPropagation()">
-        <button class="close-btn" onclick="cerrarModal()">✖</button>
-        <div class="carrusel"></div>
-    </div>
+    <div class="carrusel" onclick="event.stopPropagation()"></div>
 </div>
 
 <script>
-// CSV y funciones iguales que antes
 const csvURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2E7ECUfY-ps4Ok0_1TJxTR1UPoYl-_ZYkGNlvhk9eZWHBslhsWtoCiTaPfCjQJ38kojq9pJBeoGep/pub?output=csv";
 let departamentos = [];
 let departamentoSeleccionado = null;
@@ -367,14 +361,17 @@ function mostrarDepartamentos(lista){
         item.innerHTML=`
             <img src="${primera}" onclick="abrirModal(${index})">
             <div class="info">
-                <p class="barrio">${row["Barrio"] || "-"}</p>
-                <p class="direccion">Dirección: ${row["Dirección"]} - ${row["Ambientes"]} amb</p>
-                <div class="detalles">Valor: ${row["Valor"] || "-"} - Incluye: ${row["Incluye"] || "-"}</div>
-            </div>
-            <div class="btn-row">
-                <button class="btn btn-fotos" onclick="abrirModal(${index})">📸 Ver Fotos</button>
-                <button class="btn btn-consulta" onclick="seleccionarDepartamento('${row['Dirección']}','${row['Vendedor']}',this)">💼 Consulta</button>
-                <button class="btn btn-maps" onclick="verEnMaps('${row['Dirección']}')">🗺️ Maps</button>
+                <h3>${row["Dirección"]} - <span class="ambientes">${row["Ambientes"]} amb</span></h3>
+                <p class="barrio">${row["Barrio"] || ""}</p>
+                <div class="detalles">
+                    <span class="valor">Valor: ${row["Valor"] || "-"}</span>
+                    <span class="incluye">Incluye: ${row["Incluye"] || "-"}</span>
+                </div>
+                <div class="btn-row">
+                    <button class="btn btn-fotos" onclick="abrirModal(${index})">📸 Ver Fotos</button>
+                    <button class="btn btn-consulta" onclick="seleccionarDepartamento('${row['Dirección']}','${row['Vendedor']}',this)">💼 Consulta</button>
+                    <button class="btn btn-maps" onclick="verEnMaps('${row['Dirección']}')">🗺️ Maps</button>
+                </div>
             </div>
         `;
         item.fotos = fotosLinks;
@@ -384,6 +381,7 @@ function mostrarDepartamentos(lista){
 
 function seleccionarDepartamento(direccion,vendedor,btn){
     const mensajeSeleccion = document.getElementById("mensajeSeleccion");
+
     if(departamentoSeleccionado === direccion){
         departamentoSeleccionado = null;
         btn.closest(".list-item").classList.remove("selected");
@@ -393,13 +391,19 @@ function seleccionarDepartamento(direccion,vendedor,btn){
         return;
     }
     departamentoSeleccionado = direccion;
+
     document.querySelectorAll(".list-item").forEach(item => item.classList.remove("selected"));
     btn.closest(".list-item").classList.add("selected");
+
+    // Guardar datos ocultos
     document.getElementById("direccionForm").value = direccion;
     document.getElementById("vendedorForm").value = '+5491168686694';
+
+    // Mostrar requisitos
     document.getElementById("requisitos").style.display = "block";
     document.getElementById("requisitos").scrollIntoView({behavior:"smooth"});
     document.getElementById("consultaForm").style.display = "none";
+
     mensajeSeleccion.style.display = "none";
 }
 
