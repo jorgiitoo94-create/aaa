@@ -214,13 +214,33 @@ form input, form select{
     transition: all 0.5s;
     transform:translateY(-50px);
     opacity:0;
+    position:relative;
 }
 #requisitos.show{
     transform:translateY(0);
     opacity:1;
 }
+#requisitos.highlight{
+    animation: iluminar 1s ease-in-out 2;
+}
+@keyframes iluminar{
+    0%,100%{ box-shadow: 0 0 25px 5px #6366f1; }
+    50%{ box-shadow: 0 0 25px 5px #ffffff; }
+}
 #requisitos ul{ margin-left:25px; }
-#requisitos button{ margin-top:20px; font-size:1.2em; cursor:pointer; }
+#requisitos p{ margin-top:15px; font-size:1.3em; color:#a5b4fc; }
+#requisitos button{
+    margin-top:20px;
+    font-size:1.2em;
+    cursor:pointer;
+    border-radius:12px;
+    padding:12px 20px;
+    font-weight:bold;
+}
+#requisitos button.accepted{
+    background:#6366f1;
+    color:white;
+}
 
 /* Modal fotos */
 .modal{
@@ -300,7 +320,8 @@ form input, form select{
         <li>Mes de adelanto, mes de depósito, mes de honorarios</li>
         <li>Contrato de 3 a 12 meses según cada caso</li>
     </ul>
-    <button onclick="aceptarRequisitos()">✅ Estoy de acuerdo</button>
+    <p>Para realizar la consulta, debe aceptar los requisitos presionando el botón "Estoy de acuerdo".</p>
+    <button id="btnAceptar" onclick="aceptarRequisitos()">✅ Estoy de acuerdo</button>
 </div>
 
 <!-- Formulario siempre visible -->
@@ -421,17 +442,21 @@ function seleccionarDepartamento(direccion,vendedor,btn){
 
     const req = document.getElementById("requisitos");
     req.style.display = "block";
-    req.classList.add("show");
+    req.classList.add("show","highlight");
     req.scrollIntoView({behavior:"smooth"});
 
     const form = document.getElementById("consultaForm");
     form.classList.remove("enabled");
+    document.getElementById("btnAceptar").classList.remove("accepted");
     document.getElementById("mensajeSeleccion").style.display = "none";
+
+    setTimeout(()=> req.classList.remove("highlight"), 2200);
 }
 
 function aceptarRequisitos(){
     const form = document.getElementById("consultaForm");
     form.classList.add("enabled");
+    document.getElementById("btnAceptar").classList.add("accepted");
     form.scrollIntoView({behavior:"smooth"});
 }
 
