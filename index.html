@@ -463,7 +463,8 @@ function seleccionarDepartamento(direccion,vendedor,btn){
     btn.classList.add("selected");
 
     document.getElementById("direccionForm").value = direccion;
-    document.getElementById("vendedorForm").value = '+5491168686694';
+    // Tomar vendedor del CSV y asegurarse que tenga "+"
+    document.getElementById("vendedorForm").value = vendedor.startsWith("+") ? vendedor : "+" + vendedor;
 
     const req = document.getElementById("requisitos");
     req.style.display = "block";
