@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Departamentos Temporarios</title>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<style>
+
+body{
+background:#0f172a;
+color:white;
+font-family:Arial;
+margin:0;
+padding:20px 0;
+text-align:center;
+overflow-x:hidden;
+}
+
+h1{
+font-size:2.3em;
+margin-bottom:20px;
+}
+
+.container{
+width:92vw;
+margin:auto;
+}
+
+.sectionTitle{
+margin-top:25px;
+margin-bottom:10px;
+font-size:1.3em;
+color:#cbd5e1;
+}
+
+.btnFiltro{
+width:100%;
+padding:16px;
+margin:6px 0;
+font-size:1.3em;
+border:none;
+border-radius:18px;
+background:#6366f1;
+color:white;
+cursor:pointer;
+}
+
+.btnFiltro.activo{
+background:#16a34a;
+}
+
+select{
+width:100%;
+padding:16px;
+border-radius:18px;
+font-size:1.2em;
+background:#1e293b;
+color:white;
+border:none;
+}
+
+/* TARJETA */
+
+.list-item{
+display:flex;
+align-items:stretch;
+gap:15px;
+background:linear-gradient(145deg,#1e293b,#1b263a);
+border-radius:25px;
+padding:20px;
+margin-top:20px;
+box-shadow:0 10px 25px rgba(0,0,0,0.4);
+height:360px;
+overflow:hidden;
+}
+
+.list-item img{
+width:432px;
+min-width:432px;
+height:100%;
+object-fit:cover;
+border-radius:15px;
+}
+
+.info{
+flex:1;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+text-align:left;
+overflow:hidden;
+}
+
+.barrio{
+font-size:3.2em;
+font-weight:bold;
+color:#3b82f6;
+}
+
+.ambientes{
+font-size:2.2em;
+color:#94a3b8;
+margin-top:6px;
+}
+
+.direccion{
+font-size:2.2em;
+margin-top:6px;
+}
+
+.valor{
+font-size:2.6em;
+font-weight:bold;
+color:#facc15;
+margin-top:10px;
+}
+
+.incluye{
+font-size:2.1em;
+color:#cbd5e1;
+margin-top:6px;
+}
+
+/* BOTONES */
+
+.btnRow{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin-top:10px;
+}
+
+.btn{
+flex:1;
+padding:10px;
+border:none;
+border-radius:12px;
+font-size:2em;
+cursor:pointer;
+color:white;
+}
+
+.btnFoto{background:#f59e0b;}
+.btnMapa{background:#2563eb;}
+.btnWsp{background:#25D366;}
+
+/* MODAL */
+
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.95);
+justify-content:center;
+align-items:center;
+flex-direction:column;
+padding:20px;
+z-index:1000;
+}
+
+.closeModal{
+position:absolute;
+top:15px;
+right:20px;
+background:#ef4444;
+color:white;
+border:none;
+border-radius:50%;
+width:45px;
+height:45px;
+font-size:1.4em;
+cursor:pointer;
+}
+
+.modal img{
+max-width:90vw;
+max-height:70vh;
+border-radius:15px;
+object-fit:contain;
+}
+
+.nav{
+margin-top:20px;
+}
+
+.nav button{
+padding:12px 20px;
+font-size:1.4em;
+border:none;
+border-radius:10px;
+background:#6366f1;
+color:white;
+margin:5px;
+}
+
+.noResultados{
+margin-top:40px;
+font-size:1.2em;
+color:#f87171;
+}
+
+.formBox{
+background:#1e293b;
+padding:25px;
+border-radius:20px;
+max-width:600px;
+width:90%;
+text-align:left;
+}
+
+.formBox input,
+.formBox select{
+width:100%;
+padding:10px;
+margin:6px 0;
+border-radius:8px;
+border:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Departamentos Temporarios</h1>
+
+<div class="container">
+
+<div class="sectionTitle">Ambientes</div>
+<div id="ambientes"></div>
+
+<div class="sectionTitle">Barrio</div>
+<select id="barrioSelect">
+<option value="">Todos</option>
+</select>
+
+<div id="lista"></div>
+
+</div>
+
+<!-- MODAL FOTOS -->
+
+<div class="modal" id="modalFotos">
+
+<button class="closeModal" onclick="cerrarTodo()">✕</button>
+
+<div id="slide"></div>
+
+<div class="nav">
+<button onclick="prev()">◀</button>
+<button onclick="next()">▶</button>
+</div>
+
+</div>
+
+<!-- MODAL CONSULTA -->
+
+<div class="modal" id="modalConsulta">
+
+<button class="closeModal" onclick="cerrarConsulta()">✕</button>
+
+<div class="formBox">
+
+<h2 id="deptoTitulo"></h2>
+
+<div id="deptoInfo"></div>
+
+<h3>Requisitos</h3>
+
+<div id="bloqueRequisitos">
+
+<ul>
+
+<li>DNI o Pasaporte</li>
+
+<li>
+Demostración de ingresos
+<button onclick="toggleInfo()" style="border:none;border-radius:50%;width:25px;height:25px;background:#3b82f6;color:white">?</button>
+
+<div id="infoIngresos" style="display:none;margin-top:6px;font-size:0.9em;color:#cbd5e1">
+La demostración de ingresos se resuelve según cada caso,
+puede ser de los inquilinos o de las personas responsables
+del pago del alquiler.
+</div>
+
+</li>
+
+<li>Mes de adelanto</li>
+<li>Mes de depósito</li>
+<li>Mes de honorarios</li>
+
+</ul>
+
+<div id="totalIngreso" style="font-size:1.4em;color:#facc15;margin-top:10px"></div>
+
+<div style="margin-top:10px">
+Reserva: Medio mes de alquiler (se descuenta del total a abonar el día de ingreso)
+</div>
+
+<button onclick="aceptarRequisitos()" style="width:100%;padding:14px;border:none;border-radius:12px;background:#16a34a;color:white;font-size:1.1em;margin-top:15px">
+Aceptar requisitos y continuar
+</button>
+
+</div>
+
+<div id="bloqueFormulario" style="display:none">
+
+<h3 style="margin-top:20px">Completa tus datos</h3>
+
+<input id="nombre" placeholder="Nombre">
+
+<input id="personas" type="number" inputmode="numeric" placeholder="Cantidad de personas">
+
+<input id="fecha" type="date">
+
+<input id="meses" type="number" inputmode="numeric" placeholder="¿Por cuántos meses?">
+
+<select id="mascotas">
+<option value="">¿Mascotas?</option>
+<option>No</option>
+<option>Sí</option>
+</select>
+
+<button onclick="enviarConsulta()" style="width:100%;padding:14px;border:none;border-radius:12px;background:#25D366;color:white;font-size:1.1em">
+Continuar por WhatsApp
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const csvURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2E7ECUfY-ps4Ok0_1TJxTR1UPoYl-_ZYkGNlvhk9eZWHBslhsWtoCiTaPfCjQJ38kojq9pJBeoGep/pub?output=csv"
+
+let departamentos=[]
+let ambienteActivo=null
+let slides=[]
+let index=0
+let deptoActual=null
+
+Papa.parse(csvURL,{
+download:true,
+header:true,
+complete:function(results){
+
+departamentos=results.data.filter(r=>r["Dirección"])
+
+crearFiltros()
+filtrar()
+
+}
+})
+
+function crearFiltros(){
+
+let amb=[...new Set(departamentos.map(d=>parseInt(d["Ambientes"])))]
+
+amb.sort((a,b)=>a-b)
+
+amb.forEach(a=>{
+
+let b=document.createElement("button")
+
+b.className="btnFiltro"
+b.innerText=a+" ambientes"
+
+b.onclick=()=>{
+
+ambienteActivo=ambienteActivo==a?null:a
+
+document.querySelectorAll("#ambientes .btnFiltro").forEach(btn=>btn.classList.remove("activo"))
+
+if(ambienteActivo){ b.classList.add("activo") }
+
+actualizarBarrios()
+
+filtrar()
+
+}
+
+document.getElementById("ambientes").appendChild(b)
+
+})
+
+actualizarBarrios()
+
+}
+
+function actualizarBarrios(){
+
+let select=document.getElementById("barrioSelect")
+
+select.innerHTML='<option value="">Todos</option>'
+
+let filtrados=departamentos.filter(d=>!ambienteActivo || parseInt(d["Ambientes"])==ambienteActivo)
+
+let barrios=[...new Set(filtrados.map(d=>d["Barrio"]))]
+
+barrios.sort()
+
+barrios.forEach(b=>{
+let op=document.createElement("option")
+op.value=b
+op.textContent=b
+select.appendChild(op)
+})
+
+select.onchange=filtrar
+
+}
+
+function filtrar(){
+
+let barrio=document.getElementById("barrioSelect").value
+let lista=document.getElementById("lista")
+
+lista.innerHTML=""
+
+let resultados=departamentos
+.filter(d=>(!ambienteActivo || parseInt(d["Ambientes"])==ambienteActivo))
+.filter(d=>(!barrio || d["Barrio"]==barrio))
+
+if(resultados.length==0){
+
+lista.innerHTML='<div class="noResultados">⚠️ No hay departamentos con esos filtros</div>'
+return
+
+}
+
+resultados.forEach(row=>{
+
+let fotos=row["Fotos"].split(",").map(f=>{
+let id=f.match(/[-\w]{25,}/)
+return "https://lh3.googleusercontent.com/d/"+id[0]
+})
+
+let card=document.createElement("div")
+
+card.className="list-item"
+
+card.innerHTML=`
+
+<img src="${fotos[0]}">
+
+<div class="info">
+
+<div class="barrio">${row["Barrio"]}</div>
+
+<div class="ambientes">${row["Ambientes"]} ambientes</div>
+
+<div class="direccion">${row["Dirección"]}</div>
+
+<div class="valor">${row["Valor"]}</div>
+
+<div class="incluye">Incluye: ${row["Incluye"] || ""}</div>
+
+<div class="btnRow">
+
+<button class="btn btnFoto">📸 Fotos</button>
+<button class="btn btnMapa">🗺️ Mapa</button>
+<button class="btn btnWsp">💬 Consulta</button>
+
+</div>
+
+</div>
+`
+
+card.querySelector(".btnFoto").onclick=()=>verFotos(row)
+card.querySelector(".btnMapa").onclick=()=>verMapa(row["Dirección"])
+card.querySelector(".btnWsp").onclick=()=>consultar(row)
+
+lista.appendChild(card)
+
+})
+
+}
+
+function consultar(row){
+
+deptoActual=row
+
+let valor=parseFloat(row["Valor"])
+let total=valor*3
+
+document.getElementById("deptoTitulo").innerText=row["Barrio"]+" • "+row["Ambientes"]+" ambientes"
+
+document.getElementById("deptoInfo").innerHTML=row["Dirección"]+"<br>Valor mensual: "+valor
+
+document.getElementById("totalIngreso").innerText="Total para el ingreso: "+total
+
+document.getElementById("modalConsulta").style.display="flex"
+
+document.getElementById("bloqueRequisitos").style.display="block"
+document.getElementById("bloqueFormulario").style.display="none"
+
+}
+
+function aceptarRequisitos(){
+
+document.getElementById("bloqueRequisitos").style.display="none"
+document.getElementById("bloqueFormulario").style.display="block"
+
+}
+
+function toggleInfo(){
+
+let t=document.getElementById("infoIngresos")
+t.style.display=t.style.display=="block"?"none":"block"
+
+}
+
+function cerrarConsulta(){
+
+document.getElementById("modalConsulta").style.display="none"
+
+}
+
+function formatearFecha(fechaISO){
+
+const meses=[
+"enero","febrero","marzo","abril","mayo","junio",
+"julio","agosto","septiembre","octubre","noviembre","diciembre"
+]
+
+let partes=fechaISO.split("-")
+
+let año=partes[0]
+let mes=meses[parseInt(partes[1])-1]
+let dia=partes[2]
+
+return `${dia} de ${mes} de ${año}`
+
+}
+
+function enviarConsulta(){
+
+let nombre=document.getElementById("nombre").value
+let personas=document.getElementById("personas").value
+let fecha=document.getElementById("fecha").value
+let meses=document.getElementById("meses").value
+let mascotas=document.getElementById("mascotas").value
+
+let fechaTexto=formatearFecha(fecha)
+
+let mascotasTexto = mascotas=="Sí" ? "tengo mascotas" : "no tengo mascotas"
+
+let texto=`Hola ! mi nombre es ${nombre}, quiero consultar sobre ${deptoActual["Ambientes"]} - ${deptoActual["Dirección"]} - en - ${deptoActual["Barrio"]}. Tengo que mudarme a partir del ${fechaTexto} en lo posible por ${meses} meses. Somos ${personas} y ${mascotasTexto}.`
+
+window.open("https://wa.me/5491168686694?text="+encodeURIComponent(texto))
+
+}
+
+function verFotos(row){
+
+slides=[]
+
+row["Fotos"].split(",").forEach(f=>{
+let id=f.match(/[-\w]{25,}/)
+
+slides.push({
+url:"https://lh3.googleusercontent.com/d/"+id[0]
+})
+
+})
+
+index=0
+mostrarSlide()
+
+document.getElementById("modalFotos").style.display="flex"
+
+}
+
+function mostrarSlide(){
+
+let s=slides[index]
+
+document.getElementById("slide").innerHTML=`<img src="${s.url}">`
+
+}
+
+function next(){ if(index<slides.length-1){index++;mostrarSlide()} }
+function prev(){ if(index>0){index--;mostrarSlide()} }
+
+function verMapa(dir){
+window.open("https://www.google.com/maps/search/"+encodeURIComponent(dir+", Buenos Aires"))
+}
+
+function cerrarTodo(){
+document.getElementById("modalFotos").style.display="none"
+}
+
+</script>
+
+</body>
+</html>
