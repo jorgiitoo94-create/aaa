@@ -221,17 +221,36 @@ font-size:1.8em;
 margin-bottom:10px;
 }
 
-.formBox input,
-.formBox select,
-.formBox textarea{
+/* FORMULARIO GRANDE */
+
+.formGrande label{
+font-size:1.6em;
+display:block;
+margin-top:20px;
+}
+
+.formGrande input,
+.formGrande select{
 width:100%;
-padding:12px;
-margin:8px 0;
-border-radius:10px;
+padding:18px;
+margin-top:8px;
+border-radius:12px;
 border:none;
-font-size:1.1em;
+font-size:1.5em;
 background:#0f172a;
 color:white;
+}
+
+.btnEnviar{
+width:100%;
+padding:20px;
+margin-top:25px;
+border:none;
+border-radius:14px;
+background:#25D366;
+font-size:1.6em;
+color:white;
+cursor:pointer;
 }
 
 </style>
@@ -289,23 +308,13 @@ color:white;
 
 <div id="bloqueRequisitos">
 
-<ul style="list-style:none;padding:0;font-size:1.5em;line-height:1.6">
+<ul style="font-size:1.5em;line-height:1.6">
 
-<li>🪪 DNI o Pasaporte</li>
-
-<li>
-💼 Demostración de ingresos
-<button onclick="toggleInfo()" style="border:none;border-radius:50%;width:30px;height:30px;background:#3b82f6;color:white;margin-left:6px">?</button>
-
-<div id="infoIngresos" style="display:none;margin-top:8px;font-size:0.9em;color:#cbd5e1">
-Puede ser del inquilino o del responsable del pago.
-</div>
-
-</li>
-
-<li>💰 Mes de adelanto</li>
-<li>🔒 Mes de depósito</li>
-<li>📑 Mes de honorarios</li>
+<li>DNI o Pasaporte</li>
+<li>Demostración de ingresos</li>
+<li>Mes de adelanto</li>
+<li>Mes de depósito</li>
+<li>Mes de honorarios</li>
 
 </ul>
 
@@ -327,30 +336,33 @@ Entiendo los requisitos — continuar
 
 <div id="bloqueFormulario" style="display:none">
 
-<h3 style="font-size:2em">Completa tus datos</h3>
+<h3 style="font-size:2em;margin-bottom:10px">Completa tus datos</h3>
 
-<input id="nombre" placeholder="Nombre completo">
+<div class="formGrande">
 
-<input id="telefono" placeholder="WhatsApp">
+<label>Nombre</label>
+<input id="nombre">
 
-<input id="personas" type="number" placeholder="¿Cuántas personas vivirán?">
+<label>Cantidad de personas</label>
+<input id="personas" type="number">
 
-<label>Fecha estimada de ingreso</label>
+<label>Fecha de ingreso</label>
 <input id="fecha" type="date">
 
-<input id="meses" type="number" placeholder="¿Cuántos meses planeas alquilar?">
+<label>¿Por cuánto tiempo?</label>
+<input id="meses" type="number" placeholder="Meses">
 
+<label>¿Mascotas?</label>
 <select id="mascotas">
-<option value="">¿Mascotas?</option>
 <option>No</option>
 <option>Sí</option>
 </select>
 
-<textarea id="comentario" placeholder="Comentario adicional"></textarea>
-
-<button onclick="enviarConsulta()" style="width:100%;padding:16px;border:none;border-radius:12px;background:#25D366;color:white;font-size:1.2em">
+<button class="btnEnviar" onclick="enviarConsulta()">
 Enviar consulta por WhatsApp
 </button>
+
+</div>
 
 </div>
 
@@ -520,11 +532,6 @@ document.getElementById("bloqueRequisitos").style.display="none"
 document.getElementById("bloqueFormulario").style.display="block"
 }
 
-function toggleInfo(){
-let t=document.getElementById("infoIngresos")
-t.style.display=t.style.display=="block"?"none":"block"
-}
-
 function cerrarConsulta(){
 document.getElementById("modalConsulta").style.display="none"
 }
@@ -532,28 +539,12 @@ document.getElementById("modalConsulta").style.display="none"
 function enviarConsulta(){
 
 let nombre=document.getElementById("nombre").value
-let telefono=document.getElementById("telefono").value
 let personas=document.getElementById("personas").value
 let fecha=document.getElementById("fecha").value
 let meses=document.getElementById("meses").value
 let mascotas=document.getElementById("mascotas").value
-let comentario=document.getElementById("comentario").value
 
-let texto=
-`Consulta departamento
-
-📍 ${deptoActual["Dirección"]}, ${deptoActual["Barrio"]}
-
-👤 Nombre: ${nombre}
-📞 WhatsApp: ${telefono}
-👥 Personas: ${personas}
-📅 Ingreso: ${fecha}
-⏳ Meses: ${meses}
-🐶 Mascotas: ${mascotas}
-
-📝 Comentario:
-${comentario}
-`
+let texto=`Hola! Soy ${nombre}. Consulto por el departamento en ${deptoActual["Dirección"]}, ${deptoActual["Barrio"]}. Somos ${personas} personas. Ingreso ${fecha} por ${meses} meses. Mascotas: ${mascotas}.`
 
 window.open("https://wa.me/5491168686694?text="+encodeURIComponent(texto))
 
