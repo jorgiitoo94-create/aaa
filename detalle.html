@@ -35,15 +35,20 @@ color:#38bdf8;
 
 .box{
 background:#1e293b;
-padding:20px;
+padding:30px;
 border-radius:14px;
 margin:12px;
+font-size:2em;
 }
 
-h2{font-size:1.6em;}
+h2{font-size:1.2em;}
+
+.direccionGrande{
+font-size:4em;
+}
 
 .ambientesGrande{
-font-size:2.5em;
+font-size:5em;
 font-weight:bold;
 color:#38bdf8;
 }
@@ -73,25 +78,35 @@ z-index:999;
 
 .modalContent{
 background:#1e293b;
-padding:25px;
+padding:40px;
 border-radius:12px;
-width:90%;
-max-width:400px;
+width:95%;
+max-width:500px;
 text-align:center;
+font-size:1.5em;
+position:relative;
 }
 
-input{
+.closeBtn{
+position:absolute;
+top:10px;
+right:15px;
+cursor:pointer;
+font-size:1.5em;
+}
+
+input, select{
 width:90%;
-padding:12px;
-margin-top:10px;
+padding:15px;
+margin-top:15px;
 border-radius:8px;
 border:none;
 font-size:1em;
 }
 
 button{
-margin-top:15px;
-padding:12px 20px;
+margin-top:20px;
+padding:15px 25px;
 border:none;
 border-radius:8px;
 background:#22c55e;
@@ -100,9 +115,22 @@ font-size:1em;
 cursor:pointer;
 }
 
+button:disabled{
+background:#555;
+cursor:not-allowed;
+}
+
 .backBtn{
 background:#334155;
 margin-right:10px;
+}
+
+#mapa{
+width:100%;
+aspect-ratio:1/1;
+border:none;
+margin-top:10px;
+cursor:pointer;
 }
 
 </style>
@@ -122,7 +150,7 @@ margin-right:10px;
 
 <div class="box">
 <h2>Tu espacio ideal en Buenos Aires</h2>
-<div id="direccion"></div>
+<div id="direccion" class="direccionGrande"></div>
 </div>
 
 <div class="box">
@@ -137,9 +165,7 @@ margin-right:10px;
 
 <div class="box">
 <h2>Ubicación estratégica</h2>
-<div onclick="abrirMapa()" style="cursor:pointer">
-<iframe id="mapa" style="width:100%;height:220px;border:none;margin-top:10px"></iframe>
-</div>
+<iframe id="mapa" onclick="abrirMapa()"></iframe>
 </div>
 
 <div class="box">
@@ -159,8 +185,11 @@ margin-right:10px;
 </div>
 
 <!-- VISOR DE IMAGEN -->
-<div class="modal" id="visor" onclick="cerrarVisor()">
-<img id="imgGrande" style="max-width:90%;max-height:90%;border-radius:12px">
+<div class="modal" id="visor">
+<div style="position:relative">
+<span class="closeBtn" onclick="cerrarVisor()">✖</span>
+<img id="imgGrande" style="max-width:90vw;max-height:90vh;border-radius:12px">
+</div>
 </div>
 
 <script>
@@ -178,12 +207,9 @@ Papa.parse(csvURL,{
 download:true,
 header:true,
 complete:function(results){
-
 let data=results.data.filter(r=>r["Dirección"])
 depto=data[index]
-
 cargar()
-
 }
 })
 
@@ -195,21 +221,11 @@ return "https://lh3.googleusercontent.com/d/"+id[0]
 })
 
 document.getElementById("barrio").innerText=depto["Barrio"]
-
-document.getElementById("titulo").innerText=
-depto["Ambientes"]+" ambientes"
-
-document.getElementById("precio").innerText=
-depto["Valor"]+" / mes"
-
-document.getElementById("direccion").innerText=
-depto["Dirección"]
-
-document.getElementById("ambientes").innerText=
-depto["Ambientes"]+" ambientes"
-
-document.getElementById("incluye").innerText=
-depto["Incluye"]
+document.getElementById("titulo").innerText=depto["Ambientes"]+" ambientes"
+document.getElementById("precio").innerText=depto["Valor"]+" / mes"
+document.getElementById("direccion").innerText=depto["Dirección"]
+document.getElementById("ambientes").innerText=depto["Ambientes"]+" ambientes"
+document.getElementById("incluye").innerText=depto["Incluye"]
 
 let valor=parseFloat(depto["Valor"])
 let total=valor*3
@@ -255,58 +271,78 @@ historial=[]
 mostrarRequisitos()
 }
 
+function cerrarModal(){
+document.getElementById("modal").style.display="none"
+}
+
 function mostrarRequisitos(){
 let c=document.getElementById("modalContent")
 
 c.innerHTML=`
+<span class="closeBtn" onclick="cerrarModal()">✖</span>
 <h2>Requisitos</h2>
 <p style="text-align:left">
 • DNI o pasaporte<br>
-• Demostración de ingresos (se evalúa según el caso)<br>
-• Primer mes por adelantado<br>
-• Un mes de depósito (reintegrable)<br>
-• Un mes de honorarios<br>
-• Contratos de 3 a 12 meses
+• Demostración de ingresos<br>
+• Primer mes adelantado<br>
+• Depósito<br>
+• Honorarios<br>
+• Contratos 3 a 12 meses
 </p>
 
-<label>
-<input type="checkbox" id="check"> Estoy de acuerdo con los requisitos
-</label>
-
-<button onclick="validarRequisitos()">Aceptar para continuar</button>
+<button id="btnAceptar" onclick="activarAceptar()">Aceptar requisitos</button>
+<button id="btnContinuar" onclick="pasoNombre()" style="display:none">Continuar</button>
 `
 
 document.getElementById("modal").style.display="flex"
 }
 
-function validarRequisitos(){
-if(!document.getElementById("check").checked){
-alert("Debés aceptar los requisitos")
-return
-}
-pasoNombre()
+function activarAceptar(){
+let btn=document.getElementById("btnAceptar")
+btn.style.background="#22c55e"
+document.getElementById("btnContinuar").style.display="block"
 }
 
-function pasoNombre(){setPregunta("Nombre completo","nombre")}
-function pasoPersonas(){setPregunta("¿Cuántas personas?","personas")}
-function pasoIngreso(){setPregunta("Fecha de ingreso","ingreso")}
-function pasoTiempo(){setPregunta("¿Por cuánto tiempo?","tiempo")}
-function pasoMascotas(){setPregunta("¿Tenés mascotas?","mascotas")}
+function pasoNombre(){setPregunta("Nombre completo","nombre","text")}
+function pasoPersonas(){setPregunta("¿Cuántas personas?","personas","number")}
+function pasoIngreso(){setPregunta("Fecha de ingreso","ingreso","date")}
+function pasoTiempo(){setPregunta("¿Por cuánto tiempo (meses)?","tiempo","number")}
+function pasoMascotas(){setSelect("¿Tenés mascotas?","mascotas")}
 
-function setPregunta(texto,campo){
+function setPregunta(texto,campo,tipo){
 
 historial.push(campo)
 
 let c=document.getElementById("modalContent")
 
 c.innerHTML=`
+<span class="closeBtn" onclick="cerrarModal()">✖</span>
 <h2>${texto}</h2>
-<input id="input">
+<input id="input" type="${tipo}">
 
 <div>
 <button class="backBtn" onclick="volver()">Atrás</button>
 <button onclick="guardar('${campo}')">Continuar</button>
 </div>
+`
+}
+
+function setSelect(texto,campo){
+
+historial.push(campo)
+
+let c=document.getElementById("modalContent")
+
+c.innerHTML=`
+<span class="closeBtn" onclick="cerrarModal()">✖</span>
+<h2>${texto}</h2>
+
+<select id="input">
+<option value="Sí">Sí</option>
+<option value="No">No</option>
+</select>
+
+<button onclick="guardar('${campo}')">Continuar</button>
 `
 }
 
@@ -324,6 +360,7 @@ if(anterior=="nombre") pasoNombre()
 if(anterior=="personas") pasoPersonas()
 if(anterior=="ingreso") pasoIngreso()
 if(anterior=="tiempo") pasoTiempo()
+
 }
 
 function guardar(campo){
@@ -335,17 +372,30 @@ if(campo=="nombre") pasoPersonas()
 else if(campo=="personas") pasoIngreso()
 else if(campo=="ingreso") pasoTiempo()
 else if(campo=="tiempo") pasoMascotas()
-else if(campo=="mascotas") enviarWhatsApp()
+else if(campo=="mascotas") mostrarBotonFinal()
 
+}
+
+function mostrarBotonFinal(){
+
+let c=document.getElementById("modalContent")
+
+c.innerHTML=`
+<span class="closeBtn" onclick="cerrarModal()">✖</span>
+<h2>Listo 👌</h2>
+
+<button onclick="enviarWhatsApp()">
+💬 Consultar por WhatsApp
+</button>
+`
 }
 
 function enviarWhatsApp(){
 
-let texto=`Hola! Quiero este departamento:
+let texto=`Hola! mi nombre es ${formData.nombre} Quiero mas info sobre este depa:
 
 📍 ${depto["Dirección"]} - ${depto["Barrio"]}
 
-👤 Nombre: ${formData.nombre}
 👥 Personas: ${formData.personas}
 📅 Ingreso: ${formData.ingreso}
 ⏳ Tiempo: ${formData.tiempo}
