@@ -22,10 +22,16 @@ font-size:20px;
 
 h1{font-size:2.2em;}
 
+.barrioGrande{
+font-size:2.5em;
+font-weight:bold;
+color:#38bdf8;
+}
+
 .precio{color:#facc15;font-size:2.2em;margin-top:10px;}
 
 .galeria{display:flex;overflow-x:auto;gap:12px;padding:20px;}
-.galeria img{height:220px;border-radius:12px;}
+.galeria img{height:220px;border-radius:12px;cursor:pointer;}
 
 .box{
 background:#1e293b;
@@ -62,6 +68,7 @@ background:rgba(0,0,0,0.8);
 display:none;
 justify-content:center;
 align-items:center;
+z-index:999;
 }
 
 .modalContent{
@@ -93,6 +100,11 @@ font-size:1em;
 cursor:pointer;
 }
 
+.backBtn{
+background:#334155;
+margin-right:10px;
+}
+
 </style>
 </head>
 
@@ -101,6 +113,7 @@ cursor:pointer;
 <div class="container">
 
 <div class="hero">
+<div id="barrio" class="barrioGrande"></div>
 <h1 id="titulo"></h1>
 <div class="precio" id="precio"></div>
 </div>
@@ -124,11 +137,13 @@ cursor:pointer;
 
 <div class="box">
 <h2>Ubicación estratégica</h2>
+<div onclick="abrirMapa()" style="cursor:pointer">
 <iframe id="mapa" style="width:100%;height:220px;border:none;margin-top:10px"></iframe>
+</div>
 </div>
 
 <div class="box">
-<h2>Estimación total</h2>
+<h2>Monto a abonar al ingreso (estimado)</h2>
 <div id="total"></div>
 </div>
 
@@ -143,12 +158,18 @@ cursor:pointer;
 <div class="modalContent" id="modalContent"></div>
 </div>
 
+<!-- VISOR DE IMAGEN -->
+<div class="modal" id="visor" onclick="cerrarVisor()">
+<img id="imgGrande" style="max-width:90%;max-height:90%;border-radius:12px">
+</div>
+
 <script>
 
 const csvURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2E7ECUfY-ps4Ok0_1TJxTR1UPoYl-_ZYkGNlvhk9eZWHBslhsWtoCiTaPfCjQJ38kojq9pJBeoGep/pub?output=csv"
 
 let depto=null
 let formData={}
+let historial=[]
 
 const params=new URLSearchParams(window.location.search)
 const index=params.get("i")
@@ -173,8 +194,10 @@ let id=f.match(/[-\w]{25,}/)
 return "https://lh3.googleusercontent.com/d/"+id[0]
 })
 
+document.getElementById("barrio").innerText=depto["Barrio"]
+
 document.getElementById("titulo").innerText=
-depto["Barrio"]+" • "+depto["Ambientes"]+" ambientes"
+depto["Ambientes"]+" ambientes"
 
 document.getElementById("precio").innerText=
 depto["Valor"]+" / mes"
@@ -189,7 +212,14 @@ document.getElementById("incluye").innerText=
 depto["Incluye"]
 
 let valor=parseFloat(depto["Valor"])
-document.getElementById("total").innerText="USD "+(valor*3)
+let total=valor*3
+
+document.getElementById("total").innerHTML=`
+Mes adelantado: USD ${valor}<br>
+Depósito: USD ${valor}<br>
+Honorarios: USD ${valor}<br><br>
+<b>Total: USD ${total}</b>
+`
 
 document.getElementById("mapa").src=
 "https://maps.google.com/maps?q="+encodeURIComponent(depto["Dirección"]+", Buenos Aires")+"&output=embed"
@@ -199,64 +229,104 @@ let g=document.getElementById("galeria")
 fotos.forEach(f=>{
 let img=document.createElement("img")
 img.src=f
+img.onclick=()=>abrirVisor(f)
 g.appendChild(img)
 })
 
 }
 
+function abrirVisor(src){
+document.getElementById("imgGrande").src=src
+document.getElementById("visor").style.display="flex"
+}
+
+function cerrarVisor(){
+document.getElementById("visor").style.display="none"
+}
+
+function abrirMapa(){
+window.open("https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(depto["Dirección"]+", Buenos Aires"))
+}
+
 // ===== FLUJO =====
 
 function iniciarProceso(){
+historial=[]
 mostrarRequisitos()
 }
 
 function mostrarRequisitos(){
-let m=document.getElementById("modal")
 let c=document.getElementById("modalContent")
 
 c.innerHTML=`
-<h2>Antes de continuar</h2>
-<p>✔ Contrato mínimo 3 meses<br>
-✔ Depósito en garantía<br>
-✔ Sin fiestas ni ruidos molestos</p>
-<button onclick="pasoNombre()">Aceptar y continuar</button>
+<h2>Requisitos</h2>
+<p style="text-align:left">
+• DNI o pasaporte<br>
+• Demostración de ingresos (se evalúa según el caso)<br>
+• Primer mes por adelantado<br>
+• Un mes de depósito (reintegrable)<br>
+• Un mes de honorarios<br>
+• Contratos de 3 a 12 meses
+</p>
+
+<label>
+<input type="checkbox" id="check"> Estoy de acuerdo con los requisitos
+</label>
+
+<button onclick="validarRequisitos()">Aceptar para continuar</button>
 `
 
-m.style.display="flex"
+document.getElementById("modal").style.display="flex"
 }
 
-function pasoNombre(){
-setPregunta("Nombre completo", "nombre")
+function validarRequisitos(){
+if(!document.getElementById("check").checked){
+alert("Debés aceptar los requisitos")
+return
+}
+pasoNombre()
 }
 
-function pasoPersonas(){
-setPregunta("¿Cuántas personas?", "personas")
-}
+function pasoNombre(){setPregunta("Nombre completo","nombre")}
+function pasoPersonas(){setPregunta("¿Cuántas personas?","personas")}
+function pasoIngreso(){setPregunta("Fecha de ingreso","ingreso")}
+function pasoTiempo(){setPregunta("¿Por cuánto tiempo?","tiempo")}
+function pasoMascotas(){setPregunta("¿Tenés mascotas?","mascotas")}
 
-function pasoIngreso(){
-setPregunta("Fecha de ingreso", "ingreso")
-}
+function setPregunta(texto,campo){
 
-function pasoTiempo(){
-setPregunta("¿Por cuánto tiempo?", "tiempo")
-}
-
-function pasoMascotas(){
-setPregunta("¿Tenés mascotas?", "mascotas", true)
-}
-
-function setPregunta(texto, campo, esFinal=false){
+historial.push(campo)
 
 let c=document.getElementById("modalContent")
 
 c.innerHTML=`
 <h2>${texto}</h2>
 <input id="input">
-<button onclick="guardar('${campo}', ${esFinal})">Continuar</button>
+
+<div>
+<button class="backBtn" onclick="volver()">Atrás</button>
+<button onclick="guardar('${campo}')">Continuar</button>
+</div>
 `
 }
 
-function guardar(campo, esFinal){
+function volver(){
+
+historial.pop()
+let anterior=historial.pop()
+
+if(!anterior){
+mostrarRequisitos()
+return
+}
+
+if(anterior=="nombre") pasoNombre()
+if(anterior=="personas") pasoPersonas()
+if(anterior=="ingreso") pasoIngreso()
+if(anterior=="tiempo") pasoTiempo()
+}
+
+function guardar(campo){
 
 let val=document.getElementById("input").value
 formData[campo]=val
