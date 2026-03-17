@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Departamento</title>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<style>
+
+body{
+background:#0f172a;
+color:white;
+font-family:Arial;
+margin:0;
+}
+
+.container{max-width:900px;margin:auto;padding-bottom:100px;}
+
+.hero{text-align:center;padding:30px;}
+
+.precio{color:#facc15;font-size:1.8em;}
+
+.galeria{display:flex;overflow-x:auto;gap:10px;padding:20px;}
+.galeria img{height:200px;border-radius:10px;}
+
+.box{
+background:#1e293b;
+padding:15px;
+border-radius:12px;
+margin:10px;
+}
+
+.cta{
+position:fixed;
+bottom:0;
+width:100%;
+background:#25D366;
+text-align:center;
+padding:18px;
+font-size:1.2em;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="hero">
+<h1 id="titulo"></h1>
+<div class="precio" id="precio"></div>
+</div>
+
+<div class="galeria" id="galeria"></div>
+
+<div class="box">
+<h2>Detalles</h2>
+<div id="detalles"></div>
+</div>
+
+<div class="box">
+<h2>Ubicación</h2>
+<div id="direccion"></div>
+<iframe id="mapa" style="width:100%;height:200px;border:none;margin-top:10px"></iframe>
+</div>
+
+<div class="box">
+<h2>Incluye</h2>
+<div id="incluye"></div>
+</div>
+
+<div class="box">
+<h2>Total estimado</h2>
+<div id="total"></div>
+</div>
+
+</div>
+
+<div class="cta" onclick="consultar()">
+💬 Consultar por WhatsApp
+</div>
+
+<script>
+
+const csvURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2E7ECUfY-ps4Ok0_1TJxTR1UPoYl-_ZYkGNlvhk9eZWHBslhsWtoCiTaPfCjQJ38kojq9pJBeoGep/pub?output=csv"
+
+let depto=null
+
+const params=new URLSearchParams(window.location.search)
+const index=params.get("i")
+
+Papa.parse(csvURL,{
+download:true,
+header:true,
+complete:function(results){
+
+let data=results.data.filter(r=>r["Dirección"])
+depto=data[index]
+
+cargar()
+
+}
+})
+
+function cargar(){
+
+let fotos=depto["Fotos"].split(",").map(f=>{
+let id=f.match(/[-\w]{25,}/)
+return "https://lh3.googleusercontent.com/d/"+id[0]
+})
+
+document.getElementById("titulo").innerText=
+depto["Barrio"]+" • "+depto["Ambientes"]+" ambientes"
+
+document.getElementById("precio").innerText=
+depto["Valor"]+" / mes"
+
+document.getElementById("direccion").innerText=
+depto["Dirección"]
+
+document.getElementById("detalles").innerText=
+depto["Ambientes"]+" ambientes"
+
+document.getElementById("incluye").innerText=
+depto["Incluye"]
+
+let valor=parseFloat(depto["Valor"])
+document.getElementById("total").innerText="USD "+(valor*3)
+
+document.getElementById("mapa").src=
+"https://maps.google.com/maps?q="+encodeURIComponent(depto["Dirección"]+", Buenos Aires")+"&output=embed"
+
+let g=document.getElementById("galeria")
+
+fotos.forEach(f=>{
+let img=document.createElement("img")
+img.src=f
+g.appendChild(img)
+})
+
+}
+
+function consultar(){
+
+let texto=`Hola! Consulto por el depto en ${depto["Dirección"]}, ${depto["Barrio"]}`
+
+window.open("https://wa.me/5491168686694?text="+encodeURIComponent(texto))
+
+}
+
+</script>
+
+</body>
+</html>
