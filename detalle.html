@@ -15,7 +15,7 @@ font-family:Arial;
 margin:0;
 }
 
-.container{max-width:900px;margin:auto;padding-bottom:120px;}
+.container{max-width:900px;margin:auto;padding-bottom:160px;}
 
 .hero{text-align:center;padding:40px;}
 
@@ -30,7 +30,7 @@ color:#38bdf8;
 
 .box{
 background:#1e293b;
-padding:20px;
+padding:25px;
 border-radius:14px;
 margin:12px;
 font-size:1.6em;
@@ -45,7 +45,7 @@ padding:20px;
 .pasos{
 font-size:2.8em;
 text-align:center;
-padding:20px;
+padding:30px;
 }
 
 .cta{
@@ -54,9 +54,10 @@ bottom:0;
 width:100%;
 background:#25D366;
 text-align:center;
-padding:22px;
-font-size:1.4em;
+padding:40px;
+font-size:2.2em;
 cursor:pointer;
+font-weight:bold;
 }
 
 .modal{
@@ -64,7 +65,7 @@ position:fixed;
 top:0;left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.9);
+background:rgba(0,0,0,0.95);
 display:none;
 justify-content:center;
 align-items:center;
@@ -72,37 +73,40 @@ align-items:center;
 
 .modalContent{
 background:#1e293b;
-padding:30px;
-border-radius:12px;
-width:90%;
-max-width:500px;
+padding:50px;
+border-radius:16px;
+width:95%;
+max-width:700px;
 position:relative;
+text-align:center;
+font-size:1.6em;
 }
 
 .closeBtn{
 position:absolute;
-top:10px;
-right:15px;
+top:15px;
+right:20px;
 font-size:2em;
 color:red;
 cursor:pointer;
 }
 
 input, select{
-width:90%;
-padding:15px;
-margin-top:15px;
-border-radius:8px;
+width:95%;
+padding:20px;
+margin-top:20px;
+border-radius:10px;
 border:none;
-font-size:1em;
+font-size:1.2em;
 }
 
 button{
-margin-top:20px;
-padding:15px 25px;
+margin-top:25px;
+padding:20px 30px;
 border:none;
-border-radius:8px;
+border-radius:10px;
 cursor:pointer;
+font-size:1.2em;
 }
 
 .btnWhite{background:white;color:black;}
@@ -119,6 +123,22 @@ gap:15px;
 .carousel img{
 height:80vh;
 border-radius:12px;
+}
+
+.mapa{
+margin:20px;
+border-radius:14px;
+overflow:hidden;
+height:400px;
+}
+
+details{
+margin:12px;
+font-size:1.4em;
+background:#1e293b;
+padding:20px;
+border-radius:14px;
+cursor:pointer;
 }
 
 </style>
@@ -139,6 +159,16 @@ Si buscas mudarte de forma simple este departamento es ideal para vos
 <div class="galeria" id="galeria"></div>
 
 <div class="box">
+<b>📍 Dirección:</b><br>
+<div id="direccion"></div>
+</div>
+
+<details>
+<summary><b>Ver descripción</b></summary>
+<div id="descripcion"></div>
+</details>
+
+<div class="box">
 <b>Valor:</b><br>
 <div id="precio"></div>
 </div>
@@ -153,17 +183,21 @@ Si buscas mudarte de forma simple este departamento es ideal para vos
 <div id="total"></div>
 </div>
 
+<div class="mapa">
+<iframe id="mapaFrame" width="100%" height="100%" style="border:0;" loading="lazy"></iframe>
+</div>
+
 <div class="pasos">
 <b>Mudarte es fácil:</b><br><br>
-1. Consultás<br>
-2. Validamos tu perfil<br>
-3. Reservás sin vueltas
+Realizá tu consulta<br>
+Hablá con un asesor<br>
+Coordiná tu visita o reserva
 </div>
 
 </div>
 
 <div class="cta" onclick="iniciarProceso()">
-💬 Consultar por WhatsApp
+💬 CONSULTAR POR WHATSAPP
 </div>
 
 <!-- MODAL -->
@@ -209,6 +243,8 @@ return "https://lh3.googleusercontent.com/d/"+id[0]
 fotosGlobal=fotos
 
 document.getElementById("barrio").innerText=depto["Barrio"]
+document.getElementById("direccion").innerText=depto["Dirección"]
+document.getElementById("descripcion").innerText=depto["Descripción"]
 document.getElementById("precio").innerText=depto["Valor"]+" USD / mes"
 document.getElementById("incluye").innerText=depto["Incluye"]
 
@@ -221,6 +257,10 @@ Depósito: USD ${valor}<br>
 Honorarios: USD ${valor}<br><br>
 <b>Total: USD ${total}</b>
 `
+
+// MAPA
+document.getElementById("mapaFrame").src=
+`https://www.google.com/maps?q=${encodeURIComponent(depto["Dirección"])}&output=embed`
 
 let g=document.getElementById("galeria")
 g.innerHTML=""
@@ -269,15 +309,15 @@ let c=document.getElementById("modalContent")
 c.innerHTML=`
 <span class="closeBtn" onclick="cerrarModal()">✖</span>
 
-<h2>🔑 El ingreso a nuestros departamentos es muy simple :</h2>
+<h1>🔑 Ingreso simple</h1>
 
-<p style="text-align:left">
+<p style="text-align:left;font-size:1.3em">
 1. DNI o Pasaporte<br>
 2. Demostración de ingresos / estudios<br>
 3. Contratos de 3 a 12 meses
 </p>
 
-<p style="text-align:left">
+<p style="text-align:left;font-size:1.3em">
 📅 Al firmar:<br>
 1. Mes adelantado<br>
 2. Depósito<br>
@@ -285,15 +325,18 @@ c.innerHTML=`
 </p>
 
 <button id="aceptar" class="btnWhite" onclick="activarAceptar()">Aceptar requisitos</button>
-<button id="continuar" class="btnGreen" style="display:none" onclick="pasoNombre()">Continuar</button>
 `
 
 document.getElementById("modal").style.display="flex"
 }
 
 function activarAceptar(){
+document.getElementById("aceptar").classList.remove("btnWhite")
 document.getElementById("aceptar").classList.add("btnGreen")
-document.getElementById("continuar").style.display="block"
+
+setTimeout(()=>{
+pasoNombre()
+},500)
 }
 
 function setPaso(texto,campo,tipo){
