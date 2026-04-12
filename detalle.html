@@ -17,7 +17,15 @@ margin:0;
 
 .container{max-width:900px;margin:auto;padding-bottom:160px;}
 
-.hero{text-align:center;padding:40px;}
+.hero{
+text-align:center;
+padding:40px;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:20px;
+flex-wrap:wrap;
+}
 
 .barrioGrande{
 font-size:4em;
@@ -32,8 +40,9 @@ color:black;
 padding:12px 18px;
 border-radius:12px;
 font-size:2em;
-margin-right:15px;
 }
+
+/* resto igual */
 
 .galeria{display:flex;overflow-x:auto;gap:12px;padding:20px;}
 .galeria img{height:400px;border-radius:12px;cursor:pointer;}
@@ -224,6 +233,8 @@ cursor:pointer;
 
 <script>
 
+/* TODO EL JS EXACTAMENTE IGUAL */
+
 const csvURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2E7ECUfY-ps4Ok0_1TJxTR1UPoYl-_ZYkGNlvhk9eZWHBslhsWtoCiTaPfCjQJ38kojq9pJBeoGep/pub?output=csv"
 
 let depto=null
@@ -292,7 +303,7 @@ g.appendChild(img)
 
 }
 
-/* CARRUSEL */
+/* resto igual */
 
 function abrirImg(i){
 indexFoto=i
@@ -314,8 +325,6 @@ mostrar()
 function mostrar(){
 document.getElementById("imgGrande").src=fotosGlobal[indexFoto]
 }
-
-/* WHATSAPP FLOW */
 
 function iniciarProceso(){
 mostrarRequisitos()
