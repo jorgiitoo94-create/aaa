@@ -115,6 +115,56 @@ text-align:center;
 margin-top:10px;
 }
 
+/* 🔥 CARRUSEL */
+
+.modalImg{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.95);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:999;
+flex-direction:column;
+}
+
+.modalImg img{
+max-width:90%;
+max-height:70%;
+border-radius:15px;
+}
+
+.navBtn{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+font-size:3em;
+background:rgba(255,255,255,0.2);
+border:none;
+color:white;
+padding:10px 20px;
+cursor:pointer;
+}
+
+.prev{ left:20px; }
+.next{ right:20px; }
+
+.closeImg{
+position:absolute;
+top:20px;
+right:30px;
+font-size:3em;
+background:red;
+border:none;
+color:white;
+padding:10px 20px;
+border-radius:10px;
+cursor:pointer;
+}
+
 </style>
 </head>
 
@@ -145,23 +195,31 @@ margin-top:10px;
 <div class="modalContent" id="modalContent"></div>
 </div>
 
+<!-- MODAL IMAGEN -->
+<div class="modalImg" id="modalImg">
+<button class="closeImg" onclick="cerrarImg()">✖</button>
+<button class="navBtn prev" onclick="cambiar(-1)">‹</button>
+<img id="imgGrande">
+<button class="navBtn next" onclick="cambiar(1)">›</button>
+</div>
+
 <script>
 
 const csvURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2E7ECUfY-ps4Ok0_1TJxTR1UPoYl-_ZYkGNlvhk9eZWHBslhsWtoCiTaPfCjQJ38kojq9pJBeoGep/pub?output=csv"
 
 let depto=null
 let fotosGlobal=[]
-let formData={}
+let indexFoto=0
 
 const params=new URLSearchParams(window.location.search)
-const index=params.get("i")
+const dir=params.get("dir")
 
 Papa.parse(csvURL,{
 download:true,
 header:true,
 complete:function(results){
 let data=results.data.filter(r=>r["Dirección"])
-depto=data[index]
+depto=data.find(d=>d["Dirección"]==dir)
 cargar()
 }
 })
@@ -173,6 +231,8 @@ let id=f.match(/[-\w]{25,}/)
 return "https://lh3.googleusercontent.com/d/"+id[0]
 })
 
+fotosGlobal=fotos
+
 document.getElementById("barrio").innerText=depto["barrio"]
 document.getElementById("badgeBarrio").innerText=depto["Ambientes"]+" amb"
 
@@ -180,7 +240,6 @@ document.getElementById("direccion").innerText=depto["Dirección"]
 document.getElementById("precio").innerText="USD " + depto["Valor:"]
 document.getElementById("incluye").innerText=depto["Incluye"]
 
-// MASCOTAS
 let perro = (depto["perro?"]||"").toLowerCase()=="si"
 let gato = (depto["gato?"]||"").toLowerCase()=="si"
 
@@ -192,15 +251,39 @@ document.getElementById("mascotas").innerHTML=`
 let g=document.getElementById("galeria")
 g.innerHTML=""
 
-fotos.forEach(f=>{
+fotos.forEach((f,i)=>{
 let img=document.createElement("img")
 img.src=f
+img.onclick=()=>abrirImg(i)
 g.appendChild(img)
 })
 
 }
 
-// ===== FLUJO SIMPLE =====
+/* CARRUSEL */
+
+function abrirImg(i){
+indexFoto=i
+document.getElementById("modalImg").style.display="flex"
+mostrar()
+}
+
+function cerrarImg(){
+document.getElementById("modalImg").style.display="none"
+}
+
+function cambiar(dir){
+indexFoto+=dir
+if(indexFoto<0) indexFoto=fotosGlobal.length-1
+if(indexFoto>=fotosGlobal.length) indexFoto=0
+mostrar()
+}
+
+function mostrar(){
+document.getElementById("imgGrande").src=fotosGlobal[indexFoto]
+}
+
+/* WHATSAPP FLOW */
 
 function iniciarProceso(){
 mostrarRequisitos()
