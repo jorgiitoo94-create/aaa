@@ -160,6 +160,56 @@ color:white;
 .btnMapa{background:#2563eb;}
 .btnWsp{background:#25D366;}
 
+/* CARRUSEL */
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.9);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:999;
+flex-direction:column;
+}
+
+.modal img{
+max-width:90%;
+max-height:70%;
+border-radius:15px;
+}
+
+.closeBtn{
+position:absolute;
+top:20px;
+right:30px;
+font-size:3em;
+background:red;
+border:none;
+color:white;
+padding:10px 20px;
+border-radius:10px;
+cursor:pointer;
+}
+
+.navBtn{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+font-size:3em;
+background:rgba(255,255,255,0.2);
+border:none;
+color:white;
+padding:10px 20px;
+cursor:pointer;
+}
+
+.prev{ left:20px; }
+.next{ right:20px; }
+
 </style>
 </head>
 
@@ -173,7 +223,6 @@ color:white;
 <div class="sectionTitle">Ambientes</div>
 <div id="ambientes"></div>
 
-<!-- NUEVOS FILTROS -->
 <button class="btnFiltro" id="filtroPerro">🐶 Apto perro</button>
 <button class="btnFiltro" id="filtroGato">🐱 Apto gato</button>
 
@@ -186,6 +235,14 @@ color:white;
 
 </div>
 
+<!-- MODAL -->
+<div class="modal" id="modal">
+<button class="closeBtn" onclick="cerrarModal()">✖</button>
+<button class="navBtn prev" onclick="cambiar(-1)">‹</button>
+<img id="modalImg">
+<button class="navBtn next" onclick="cambiar(1)">›</button>
+</div>
+
 <script>
 
 const csvURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2E7ECUfY-ps4Ok0_1TJxTR1UPoYl-_ZYkGNlvhk9eZWHBslhsWtoCiTaPfCjQJ38kojq9pJBeoGep/pub?output=csv"
@@ -194,6 +251,9 @@ let departamentos=[]
 let ambienteActivo=null
 let filtroPerro=false
 let filtroGato=false
+
+let fotosActuales=[]
+let indexFoto=0
 
 Papa.parse(csvURL,{
 download:true,
@@ -241,8 +301,6 @@ document.getElementById("ambientes").appendChild(b)
 actualizarBarrios()
 
 }
-
-/* FILTROS MASCOTAS */
 
 document.getElementById("filtroPerro").onclick=()=>{
 filtroPerro=!filtroPerro
@@ -307,7 +365,7 @@ card.className="list-item"
 
 card.innerHTML=`
 
-<img src="${fotos[0]}">
+<img src="${fotos[0]}" class="imgPrincipal">
 
 <div class="info">
 
@@ -336,6 +394,9 @@ card.innerHTML=`
 </div>
 `
 
+card.querySelector(".btnFoto").onclick=()=>abrirModal(fotos)
+card.querySelector(".imgPrincipal").onclick=()=>abrirModal(fotos)
+
 card.querySelector(".btnMapa").onclick=()=>verMapa(row["Dirección"])
 
 card.querySelector(".btnWsp").onclick=()=>{
@@ -346,6 +407,28 @@ lista.appendChild(card)
 
 })
 
+}
+
+function abrirModal(fotos){
+fotosActuales=fotos
+indexFoto=0
+document.getElementById("modal").style.display="flex"
+mostrar()
+}
+
+function cerrarModal(){
+document.getElementById("modal").style.display="none"
+}
+
+function cambiar(dir){
+indexFoto+=dir
+if(indexFoto<0) indexFoto=fotosActuales.length-1
+if(indexFoto>=fotosActuales.length) indexFoto=0
+mostrar()
+}
+
+function mostrar(){
+document.getElementById("modalImg").src=fotosActuales[indexFoto]
 }
 
 function verMapa(dir){
