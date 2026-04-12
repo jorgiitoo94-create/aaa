@@ -42,8 +42,6 @@ border-radius:12px;
 font-size:2em;
 }
 
-/* resto igual */
-
 .galeria{display:flex;overflow-x:auto;gap:12px;padding:20px;}
 .galeria img{height:400px;border-radius:12px;cursor:pointer;}
 
@@ -223,7 +221,6 @@ cursor:pointer;
 <div class="modalContent" id="modalContent"></div>
 </div>
 
-<!-- MODAL IMAGEN -->
 <div class="modalImg" id="modalImg">
 <button class="closeImg" onclick="cerrarImg()">✖</button>
 <button class="navBtn prev" onclick="cambiar(-1)">‹</button>
@@ -232,8 +229,6 @@ cursor:pointer;
 </div>
 
 <script>
-
-/* TODO EL JS EXACTAMENTE IGUAL */
 
 const csvURL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2E7ECUfY-ps4Ok0_1TJxTR1UPoYl-_ZYkGNlvhk9eZWHBslhsWtoCiTaPfCjQJ38kojq9pJBeoGep/pub?output=csv"
 
@@ -284,12 +279,12 @@ let perro = (depto["perro?"]||"").toLowerCase()=="si"
 let gato = (depto["gato?"]||"").toLowerCase()=="si"
 
 document.getElementById("mascotas").innerHTML=`
-🐶 ${perro ? "Apto perro" : "No permitido"}<br>
-🐱 ${gato ? "Apto gato" : "No permitido"}
+🐶 ${perro ? "Apto perro (consultar depósito)" : "No permitido"}<br>
+🐱 ${gato ? "Apto gato (consultar depósito)" : "No permitido"}
 `
 
 document.getElementById("mapa").src =
-"https://www.google.com/maps?q="+encodeURIComponent(depto["Dirección"])+"&output=embed"
+"https://www.google.com/maps?q="+encodeURIComponent(depto["Dirección"] + ", Buenos Aires, Argentina")+"&output=embed"
 
 let g=document.getElementById("galeria")
 g.innerHTML=""
