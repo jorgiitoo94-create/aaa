@@ -160,6 +160,19 @@ color:white;
 .btnMapa{background:#2563eb;}
 .btnWsp{background:#25D366;}
 
+/* LABELS (agregado sin afectar estilos existentes) */
+.btnLabels{
+display:flex;
+gap:8px;
+margin-top:4px;
+font-size:1em;
+color:#94a3b8;
+text-align:center;
+}
+.btnLabels div{
+flex:1;
+}
+
 /* CARRUSEL */
 
 .modal{
@@ -363,6 +376,8 @@ let gato = (row["gato?"]||"").toLowerCase()=="si"
 let card=document.createElement("div")
 card.className="list-item"
 
+let linkDetalle="detalle.html?dir="+encodeURIComponent(row["Dirección"])
+
 card.innerHTML=`
 
 <img src="${fotos[0]}" class="imgPrincipal">
@@ -392,11 +407,11 @@ card.innerHTML=`
 
 </div>
 
-<div style="display:flex;gap:8px;margin-top:4px;font-size:1.2em;justify-content:space-between;text-align:center;">
-<div style="flex:1;">Fotos</div>
-<div style="flex:1;">Mapa</div>
-<div style="flex:1;">Info</div>
-<div style="flex:1;">Compartir</div>
+<div class="btnLabels">
+<div>Fotos</div>
+<div>Mapa</div>
+<div>Info</div>
+<div>Compartir</div>
 </div>
 
 </div>
@@ -408,13 +423,12 @@ card.querySelector(".imgPrincipal").onclick=()=>abrirModal(fotos)
 card.querySelector(".btnMapa").onclick=()=>verMapa(row["Dirección"])
 
 card.querySelector(".btnWsp").onclick=()=>{
-window.open("detalle.html?dir="+encodeURIComponent(row["Dirección"]))
+window.open(linkDetalle)
 }
 
 card.querySelector(".btnCompartir").onclick=()=>{
-let url=window.location.origin + "/detalle.html?dir=" + encodeURIComponent(row["Dirección"])
-let texto="Mira este departamento: " + url
-window.open("https://wa.me/?text="+encodeURIComponent(texto))
+let url="https://wa.me/?text="+encodeURIComponent("Mirá este departamento: "+window.location.origin+"/"+linkDetalle)
+window.open(url)
 }
 
 lista.appendChild(card)
