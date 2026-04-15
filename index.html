@@ -388,7 +388,15 @@ card.innerHTML=`
 <button class="btn btnFoto">📸</button>
 <button class="btn btnMapa">🗺️</button>
 <button class="btn btnWsp">💬</button>
+<button class="btn btnWsp btnCompartir">📤</button>
 
+</div>
+
+<div style="display:flex;gap:8px;margin-top:4px;font-size:1.2em;justify-content:space-between;text-align:center;">
+<div style="flex:1;">Fotos</div>
+<div style="flex:1;">Mapa</div>
+<div style="flex:1;">Info</div>
+<div style="flex:1;">Compartir</div>
 </div>
 
 </div>
@@ -401,6 +409,12 @@ card.querySelector(".btnMapa").onclick=()=>verMapa(row["Dirección"])
 
 card.querySelector(".btnWsp").onclick=()=>{
 window.open("detalle.html?dir="+encodeURIComponent(row["Dirección"]))
+}
+
+card.querySelector(".btnCompartir").onclick=()=>{
+let url=window.location.origin + "/detalle.html?dir=" + encodeURIComponent(row["Dirección"])
+let texto="Mira este departamento: " + url
+window.open("https://wa.me/?text="+encodeURIComponent(texto))
 }
 
 lista.appendChild(card)
@@ -432,7 +446,7 @@ document.getElementById("modalImg").src=fotosActuales[indexFoto]
 }
 
 function verMapa(dir){
-window.open("https://www.google.com/maps/search/"+encodeURIComponent(dir+", Buenos Aires"))
+window.open("https://www.google.com/maps/search/"+encodeURIComponent(dir+", CABA"))
 }
 
 </script>
