@@ -347,8 +347,14 @@ let gato = (row["gato?"]||"").toLowerCase()=="si"
 let card=document.createElement("div")
 card.className="list-item"
 
-let basePath=window.location.pathname.replace("index.html","")
-let fullLink=window.location.origin + basePath + "detalle.html?dir="+encodeURIComponent(row["Dirección"])
+let telefono = row["Telefono"] || "5490000000000"
+
+let mensaje = `Hola! Quiero consultar por este departamento:
+📍 ${row["Dirección"]}
+🏠 ${row["Ambientes"]} ambientes
+💰 ${row["Valor:"]}`
+
+let linkWsp = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`
 
 card.innerHTML=`
 
@@ -376,7 +382,7 @@ card.innerHTML=`
 <div class="btnLabels">
 <div>Fotos</div>
 <div>Mapa</div>
-<div>Info</div>
+<div>Consultar</div>
 <div>Compartir</div>
 </div>
 
@@ -389,11 +395,11 @@ card.querySelector(".imgPrincipal").onclick=()=>abrirModal(fotos)
 card.querySelector(".btnMapa").onclick=()=>verMapa(row["Dirección"])
 
 card.querySelector(".btnWsp").onclick=()=>{
-window.open(fullLink)
+window.open(linkWsp)
 }
 
 card.querySelector(".btnCompartir").onclick=()=>{
-window.open("https://wa.me/?text="+encodeURIComponent("Mirá este departamento: "+fullLink))
+window.open("https://wa.me/?text="+encodeURIComponent("Mirá este departamento: "+row["Dirección"]))
 }
 
 lista.appendChild(card)
