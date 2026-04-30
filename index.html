@@ -172,6 +172,25 @@ text-align:center;
 flex:1;
 }
 
+/* NUEVO BOTON CONSULTA */
+
+.btnConsulta{
+width:100%;
+margin-top:12px;
+padding:16px;
+font-size:2em;
+border:none;
+border-radius:14px;
+background:#22c55e;
+color:white;
+cursor:pointer;
+font-weight:bold;
+}
+
+.btnConsulta:hover{
+background:#16a34a;
+}
+
 /* CARRUSEL */
 
 .modal{
@@ -369,16 +388,16 @@ card.innerHTML=`
 <div class="btnRow">
 <button class="btn btnFoto">📸</button>
 <button class="btn btnMapa">🗺️</button>
-<button class="btn btnWsp">💬</button>
-<button class="btn btnWsp btnCompartir">📤</button>
+<button class="btn btnCompartir">📤</button>
 </div>
 
 <div class="btnLabels">
 <div>Fotos</div>
 <div>Mapa</div>
-<div>Info</div>
 <div>Compartir</div>
 </div>
+
+<button class="btn btnConsulta">💬 Info + consulta</button>
 
 </div>
 `
@@ -388,7 +407,7 @@ card.querySelector(".imgPrincipal").onclick=()=>abrirModal(fotos)
 
 card.querySelector(".btnMapa").onclick=()=>verMapa(row["Dirección"])
 
-card.querySelector(".btnWsp").onclick=()=>{
+card.querySelector(".btnConsulta").onclick=()=>{
 window.open(fullLink)
 }
 
