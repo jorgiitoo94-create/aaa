@@ -1,0 +1,2699 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Alquilar Temporario</title>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    background:#0b1120;
+    color:#e2e8f0;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+button{
+    font-family:inherit;
+}
+
+.container{
+    width:100%;
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header{
+    text-align:center;
+    padding:35px 15px 25px;
+}
+
+header h1{
+    margin:0 0 10px;
+    font-size:clamp(28px,5vw,42px);
+}
+
+header p{
+    margin:0;
+    color:#64748b;
+    font-size:15px;
+}
+
+
+/* =========================================================
+   FILTROS
+========================================================= */
+
+.filtros{
+    background:#111827;
+    border:1px solid #1e293b;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:30px;
+}
+
+.filtro{
+    margin-bottom:25px;
+}
+
+.filtro:last-child{
+    margin-bottom:0;
+}
+
+.filtro h3{
+    margin:0 0 6px;
+    font-size:16px;
+}
+
+.filtro p{
+    margin:0 0 12px;
+    color:#64748b;
+    font-size:13px;
+}
+
+.botones-filtro{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.filtro-btn{
+    background:#0b1120;
+    color:#e2e8f0;
+    border:1px solid #1e293b;
+    padding:10px 15px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.filtro-btn:hover{
+    border-color:#22c55e;
+}
+
+.filtro-btn.activo{
+    background:#14532d;
+    border-color:#22c55e;
+    color:#dcfce7;
+}
+
+
+/* =========================================================
+   BARRIOS SELECCIONADOS
+========================================================= */
+
+#barriosSeleccionados{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:12px;
+}
+
+.barrio-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:#14532d;
+    border:1px solid #22c55e;
+    color:#dcfce7;
+    padding:7px 10px;
+    border-radius:20px;
+    font-size:13px;
+}
+
+.barrio-tag button{
+    background:none;
+    border:0;
+    color:#dcfce7;
+    cursor:pointer;
+    font-size:16px;
+}
+
+
+/* =========================================================
+   SELECT BARRIO
+========================================================= */
+
+#barrioSelect{
+    width:100%;
+    max-width:400px;
+    background:#0b1120;
+    color:#e2e8f0;
+    border:1px solid #1e293b;
+    border-radius:10px;
+    padding:12px;
+}
+
+
+/* =========================================================
+   RESULTADOS
+========================================================= */
+
+.resultados-info{
+    color:#64748b;
+    margin-bottom:15px;
+    font-size:14px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    gap:20px;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.card{
+    background:#111827;
+    border:1px solid #1e293b;
+    border-radius:18px;
+    overflow:hidden;
+    transition:.2s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+    border-color:#334155;
+}
+
+.card-imagen{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    display:block;
+    background:#0f172a;
+    cursor:pointer;
+}
+
+.card-contenido{
+    padding:17px;
+}
+
+.card-barrio{
+    color:#22c55e;
+    font-size:13px;
+    font-weight:bold;
+    text-transform:uppercase;
+    margin-bottom:7px;
+}
+
+.card h2{
+    font-size:21px;
+    margin:0 0 8px;
+}
+
+.card-direccion{
+    color:#94a3b8;
+    font-size:14px;
+    margin-bottom:12px;
+}
+
+.card-valor{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:12px;
+}
+
+.card-incluye{
+    color:#94a3b8;
+    font-size:13px;
+    line-height:1.5;
+    margin-bottom:10px;
+}
+
+.mascotas{
+    display:flex;
+    gap:7px;
+    margin:12px 0;
+}
+
+.mascota{
+    background:#0b1120;
+    border:1px solid #1e293b;
+    padding:5px 8px;
+    border-radius:7px;
+    font-size:12px;
+}
+
+
+/* =========================================================
+   BOTONES CARD
+========================================================= */
+
+.card-botones{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:7px;
+    margin-top:15px;
+}
+
+.card-btn{
+    border:1px solid transparent;
+    border-radius:9px;
+    padding:10px 5px;
+    color:#e2e8f0;
+    cursor:pointer;
+    font-size:12px;
+    transition:.2s;
+}
+
+.card-btn:hover{
+    transform:translateY(-1px);
+}
+
+
+/* FOTOS */
+
+.btn-fotos{
+    background:#241b3d;
+    border-color:#43356b;
+}
+
+.btn-fotos:hover{
+    background:#30234e;
+}
+
+
+/* DESCRIPCION */
+
+.btn-descripcion{
+    background:#3a2b16;
+    border-color:#60461f;
+}
+
+.btn-descripcion:hover{
+    background:#493619;
+}
+
+
+/* CONTACTO */
+
+.btn-contacto{
+    background:#123523;
+    border-color:#1d6039;
+}
+
+.btn-contacto:hover{
+    background:#17472c;
+}
+
+
+/* =========================================================
+   SIN RESULTADOS
+========================================================= */
+
+.sin-resultados{
+    text-align:center;
+    color:#64748b;
+    padding:50px 20px;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.88);
+    z-index:1000;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
+}
+
+.modal.activo{
+    display:flex;
+}
+
+.modal-contenido{
+    width:100%;
+    max-width:1000px;
+    max-height:95vh;
+    position:relative;
+}
+
+
+/* =========================================================
+   GALERIA
+========================================================= */
+
+.galeria-imagen{
+    width:100%;
+    max-height:80vh;
+    object-fit:contain;
+    display:block;
+    border-radius:10px;
+}
+
+.cerrar{
+    position:absolute;
+    right:10px;
+    top:10px;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:1px solid #475569;
+    background:rgba(15,23,42,.9);
+    color:white;
+    font-size:24px;
+    cursor:pointer;
+    z-index:5;
+}
+
+.flecha{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:45px;
+    height:55px;
+    border:1px solid #475569;
+    background:rgba(15,23,42,.8);
+    color:white;
+    font-size:30px;
+    cursor:pointer;
+    border-radius:10px;
+    z-index:5;
+}
+
+.flecha.izquierda{
+    left:10px;
+}
+
+.flecha.derecha{
+    right:10px;
+}
+
+.contador{
+    text-align:center;
+    color:#cbd5e1;
+    margin-top:10px;
+}
+
+.volver{
+    display:block;
+    margin:12px auto 0;
+    background:#111827;
+    border:1px solid #334155;
+    color:#e2e8f0;
+    padding:10px 18px;
+    border-radius:9px;
+    cursor:pointer;
+}
+
+
+/* =========================================================
+   DESCRIPCION
+========================================================= */
+
+.descripcion-modal{
+    background:#111827;
+    border:1px solid #1e293b;
+    border-radius:18px;
+    padding:25px;
+    max-height:85vh;
+    overflow:auto;
+}
+
+.descripcion-modal h2{
+    margin-top:0;
+}
+
+.descripcion-texto{
+    color:#cbd5e1;
+    line-height:1.7;
+    white-space:pre-wrap;
+}
+
+
+/* =========================================================
+   WHATSAPP FLOTANTE
+========================================================= */
+
+.whatsapp-flotante{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    background:#22c55e;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    cursor:pointer;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+    z-index:500;
+}
+
+
+/* =========================================================
+   FORMULARIO WHATSAPP
+========================================================= */
+
+.formulario{
+    background:#111827;
+    border:1px solid #1e293b;
+    border-radius:18px;
+    padding:25px;
+    width:100%;
+    max-width:500px;
+}
+
+.formulario h2{
+    margin-top:0;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:7px;
+    font-size:13px;
+    color:#cbd5e1;
+}
+
+.form-group input,
+.form-group select{
+    width:100%;
+    background:#0b1120;
+    border:1px solid #1e293b;
+    border-radius:9px;
+    color:#e2e8f0;
+    padding:12px;
+}
+
+.formulario-submit{
+    width:100%;
+    background:#14532d;
+    border:1px solid #22c55e;
+    color:#dcfce7;
+    padding:13px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading{
+    text-align:center;
+    padding:50px;
+    color:#64748b;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:600px){
+
+    .container{
+        padding:12px;
+    }
+
+    header{
+        padding:25px 10px 20px;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .card-imagen{
+        height:230px;
+    }
+
+    .card-botones{
+        gap:5px;
+    }
+
+    .card-btn{
+        font-size:11px;
+        padding:10px 3px;
+    }
+
+    .flecha{
+        width:38px;
+        height:48px;
+        font-size:24px;
+    }
+
+}
+
+
+/* =========================================================
+   IMAGEN FALLIDA
+========================================================= */
+
+.imagen-error{
+    width:100%;
+    height:220px;
+    background:#0f172a;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#64748b;
+    cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<header>
+
+    <h1>Encontrá tu próximo hogar temporal</h1>
+
+    <p>
+        Departamentos amoblados · Estadías de 3 a 12 meses
+    </p>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- =====================================================
+         FILTROS
+    ====================================================== -->
+
+    <div class="filtros">
+
+
+        <!-- AMBIENTES -->
+
+        <div class="filtro">
+
+            <h3>
+                ¿Qué tipo de departamento estás buscando?
+            </h3>
+
+            <p>
+                Elegí la cantidad de ambientes que necesitás
+            </p>
+
+            <div
+                class="botones-filtro"
+                id="filtroAmbientes"
+            ></div>
+
+        </div>
+
+
+        <!-- MASCOTAS -->
+
+        <div class="filtro">
+
+            <h3>
+                ¿Tenés mascota?
+            </h3>
+
+            <p>
+                Seleccioná si necesitás que aceptemos mascotas
+            </p>
+
+            <div class="botones-filtro">
+
+                <button
+                    class="filtro-btn"
+                    data-mascota="perro"
+                    onclick="toggleMascota('perro')"
+                >
+                    🐶 Perro
+                </button>
+
+                <button
+                    class="filtro-btn"
+                    data-mascota="gato"
+                    onclick="toggleMascota('gato')"
+                >
+                    🐱 Gato
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- BARRIO -->
+
+        <div class="filtro">
+
+            <h3>
+                ¿En qué barrio te gustaría vivir?
+            </h3>
+
+            <p>
+                Podés elegir una zona o ver todas las opciones
+            </p>
+
+            <select
+                id="barrioSelect"
+                onchange="agregarBarrio(this.value)"
+            >
+
+                <option value="">
+                    Seleccioná un barrio
+                </option>
+
+            </select>
+
+
+            <div id="barriosSeleccionados"></div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- RESULTADOS -->
+
+    <div
+        class="resultados-info"
+        id="resultadosInfo"
+    ></div>
+
+
+    <div
+        class="grid"
+        id="departamentos"
+    >
+
+        <div class="loading">
+            Cargando departamentos...
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================================
+     MODAL GALERIA
+========================================================= -->
+
+<div
+    class="modal"
+    id="modalGaleria"
+>
+
+    <div class="modal-contenido">
+
+        <button
+            class="cerrar"
+            onclick="cerrarModal()"
+        >
+            ×
+        </button>
+
+
+        <button
+            class="flecha izquierda"
+            onclick="fotoAnterior()"
+        >
+            ‹
+        </button>
+
+
+        <img
+            id="imagenGaleria"
+            class="galeria-imagen"
+            src=""
+            alt=""
+        >
+
+
+        <button
+            class="flecha derecha"
+            onclick="fotoSiguiente()"
+        >
+            ›
+        </button>
+
+
+        <div
+            class="contador"
+            id="contadorFotos"
+        ></div>
+
+
+        <button
+            class="volver"
+            onclick="cerrarModal()"
+        >
+            ← Volver
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL DESCRIPCION
+========================================================= -->
+
+<div
+    class="modal"
+    id="modalDescripcion"
+>
+
+    <div class="modal-contenido">
+
+        <div class="descripcion-modal">
+
+            <button
+                class="cerrar"
+                onclick="cerrarModal()"
+            >
+                ×
+            </button>
+
+            <h2 id="descripcionTitulo"></h2>
+
+            <div
+                class="descripcion-texto"
+                id="descripcionTexto"
+            ></div>
+
+            <button
+                class="volver"
+                onclick="cerrarModal()"
+            >
+                ← Volver
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL CONSULTA GENERAL
+========================================================= -->
+
+<div
+    class="modal"
+    id="modalFormulario"
+>
+
+    <div class="modal-contenido">
+
+        <div class="formulario">
+
+            <button
+                class="cerrar"
+                onclick="cerrarModal()"
+            >
+                ×
+            </button>
+
+
+            <h2>
+                Encontremos tu próximo hogar temporal
+            </h2>
+
+
+            <div class="form-group">
+
+                <label>
+                    ¿Cuál es tu nombre?
+                </label>
+
+                <input
+                    type="text"
+                    id="nombreConsulta"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    ¿Desde qué fecha estás buscando mudarte?
+                </label>
+
+                <input
+                    type="date"
+                    id="fechaConsulta"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    ¿Por cuántos meses?
+                </label>
+
+                <select id="mesesConsulta">
+
+                    <option value="3 a 6 meses">
+                        3–6 meses
+                    </option>
+
+                    <option value="6 a 9 meses">
+                        6–9 meses
+                    </option>
+
+                    <option value="9 a 12 meses">
+                        9–12 meses
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    ¿Cuántos ambientes?
+                </label>
+
+                <select id="ambientesConsulta">
+
+                    <option value="1 ambiente">
+                        1 ambiente
+                    </option>
+
+                    <option value="2 ambientes">
+                        2 ambientes
+                    </option>
+
+                    <option value="3 ambientes">
+                        3 ambientes
+                    </option>
+
+                    <option value="4 ambientes">
+                        4 ambientes
+                    </option>
+
+                    <option value="5 ambientes">
+                        5 ambientes
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                class="formulario-submit"
+                onclick="enviarConsultaGeneral()"
+            >
+                Realizar consulta
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     WHATSAPP FLOTANTE
+========================================================= -->
+
+<div
+    class="whatsapp-flotante"
+    onclick="abrirFormulario()"
+>
+    💬
+</div>
+
+
+<script>
+
+
+/* =========================================================
+   CONFIGURACION
+========================================================= */
+
+const URL_CSV =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2E7ECUfY-ps4Ok0_1TJxTR1UPoYl-_ZYkGNlvhk9eZWHBslhsWtoCiTaPfCjQJ38kojq9pJBeoGep/pub?output=csv";
+
+
+/*
+   Número general de WhatsApp.
+   CAMBIAR por tu número.
+*/
+
+const WHATSAPP_GENERAL =
+"549XXXXXXXXXX";
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let departamentos = [];
+
+let ambientesSeleccionados = [];
+
+let mascotasSeleccionadas = [];
+
+let barriosSeleccionados = [];
+
+let fotosGaleria = [];
+
+let indiceFoto = 0;
+
+let modalAbierto = false;
+
+
+/* =========================================================
+   OBTENER TODAS LAS FOTOS
+========================================================= */
+
+function obtenerFotos(row){
+
+    /*
+       Columnas reales del Google Sheet
+    */
+
+    const columnasFotos = [
+        "Fotos",
+        "Fotos2",
+        "Fotos3"
+    ];
+
+
+    let todasLasFotos = [];
+
+
+    /*
+       Buscar columna ignorando mayúsculas/minúsculas
+    */
+
+    function obtenerColumna(nombre){
+
+        const clave =
+            Object.keys(row).find(function(k){
+
+                return k.trim().toLowerCase() ===
+                       nombre.trim().toLowerCase();
+
+            });
+
+
+        return clave ? row[clave] : "";
+
+    }
+
+
+    /*
+       Convertir enlaces de Google Drive
+    */
+
+    function convertirDrive(url){
+
+        url = url.trim();
+
+
+        /*
+           Extraer ID de:
+
+           drive.google.com/open?id=XXXX
+
+           drive.google.com/file/d/XXXX/view
+
+           drive.google.com/uc?id=XXXX
+        */
+
+        let match =
+            url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+
+
+        if(!match){
+
+            match =
+                url.match(
+                    /\/file\/d\/([a-zA-Z0-9_-]+)/
+                );
+
+        }
+
+
+        if(!match){
+
+            match =
+                url.match(
+                    /\/d\/([a-zA-Z0-9_-]+)/
+                );
+
+        }
+
+
+        /*
+           Si encontramos ID
+        */
+
+        if(match){
+
+            const id =
+                match[1];
+
+
+            return (
+                "https://drive.google.com/thumbnail?id=" +
+                id +
+                "&sz=w1600"
+            );
+
+        }
+
+
+        return url;
+
+    }
+
+
+    /*
+       Recorrer Fotos, Fotos2 y Fotos3
+    */
+
+    columnasFotos.forEach(function(columna){
+
+        const contenido =
+            obtenerColumna(columna);
+
+
+        if(!contenido){
+
+            return;
+
+        }
+
+
+        const texto =
+            String(contenido).trim();
+
+
+        if(!texto){
+
+            return;
+
+        }
+
+
+        /*
+           Extraer URLs.
+
+           Funciona también cuando
+           están dentro de:
+
+           [URL](URL)
+        */
+
+        const urls =
+            texto.match(
+                /https?:\/\/[^\s\])"']+/g
+            );
+
+
+        if(!urls){
+
+            return;
+
+        }
+
+
+        urls.forEach(function(url){
+
+            url =
+                url.trim();
+
+
+            /*
+               Limpiar caracteres
+               finales.
+            */
+
+            url =
+                url.replace(
+                    /[),.;]+$/,
+                    ""
+                );
+
+
+            const foto =
+                convertirDrive(url);
+
+
+            /*
+               Evitar duplicados
+            */
+
+            if(
+                foto &&
+                !todasLasFotos.includes(foto)
+            ){
+
+                todasLasFotos.push(foto);
+
+            }
+
+        });
+
+    });
+
+
+    console.log(
+        "Fotos encontradas:",
+        todasLasFotos
+    );
+
+
+    return todasLasFotos;
+
+}
+
+
+/* =========================================================
+   CARGAR CSV
+========================================================= */
+
+Papa.parse(
+    URL_CSV,
+    {
+
+        download:true,
+
+        header:true,
+
+        skipEmptyLines:true,
+
+        complete:function(results){
+
+            console.log(
+                "CSV cargado:",
+                results.data
+            );
+
+
+            departamentos =
+                results.data.filter(function(row){
+
+                    return (
+                        obtenerCelda(row,"Dirección") ||
+                        obtenerCelda(row,"direccion")
+                    );
+
+                });
+
+
+            prepararFiltros();
+
+            renderizar();
+
+        },
+
+        error:function(error){
+
+            console.error(
+                "Error cargando CSV:",
+                error
+            );
+
+
+            document.getElementById(
+                "departamentos"
+            ).innerHTML = `
+                <div class="sin-resultados">
+                    No se pudieron cargar los departamentos.
+                </div>
+            `;
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   OBTENER CELDA
+========================================================= */
+
+function obtenerCelda(row,nombre){
+
+    const clave =
+        Object.keys(row).find(function(k){
+
+            return k.trim().toLowerCase() ===
+                   nombre.trim().toLowerCase();
+
+        });
+
+
+    return clave
+        ? String(row[clave] || "").trim()
+        : "";
+
+}
+
+
+/* =========================================================
+   PREPARAR FILTROS
+========================================================= */
+
+function prepararFiltros(){
+
+    const ambientes = [];
+
+
+    departamentos.forEach(function(row){
+
+        const ambiente =
+            obtenerCelda(row,"Ambientes");
+
+
+        if(
+            ambiente &&
+            !ambientes.includes(ambiente)
+        ){
+
+            ambientes.push(ambiente);
+
+        }
+
+    });
+
+
+    ambientes.sort(function(a,b){
+
+        return parseInt(a) - parseInt(b);
+
+    });
+
+
+    const contenedor =
+        document.getElementById(
+            "filtroAmbientes"
+        );
+
+
+    contenedor.innerHTML = "";
+
+
+    ambientes.forEach(function(ambiente){
+
+        const numero =
+            parseInt(ambiente);
+
+
+        const texto =
+            numero === 1
+                ? "1 ambiente"
+                : numero + " ambientes";
+
+
+        const boton =
+            document.createElement("button");
+
+
+        boton.className =
+            "filtro-btn";
+
+
+        boton.textContent =
+            texto;
+
+
+        boton.dataset.ambiente =
+            ambiente;
+
+
+        boton.onclick =
+            function(){
+
+                toggleAmbiente(
+                    ambiente,
+                    boton
+                );
+
+            };
+
+
+        contenedor.appendChild(
+            boton
+        );
+
+    });
+
+
+    /*
+       Barrios
+    */
+
+    const barrios = [];
+
+
+    departamentos.forEach(function(row){
+
+        const barrio =
+            obtenerCelda(row,"barrio");
+
+
+        if(
+            barrio &&
+            !barrios.includes(barrio)
+        ){
+
+            barrios.push(barrio);
+
+        }
+
+    });
+
+
+    barrios.sort();
+
+
+    const select =
+        document.getElementById(
+            "barrioSelect"
+        );
+
+
+    barrios.forEach(function(barrio){
+
+        const option =
+            document.createElement("option");
+
+
+        option.value =
+            barrio;
+
+
+        option.textContent =
+            barrio;
+
+
+        select.appendChild(
+            option
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   TOGGLE AMBIENTE
+========================================================= */
+
+function toggleAmbiente(
+    ambiente,
+    boton
+){
+
+    const indice =
+        ambientesSeleccionados.indexOf(
+            ambiente
+        );
+
+
+    if(indice === -1){
+
+        ambientesSeleccionados.push(
+            ambiente
+        );
+
+        boton.classList.add(
+            "activo"
+        );
+
+    }else{
+
+        ambientesSeleccionados.splice(
+            indice,
+            1
+        );
+
+        boton.classList.remove(
+            "activo"
+        );
+
+    }
+
+
+    renderizar();
+
+}
+
+
+/* =========================================================
+   TOGGLE MASCOTA
+========================================================= */
+
+function toggleMascota(tipo){
+
+    const indice =
+        mascotasSeleccionadas.indexOf(
+            tipo
+        );
+
+
+    const boton =
+        document.querySelector(
+            `[data-mascota="${tipo}"]`
+        );
+
+
+    if(indice === -1){
+
+        mascotasSeleccionadas.push(
+            tipo
+        );
+
+        boton.classList.add(
+            "activo"
+        );
+
+    }else{
+
+        mascotasSeleccionadas.splice(
+            indice,
+            1
+        );
+
+        boton.classList.remove(
+            "activo"
+        );
+
+    }
+
+
+    renderizar();
+
+}
+
+
+/* =========================================================
+   AGREGAR BARRIO
+========================================================= */
+
+function agregarBarrio(barrio){
+
+    if(!barrio){
+
+        return;
+
+    }
+
+
+    if(
+        !barriosSeleccionados.includes(
+            barrio
+        )
+    ){
+
+        barriosSeleccionados.push(
+            barrio
+        );
+
+    }
+
+
+    document.getElementById(
+        "barrioSelect"
+    ).value = "";
+
+
+    renderizarBarrios();
+
+    renderizar();
+
+}
+
+
+/* =========================================================
+   MOSTRAR BARRIOS
+========================================================= */
+
+function renderizarBarrios(){
+
+    const contenedor =
+        document.getElementById(
+            "barriosSeleccionados"
+        );
+
+
+    contenedor.innerHTML = "";
+
+
+    barriosSeleccionados.forEach(function(barrio){
+
+        const tag =
+            document.createElement("div");
+
+
+        tag.className =
+            "barrio-tag";
+
+
+        tag.innerHTML = `
+            <span>${escapeHTML(barrio)}</span>
+            <button
+                onclick="quitarBarrio(${JSON.stringify(barrio)})"
+            >
+                ×
+            </button>
+        `;
+
+
+        contenedor.appendChild(
+            tag
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   QUITAR BARRIO
+========================================================= */
+
+function quitarBarrio(barrio){
+
+    barriosSeleccionados =
+        barriosSeleccionados.filter(
+            function(b){
+                return b !== barrio;
+            }
+        );
+
+
+    renderizarBarrios();
+
+    renderizar();
+
+}
+
+
+/* =========================================================
+   FILTRAR
+========================================================= */
+
+function obtenerDepartamentosFiltrados(){
+
+    return departamentos.filter(function(row){
+
+        /*
+           AMBIENTES
+        */
+
+        if(
+            ambientesSeleccionados.length > 0
+        ){
+
+            const ambiente =
+                obtenerCelda(
+                    row,
+                    "Ambientes"
+                );
+
+
+            if(
+                !ambientesSeleccionados.includes(
+                    ambiente
+                )
+            ){
+
+                return false;
+
+            }
+
+        }
+
+
+        /*
+           BARRIOS
+        */
+
+        if(
+            barriosSeleccionados.length > 0
+        ){
+
+            const barrio =
+                obtenerCelda(
+                    row,
+                    "barrio"
+                );
+
+
+            if(
+                !barriosSeleccionados.includes(
+                    barrio
+                )
+            ){
+
+                return false;
+
+            }
+
+        }
+
+
+        /*
+           MASCOTAS
+        */
+
+        if(
+            mascotasSeleccionadas.length > 0
+        ){
+
+            const perro =
+                obtenerCelda(
+                    row,
+                    "perro?"
+                ).toLowerCase();
+
+
+            const gato =
+                obtenerCelda(
+                    row,
+                    "gato?"
+                ).toLowerCase();
+
+
+            let acepta = false;
+
+
+            if(
+                mascotasSeleccionadas.includes(
+                    "perro"
+                ) &&
+                (
+                    perro === "si" ||
+                    perro === "sí"
+                )
+            ){
+
+                acepta = true;
+
+            }
+
+
+            if(
+                mascotasSeleccionadas.includes(
+                    "gato"
+                ) &&
+                (
+                    gato === "si" ||
+                    gato === "sí"
+                )
+            ){
+
+                acepta = true;
+
+            }
+
+
+            if(!acepta){
+
+                return false;
+
+            }
+
+        }
+
+
+        return true;
+
+    });
+
+}
+
+
+/* =========================================================
+   RENDERIZAR
+========================================================= */
+
+function renderizar(){
+
+    const contenedor =
+        document.getElementById(
+            "departamentos"
+        );
+
+
+    const lista =
+        obtenerDepartamentosFiltrados();
+
+
+    document.getElementById(
+        "resultadosInfo"
+    ).textContent =
+        lista.length +
+        (
+            lista.length === 1
+                ? " departamento encontrado"
+                : " departamentos encontrados"
+        );
+
+
+    if(lista.length === 0){
+
+        contenedor.innerHTML = `
+            <div class="sin-resultados">
+                No encontramos departamentos
+                con esos filtros.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    contenedor.innerHTML = "";
+
+
+    lista.forEach(function(row){
+
+        contenedor.appendChild(
+            crearCard(row)
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   CREAR CARD
+========================================================= */
+
+function crearCard(row){
+
+    const card =
+        document.createElement("article");
+
+
+    card.className =
+        "card";
+
+
+    const fotos =
+        obtenerFotos(row);
+
+
+    const primeraFoto =
+        fotos.length > 0
+            ? fotos[0]
+            : "";
+
+
+    const barrio =
+        obtenerCelda(
+            row,
+            "barrio"
+        );
+
+
+    const direccion =
+        obtenerCelda(
+            row,
+            "Dirección"
+        );
+
+
+    const ambientes =
+        obtenerCelda(
+            row,
+            "Ambientes"
+        );
+
+
+    const valor =
+        obtenerCelda(
+            row,
+            "Valor:"
+        );
+
+
+    const incluye =
+        obtenerCelda(
+            row,
+            "Incluye"
+        );
+
+
+    const perro =
+        obtenerCelda(
+            row,
+            "perro?"
+        ).toLowerCase();
+
+
+    const gato =
+        obtenerCelda(
+            row,
+            "gato?"
+        ).toLowerCase();
+
+
+    const descripcion =
+        obtenerCelda(
+            row,
+            "descripcion"
+        ) ||
+        obtenerCelda(
+            row,
+            "DescripcioN"
+        );
+
+
+    const textoAmbientes =
+        parseInt(ambientes) === 1
+            ? "1 ambiente"
+            : ambientes + " ambientes";
+
+
+    let imagenHTML;
+
+
+    if(primeraFoto){
+
+        imagenHTML = `
+            <img
+                class="card-imagen"
+                src="${escapeHTML(primeraFoto)}"
+                alt="${escapeHTML(direccion)}"
+                loading="lazy"
+                onclick="abrirGaleriaDesdeCard(this)"
+                data-fotos='${escapeHTML(JSON.stringify(fotos))}'
+                onerror="imagenFallida(this)"
+            >
+        `;
+
+    }else{
+
+        imagenHTML = `
+            <div class="imagen-error">
+                Sin foto
+            </div>
+        `;
+
+    }
+
+
+    let mascotasHTML = "";
+
+
+    if(
+        perro === "si" ||
+        perro === "sí"
+    ){
+
+        mascotasHTML += `
+            <span class="mascota">
+                🐶 Perro
+            </span>
+        `;
+
+    }
+
+
+    if(
+        gato === "si" ||
+        gato === "sí"
+    ){
+
+        mascotasHTML += `
+            <span class="mascota">
+                🐱 Gato
+            </span>
+        `;
+
+    }
+
+
+    card.innerHTML = `
+
+        ${imagenHTML}
+
+        <div class="card-contenido">
+
+            <div class="card-barrio">
+                ${escapeHTML(barrio)}
+            </div>
+
+            <h2>
+                ${escapeHTML(textoAmbientes)}
+            </h2>
+
+            <div class="card-direccion">
+                📍 ${escapeHTML(direccion)}
+            </div>
+
+            <div class="card-valor">
+                💰 ${escapeHTML(valor)}
+            </div>
+
+            ${
+                incluye
+                ?
+                `
+                <div class="card-incluye">
+                    ${escapeHTML(incluye)}
+                </div>
+                `
+                :
+                ""
+            }
+
+            ${
+                mascotasHTML
+                ?
+                `<div class="mascotas">
+                    ${mascotasHTML}
+                </div>`
+                :
+                ""
+            }
+
+
+            <div class="card-botones">
+
+                <button
+                    class="card-btn btn-fotos"
+                    onclick='abrirGaleria(${JSON.stringify(fotos)})'
+                >
+                    📸 Fotos
+                </button>
+
+
+                <button
+                    class="card-btn btn-descripcion"
+                    onclick='abrirDescripcion(${JSON.stringify(
+                        descripcion
+                    )},${JSON.stringify(
+                        direccion
+                    )})'
+                >
+                    📋 Descripción
+                </button>
+
+
+                <button
+                    class="card-btn btn-contacto"
+                    onclick='contactarWhatsApp(${JSON.stringify(
+                        row
+                    )})'
+                >
+                    💬 Contacto
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    return card;
+
+}
+
+
+/* =========================================================
+   IMAGEN FALLIDA
+========================================================= */
+
+function imagenFallida(img){
+
+    img.onerror = null;
+
+    img.style.display =
+        "none";
+
+
+    const contenedor =
+        img.parentElement;
+
+
+    const placeholder =
+        document.createElement(
+            "div"
+        );
+
+
+    placeholder.className =
+        "imagen-error";
+
+
+    placeholder.textContent =
+        "Imagen no disponible";
+
+
+    contenedor.insertBefore(
+        placeholder,
+        img
+    );
+
+}
+
+
+/* =========================================================
+   GALERIA DESDE CARD
+========================================================= */
+
+function abrirGaleriaDesdeCard(img){
+
+    try{
+
+        const fotos =
+            JSON.parse(
+                img.dataset.fotos
+            );
+
+
+        abrirGaleria(fotos);
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =========================================================
+   ABRIR GALERIA
+========================================================= */
+
+function abrirGaleria(fotos){
+
+    if(
+        !fotos ||
+        fotos.length === 0
+    ){
+
+        return;
+
+    }
+
+
+    fotosGaleria =
+        fotos;
+
+
+    indiceFoto = 0;
+
+
+    modalAbierto = true;
+
+
+    history.pushState(
+        {
+            modal:true
+        },
+        ""
+    );
+
+
+    document.getElementById(
+        "modalGaleria"
+    ).classList.add(
+        "activo"
+    );
+
+
+    mostrarFoto();
+
+}
+
+
+/* =========================================================
+   MOSTRAR FOTO
+========================================================= */
+
+function mostrarFoto(){
+
+    if(
+        fotosGaleria.length === 0
+    ){
+
+        return;
+
+    }
+
+
+    const imagen =
+        document.getElementById(
+            "imagenGaleria"
+        );
+
+
+    imagen.src =
+        fotosGaleria[indiceFoto];
+
+
+    imagen.alt =
+        "Foto " +
+        (indiceFoto + 1);
+
+
+    document.getElementById(
+        "contadorFotos"
+    ).textContent =
+        (indiceFoto + 1) +
+        " / " +
+        fotosGaleria.length;
+
+}
+
+
+/* =========================================================
+   FOTO ANTERIOR
+========================================================= */
+
+function fotoAnterior(){
+
+    if(
+        fotosGaleria.length === 0
+    ){
+
+        return;
+
+    }
+
+
+    indiceFoto--;
+
+
+    if(
+        indiceFoto < 0
+    ){
+
+        indiceFoto =
+            fotosGaleria.length - 1;
+
+    }
+
+
+    mostrarFoto();
+
+}
+
+
+/* =========================================================
+   FOTO SIGUIENTE
+========================================================= */
+
+function fotoSiguiente(){
+
+    if(
+        fotosGaleria.length === 0
+    ){
+
+        return;
+
+    }
+
+
+    indiceFoto++;
+
+
+    if(
+        indiceFoto >=
+        fotosGaleria.length
+    ){
+
+        indiceFoto = 0;
+
+    }
+
+
+    mostrarFoto();
+
+}
+
+
+/* =========================================================
+   DESCRIPCION
+========================================================= */
+
+function abrirDescripcion(
+    descripcion,
+    direccion
+){
+
+    modalAbierto = true;
+
+
+    history.pushState(
+        {
+            modal:true
+        },
+        ""
+    );
+
+
+    document.getElementById(
+        "descripcionTitulo"
+    ).textContent =
+        direccion ||
+        "Departamento";
+
+
+    document.getElementById(
+        "descripcionTexto"
+    ).textContent =
+        descripcion ||
+        "No hay descripción disponible.";
+
+
+    document.getElementById(
+        "modalDescripcion"
+    ).classList.add(
+        "activo"
+    );
+
+}
+
+
+/* =========================================================
+   FORMULARIO GENERAL
+========================================================= */
+
+function abrirFormulario(){
+
+    modalAbierto = true;
+
+
+    history.pushState(
+        {
+            modal:true
+        },
+        ""
+    );
+
+
+    document.getElementById(
+        "modalFormulario"
+    ).classList.add(
+        "activo"
+    );
+
+}
+
+
+/* =========================================================
+   CERRAR MODAL
+========================================================= */
+
+function cerrarModal(){
+
+    if(
+        modalAbierto
+    ){
+
+        history.back();
+
+    }else{
+
+        cerrarModalDirectamente();
+
+    }
+
+}
+
+
+/* =========================================================
+   CERRAR MODAL DIRECTAMENTE
+========================================================= */
+
+function cerrarModalDirectamente(){
+
+    document
+        .querySelectorAll(".modal")
+        .forEach(function(modal){
+
+            modal.classList.remove(
+                "activo"
+            );
+
+        });
+
+
+    modalAbierto = false;
+
+}
+
+
+/* =========================================================
+   HISTORIAL
+========================================================= */
+
+window.addEventListener(
+    "popstate",
+    function(){
+
+        cerrarModalDirectamente();
+
+    }
+);
+
+
+/* =========================================================
+   TECLADO GALERIA
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        const galeria =
+            document.getElementById(
+                "modalGaleria"
+            );
+
+
+        if(
+            !galeria.classList.contains(
+                "activo"
+            )
+        ){
+
+            return;
+
+        }
+
+
+        if(
+            event.key === "ArrowRight"
+        ){
+
+            fotoSiguiente();
+
+        }
+
+
+        if(
+            event.key === "ArrowLeft"
+        ){
+
+            fotoAnterior();
+
+        }
+
+
+        if(
+            event.key === "Escape"
+        ){
+
+            cerrarModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   CONTACTO WHATSAPP
+========================================================= */
+
+function contactarWhatsApp(row){
+
+    const vendedor =
+        obtenerCelda(
+            row,
+            "Vendedor"
+        );
+
+
+    if(!vendedor){
+
+        alert(
+            "No hay número de WhatsApp cargado para este departamento."
+        );
+
+        return;
+
+    }
+
+
+    /*
+       Limpiar número
+    */
+
+    const telefono =
+        vendedor.replace(
+            /\D/g,
+            ""
+        );
+
+
+    const direccion =
+        obtenerCelda(
+            row,
+            "Dirección"
+        );
+
+
+    const ambientes =
+        obtenerCelda(
+            row,
+            "Ambientes"
+        );
+
+
+    const valor =
+        obtenerCelda(
+            row,
+            "Valor:"
+        );
+
+
+    const textoAmbientes =
+        parseInt(ambientes) === 1
+            ? "1 ambiente"
+            : ambientes + " ambientes";
+
+
+    const mensaje =
+`Hola! Me gustaría saber mas sobre este departamento
+
+📍 Dirección:
+${direccion || "Consultar"}
+
+🏠 Características:
+${textoAmbientes}
+
+💰 Valor:
+${valor || "Consultar"}
+
+¡Muchas gracias!`;
+
+
+    const url =
+        "https://wa.me/" +
+        telefono +
+        "?text=" +
+        encodeURIComponent(
+            mensaje
+        );
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* =========================================================
+   CONSULTA GENERAL
+========================================================= */
+
+function enviarConsultaGeneral(){
+
+    const nombre =
+        document.getElementById(
+            "nombreConsulta"
+        ).value.trim();
+
+
+    const fecha =
+        document.getElementById(
+            "fechaConsulta"
+        ).value;
+
+
+    const meses =
+        document.getElementById(
+            "mesesConsulta"
+        ).value;
+
+
+    const ambientes =
+        document.getElementById(
+            "ambientesConsulta"
+        ).value;
+
+
+    if(!nombre){
+
+        alert(
+            "Por favor ingresá tu nombre."
+        );
+
+        return;
+
+    }
+
+
+    const mensaje =
+`Hola, ¿cómo estás?
+
+Me gustaría consultar por un departamento temporal.
+
+👤 Nombre:
+${nombre}
+
+📅 Fecha estimada de mudanza:
+${fecha || "A confirmar"}
+
+📆 Duración:
+${meses}
+
+🏠 Ambientes:
+${ambientes}
+
+Estoy buscando opciones de alquiler temporal.
+
+¡Muchas gracias!`;
+
+
+    const url =
+        "https://wa.me/" +
+        WHATSAPP_GENERAL +
+        "?text=" +
+        encodeURIComponent(
+            mensaje
+        );
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(valor){
+
+    return String(
+        valor || ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =========================================================
+   CERRAR MODAL AL TOCAR FONDO
+========================================================= */
+
+document
+    .querySelectorAll(".modal")
+    .forEach(function(modal){
+
+        modal.addEventListener(
+            "click",
+            function(event){
+
+                if(
+                    event.target === modal
+                ){
+
+                    cerrarModal();
+
+                }
+
+            }
+        );
+
+    });
+
+
+</script>
+
+</body>
+</html>
