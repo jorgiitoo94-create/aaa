@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>Alquilar Temporario</title>
 
@@ -16,589 +21,1243 @@
 }
 
 html{
-    scroll-behavior:smooth;
+    width:100%;
+    margin:0;
+    padding:0;
 }
 
 body{
+
     margin:0;
-    background:#0b1120;
-    color:#e2e8f0;
-    font-family:Arial,Helvetica,sans-serif;
-}
 
-button{
-    font-family:inherit;
-}
-
-.container{
     width:100%;
-    max-width:1200px;
-    margin:auto;
-    padding:20px;
+
+    background:#0b1120;
+
+    color:#e2e8f0;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    overflow-x:hidden;
 }
 
 
-/* =========================================================
+/* =========================
    HEADER
-========================================================= */
+========================= */
 
 header{
+
+    width:100%;
+
     text-align:center;
-    padding:35px 15px 25px;
+
+    padding:45px 20px 30px;
+
+    background:#0b1120;
 }
 
 header h1{
+
     margin:0 0 10px;
-    font-size:clamp(28px,5vw,42px);
+
+    font-size:36px;
+
+    font-weight:700;
+
+    color:#f8fafc;
 }
 
 header p{
+
     margin:0;
+
     color:#64748b;
-    font-size:15px;
+
+    font-size:16px;
 }
 
 
-/* =========================================================
+/* =========================
+   CONTAINER
+========================= */
+
+.container{
+
+    width:100%;
+
+    max-width:1200px;
+
+    margin:0 auto;
+
+    padding:0 20px 50px;
+}
+
+
+/* =========================
    FILTROS
-========================================================= */
+========================= */
 
 .filtros{
+
+    width:100%;
+
     background:#111827;
+
     border:1px solid #1e293b;
-    border-radius:18px;
-    padding:20px;
-    margin-bottom:30px;
+
+    border-radius:16px;
+
+    padding:24px;
+
+    margin-bottom:25px;
 }
 
 .filtro{
+
     margin-bottom:25px;
 }
 
 .filtro:last-child{
+
     margin-bottom:0;
 }
 
-.filtro h3{
-    margin:0 0 6px;
+.filtro-titulo{
+
     font-size:16px;
+
+    font-weight:600;
+
+    color:#f1f5f9;
+
+    margin-bottom:5px;
 }
 
-.filtro p{
-    margin:0 0 12px;
-    color:#64748b;
+.filtro-ayuda{
+
     font-size:13px;
+
+    color:#64748b;
+
+    margin-bottom:12px;
 }
 
 .botones-filtro{
+
     display:flex;
+
     flex-wrap:wrap;
+
     gap:8px;
 }
 
 .filtro-btn{
+
+    border:1px solid #334155;
+
     background:#0b1120;
-    color:#e2e8f0;
-    border:1px solid #1e293b;
-    padding:10px 15px;
-    border-radius:10px;
+
+    color:#cbd5e1;
+
+    border-radius:9px;
+
+    padding:11px 16px;
+
     cursor:pointer;
+
+    font-size:14px;
+
     transition:.2s;
+
+    min-height:42px;
 }
 
 .filtro-btn:hover{
-    border-color:#22c55e;
+
+    border-color:#475569;
+
+    background:#172033;
 }
 
 .filtro-btn.activo{
+
     background:#14532d;
+
     border-color:#22c55e;
+
     color:#dcfce7;
 }
 
 
-/* =========================================================
+/* =========================
+   SELECT BARRIO
+========================= */
+
+#barrioSelect{
+
+    width:100%;
+
+    max-width:500px;
+
+    background:#0b1120;
+
+    color:#e2e8f0;
+
+    border:1px solid #334155;
+
+    border-radius:9px;
+
+    padding:12px 14px;
+
+    font-size:14px;
+
+    outline:none;
+}
+
+#barrioSelect:focus{
+
+    border-color:#22c55e;
+}
+
+
+/* =========================
    BARRIOS SELECCIONADOS
-========================================================= */
+========================= */
 
 #barriosSeleccionados{
+
     display:flex;
+
     flex-wrap:wrap;
+
     gap:8px;
+
     margin-top:12px;
 }
 
 .barrio-tag{
-    display:inline-flex;
+
+    display:flex;
+
     align-items:center;
+
     gap:8px;
+
     background:#14532d;
+
     border:1px solid #22c55e;
+
     color:#dcfce7;
-    padding:7px 10px;
+
+    padding:8px 11px;
+
     border-radius:20px;
+
     font-size:13px;
 }
 
 .barrio-tag button{
-    background:none;
+
     border:0;
-    color:#dcfce7;
+
+    background:transparent;
+
+    color:#bbf7d0;
+
     cursor:pointer;
+
     font-size:16px;
+
+    line-height:1;
 }
 
 
-/* =========================================================
-   SELECT BARRIO
-========================================================= */
-
-#barrioSelect{
-    width:100%;
-    max-width:400px;
-    background:#0b1120;
-    color:#e2e8f0;
-    border:1px solid #1e293b;
-    border-radius:10px;
-    padding:12px;
-}
-
-
-/* =========================================================
+/* =========================
    RESULTADOS
-========================================================= */
+========================= */
 
 .resultados-info{
-    color:#64748b;
+
     margin-bottom:15px;
+
+    color:#64748b;
+
     font-size:14px;
 }
 
+
+/* =========================
+   GRID
+========================= */
+
 .grid{
+
+    width:100%;
+
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-    gap:20px;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap:18px;
 }
 
 
-/* =========================================================
+/* =========================
    CARD
-========================================================= */
+========================= */
 
 .card{
-    background:#111827;
-    border:1px solid #1e293b;
-    border-radius:18px;
+
+    width:100%;
+
+    min-width:0;
+
     overflow:hidden;
+
+    background:#111827;
+
+    border:1px solid #1e293b;
+
+    border-radius:15px;
+
     transition:.2s;
 }
 
 .card:hover{
-    transform:translateY(-3px);
+
     border-color:#334155;
+
+    transform:translateY(-2px);
 }
 
+
+/* =========================
+   IMAGEN
+========================= */
+
 .card-imagen{
-    width:100%;
-    height:220px;
-    object-fit:cover;
+
     display:block;
+
+    width:100%;
+
+    height:250px;
+
+    object-fit:cover;
+
     background:#0f172a;
+
     cursor:pointer;
 }
 
+
+/* =========================
+   CONTENIDO
+========================= */
+
 .card-contenido{
-    padding:17px;
+
+    padding:18px;
 }
 
 .card-barrio{
+
     color:#22c55e;
-    font-size:13px;
-    font-weight:bold;
+
+    font-size:12px;
+
+    font-weight:700;
+
     text-transform:uppercase;
-    margin-bottom:7px;
+
+    letter-spacing:.5px;
+
+    margin-bottom:5px;
 }
 
-.card h2{
-    font-size:21px;
-    margin:0 0 8px;
+.card-titulo{
+
+    color:#f8fafc;
+
+    font-size:20px;
+
+    font-weight:700;
+
+    margin-bottom:6px;
 }
 
 .card-direccion{
+
     color:#94a3b8;
+
     font-size:14px;
+
     margin-bottom:12px;
 }
 
 .card-valor{
-    font-size:22px;
-    font-weight:bold;
+
+    color:#f8fafc;
+
+    font-size:18px;
+
+    font-weight:700;
+
     margin-bottom:12px;
 }
 
 .card-incluye{
+
     color:#94a3b8;
+
     font-size:13px;
+
     line-height:1.5;
-    margin-bottom:10px;
+
+    margin-bottom:12px;
 }
 
-.mascotas{
+
+/* =========================
+   MASCOTAS
+========================= */
+
+.card-mascotas{
+
     display:flex;
+
+    flex-wrap:wrap;
+
     gap:7px;
-    margin:12px 0;
+
+    margin-bottom:15px;
 }
 
 .mascota{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    padding:5px 9px;
+
+    border-radius:15px;
+
     background:#0b1120;
+
     border:1px solid #1e293b;
-    padding:5px 8px;
-    border-radius:7px;
+
     font-size:12px;
+
+    color:#cbd5e1;
 }
 
 
-/* =========================================================
+/* =========================
    BOTONES CARD
-========================================================= */
+========================= */
 
 .card-botones{
+
+    width:100%;
+
     display:grid;
-    grid-template-columns:1fr 1fr 1fr;
+
+    grid-template-columns:
+        repeat(3, minmax(0,1fr));
+
     gap:7px;
-    margin-top:15px;
 }
 
 .card-btn{
-    border:1px solid transparent;
-    border-radius:9px;
-    padding:10px 5px;
-    color:#e2e8f0;
+
+    width:100%;
+
+    min-width:0;
+
+    border:0;
+
+    border-radius:8px;
+
+    padding:11px 5px;
+
     cursor:pointer;
+
     font-size:12px;
+
+    font-weight:600;
+
     transition:.2s;
+
+    color:#f8fafc;
 }
-
-.card-btn:hover{
-    transform:translateY(-1px);
-}
-
-
-/* FOTOS */
 
 .btn-fotos{
-    background:#241b3d;
-    border-color:#43356b;
+
+    background:#312e81;
+
+    border:1px solid #4338ca;
 }
 
 .btn-fotos:hover{
-    background:#30234e;
+
+    background:#3730a3;
 }
 
-
-/* DESCRIPCION */
-
 .btn-descripcion{
-    background:#3a2b16;
-    border-color:#60461f;
+
+    background:#713f12;
+
+    border:1px solid #92400e;
 }
 
 .btn-descripcion:hover{
-    background:#493619;
+
+    background:#854d0e;
 }
 
-
-/* CONTACTO */
-
 .btn-contacto{
-    background:#123523;
-    border-color:#1d6039;
+
+    background:#14532d;
+
+    border:1px solid #166534;
 }
 
 .btn-contacto:hover{
-    background:#17472c;
+
+    background:#166534;
 }
 
 
-/* =========================================================
+/* =========================
    SIN RESULTADOS
-========================================================= */
+========================= */
 
 .sin-resultados{
+
+    width:100%;
+
     text-align:center;
-    color:#64748b;
+
     padding:50px 20px;
+
+    background:#111827;
+
+    border:1px solid #1e293b;
+
+    border-radius:15px;
+
+    color:#64748b;
 }
 
 
-/* =========================================================
-   MODAL
-========================================================= */
+/* =========================
+   MODALES
+========================= */
 
 .modal{
+
     display:none;
+
     position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.88);
+
     z-index:1000;
+
+    inset:0;
+
+    width:100%;
+
+    height:100%;
+
+    background:rgba(0,0,0,.88);
+
     align-items:center;
+
     justify-content:center;
-    padding:15px;
+
+    padding:20px;
 }
 
 .modal.activo{
+
     display:flex;
 }
 
-.modal-contenido{
-    width:100%;
-    max-width:1000px;
-    max-height:95vh;
+
+/* =========================
+   GALERIA
+========================= */
+
+.galeria-contenido{
+
     position:relative;
+
+    width:100%;
+
+    max-width:1100px;
+
+    height:90vh;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
 }
 
-
-/* =========================================================
-   GALERIA
-========================================================= */
-
 .galeria-imagen{
-    width:100%;
-    max-height:80vh;
+
+    max-width:90%;
+
+    max-height:85vh;
+
     object-fit:contain;
-    display:block;
+
     border-radius:10px;
+
+    user-select:none;
 }
 
 .cerrar{
+
     position:absolute;
+
     right:10px;
-    top:10px;
-    width:40px;
-    height:40px;
+
+    top:0;
+
+    width:42px;
+
+    height:42px;
+
     border-radius:50%;
-    border:1px solid #475569;
-    background:rgba(15,23,42,.9);
-    color:white;
-    font-size:24px;
+
+    border:1px solid #334155;
+
+    background:#111827;
+
+    color:#f8fafc;
+
+    font-size:25px;
+
     cursor:pointer;
-    z-index:5;
+
+    z-index:10;
 }
 
 .flecha{
+
     position:absolute;
+
     top:50%;
+
     transform:translateY(-50%);
-    width:45px;
-    height:55px;
-    border:1px solid #475569;
-    background:rgba(15,23,42,.8);
-    color:white;
+
+    width:48px;
+
+    height:65px;
+
+    border:1px solid #334155;
+
+    background:#111827;
+
+    color:#f8fafc;
+
+    border-radius:9px;
+
     font-size:30px;
+
     cursor:pointer;
-    border-radius:10px;
-    z-index:5;
+
+    z-index:10;
 }
 
 .flecha.izquierda{
+
     left:10px;
 }
 
 .flecha.derecha{
+
     right:10px;
 }
 
 .contador{
-    text-align:center;
+
+    position:absolute;
+
+    bottom:5px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
     color:#cbd5e1;
-    margin-top:10px;
-}
 
-.volver{
-    display:block;
-    margin:12px auto 0;
     background:#111827;
+
     border:1px solid #334155;
-    color:#e2e8f0;
-    padding:10px 18px;
-    border-radius:9px;
-    cursor:pointer;
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    font-size:13px;
 }
 
 
-/* =========================================================
+/* =========================
    DESCRIPCION
-========================================================= */
+========================= */
 
-.descripcion-modal{
-    background:#111827;
-    border:1px solid #1e293b;
-    border-radius:18px;
-    padding:25px;
+.descripcion-contenido{
+
+    position:relative;
+
+    width:100%;
+
+    max-width:650px;
+
     max-height:85vh;
+
     overflow:auto;
+
+    background:#111827;
+
+    border:1px solid #1e293b;
+
+    border-radius:15px;
+
+    padding:25px;
 }
 
-.descripcion-modal h2{
+.descripcion-contenido h2{
+
     margin-top:0;
+
+    color:#f8fafc;
 }
 
 .descripcion-texto{
-    color:#cbd5e1;
-    line-height:1.7;
+
     white-space:pre-wrap;
+
+    color:#cbd5e1;
+
+    line-height:1.6;
+
+    font-size:15px;
 }
 
 
-/* =========================================================
+/* =========================
+   WHATSAPP
+========================= */
+
+.whatsapp-contenido{
+
+    position:relative;
+
+    width:100%;
+
+    max-width:550px;
+
+    max-height:90vh;
+
+    overflow:auto;
+
+    background:#111827;
+
+    border:1px solid #1e293b;
+
+    border-radius:15px;
+
+    padding:25px;
+}
+
+.whatsapp-contenido h2{
+
+    margin-top:0;
+
+    color:#f8fafc;
+
+    font-size:24px;
+}
+
+.form-grupo{
+
+    margin-bottom:18px;
+}
+
+.form-grupo label{
+
+    display:block;
+
+    margin-bottom:7px;
+
+    color:#cbd5e1;
+
+    font-size:14px;
+
+    font-weight:600;
+}
+
+.form-grupo input,
+.form-grupo select{
+
+    width:100%;
+
+    padding:12px;
+
+    background:#0b1120;
+
+    color:#f8fafc;
+
+    border:1px solid #334155;
+
+    border-radius:8px;
+
+    outline:none;
+
+    font-size:14px;
+}
+
+.form-grupo input:focus,
+.form-grupo select:focus{
+
+    border-color:#22c55e;
+}
+
+.btn-whatsapp-form{
+
+    width:100%;
+
+    border:0;
+
+    border-radius:9px;
+
+    padding:14px;
+
+    background:#16a34a;
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+.btn-whatsapp-form:hover{
+
+    background:#15803d;
+}
+
+
+/* =========================
    WHATSAPP FLOTANTE
-========================================================= */
+========================= */
 
 .whatsapp-flotante{
+
     position:fixed;
+
     right:20px;
+
     bottom:20px;
+
     width:58px;
+
     height:58px;
+
     border-radius:50%;
-    background:#22c55e;
+
+    background:#16a34a;
+
     color:white;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
-    font-size:28px;
+
+    font-size:27px;
+
     cursor:pointer;
-    box-shadow:0 10px 30px rgba(0,0,0,.35);
-    z-index:500;
+
+    z-index:900;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,.4);
+}
+
+.whatsapp-flotante:hover{
+
+    background:#15803d;
 }
 
 
-/* =========================================================
-   FORMULARIO WHATSAPP
-========================================================= */
+/* =========================
+   ERROR IMAGEN
+========================= */
 
-.formulario{
-    background:#111827;
-    border:1px solid #1e293b;
-    border-radius:18px;
-    padding:25px;
+.imagen-error{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
     width:100%;
-    max-width:500px;
-}
 
-.formulario h2{
-    margin-top:0;
-}
+    height:100%;
 
-.form-group{
-    margin-bottom:15px;
-}
-
-.form-group label{
-    display:block;
-    margin-bottom:7px;
-    font-size:13px;
-    color:#cbd5e1;
-}
-
-.form-group input,
-.form-group select{
-    width:100%;
-    background:#0b1120;
-    border:1px solid #1e293b;
-    border-radius:9px;
-    color:#e2e8f0;
-    padding:12px;
-}
-
-.formulario-submit{
-    width:100%;
-    background:#14532d;
-    border:1px solid #22c55e;
-    color:#dcfce7;
-    padding:13px;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-
-/* =========================================================
-   LOADING
-========================================================= */
-
-.loading{
-    text-align:center;
-    padding:50px;
     color:#64748b;
+
+    font-size:13px;
 }
 
 
-/* =========================================================
-   MOBILE
-========================================================= */
+/* =========================
+   TABLET
+========================= */
+
+@media(max-width:900px){
+
+    .grid{
+
+        grid-template-columns:
+            repeat(2, minmax(0,1fr));
+    }
+
+}
+
+
+/* =========================
+   CELULAR
+========================= */
 
 @media(max-width:600px){
 
-    .container{
-        padding:12px;
+    body{
+
+        width:100%;
+
+        max-width:100%;
+
+        overflow-x:hidden;
     }
 
     header{
-        padding:25px 10px 20px;
+
+        width:100%;
+
+        padding:25px 15px 20px;
     }
 
+    header h1{
+
+        font-size:28px;
+
+        line-height:1.2;
+    }
+
+    header p{
+
+        font-size:14px;
+
+        line-height:1.5;
+    }
+
+    .container{
+
+        width:100%;
+
+        max-width:none;
+
+        padding:0;
+    }
+
+
+    /* FILTROS */
+
+    .filtros{
+
+        width:100%;
+
+        border-radius:0;
+
+        border-left:0;
+
+        border-right:0;
+
+        padding:18px 15px;
+
+        margin-bottom:20px;
+    }
+
+    .filtro{
+
+        width:100%;
+    }
+
+    .botones-filtro{
+
+        width:100%;
+
+        display:flex;
+
+        flex-direction:column;
+
+        gap:8px;
+    }
+
+    .botones-filtro .filtro-btn{
+
+        width:100%;
+
+        min-width:0;
+
+        min-height:46px;
+
+        font-size:14px;
+    }
+
+    #barrioSelect{
+
+        width:100%;
+
+        max-width:none;
+
+        min-height:46px;
+    }
+
+    #barriosSeleccionados{
+
+        width:100%;
+    }
+
+
+    /* RESULTADOS */
+
+    .resultados-info{
+
+        width:100%;
+
+        padding:0 15px;
+
+        margin-bottom:12px;
+    }
+
+
+    /* GRID */
+
     .grid{
+
+        width:100%;
+
+        display:grid;
+
         grid-template-columns:1fr;
+
+        gap:12px;
+    }
+
+
+    /* CARD */
+
+    .card{
+
+        width:100%;
+
+        border-radius:0;
+
+        border-left:0;
+
+        border-right:0;
+
+        transform:none !important;
     }
 
     .card-imagen{
-        height:230px;
+
+        width:100%;
+
+        height:250px;
+
+        border-radius:0;
     }
 
+    .card-contenido{
+
+        width:100%;
+
+        padding:17px 15px;
+    }
+
+
+    /* BOTONES FULL WIDTH */
+
     .card-botones{
-        gap:5px;
+
+        width:100%;
+
+        display:flex;
+
+        flex-direction:column;
+
+        gap:8px;
     }
 
     .card-btn{
-        font-size:11px;
-        padding:10px 3px;
+
+        width:100%;
+
+        min-width:0;
+
+        min-height:46px;
+
+        padding:12px;
+
+        font-size:13px;
+    }
+
+
+    /* MODALES */
+
+    .modal{
+
+        padding:0;
+    }
+
+    .galeria-contenido{
+
+        width:100%;
+
+        height:100vh;
+    }
+
+    .galeria-imagen{
+
+        max-width:100%;
+
+        max-height:80vh;
+
+        border-radius:0;
     }
 
     .flecha{
-        width:38px;
-        height:48px;
+
+        width:40px;
+
+        height:52px;
+
         font-size:24px;
+    }
+
+    .flecha.izquierda{
+
+        left:5px;
+    }
+
+    .flecha.derecha{
+
+        right:5px;
+    }
+
+    .cerrar{
+
+        top:10px;
+
+        right:10px;
+    }
+
+    .descripcion-contenido{
+
+        width:100%;
+
+        height:100%;
+
+        max-height:none;
+
+        border-radius:0;
+
+        border:0;
+
+        padding:20px 15px;
+    }
+
+    .whatsapp-contenido{
+
+        width:100%;
+
+        height:100%;
+
+        max-height:none;
+
+        border-radius:0;
+
+        border:0;
+
+        padding:20px 15px;
+    }
+
+    .whatsapp-flotante{
+
+        right:15px;
+
+        bottom:15px;
     }
 
 }
 
 
-/* =========================================================
-   IMAGEN FALLIDA
-========================================================= */
+/* =========================
+   CELULAR PEQUEÑO
+========================= */
 
-.imagen-error{
-    width:100%;
-    height:220px;
-    background:#0f172a;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#64748b;
-    cursor:pointer;
+@media(max-width:380px){
+
+    header h1{
+
+        font-size:25px;
+    }
+
+    .card-imagen{
+
+        height:220px;
+    }
+
 }
 
 </style>
 
 </head>
 
+
 <body>
 
 
+<!-- =========================
+     HEADER
+========================= -->
+
 <header>
 
-    <h1>Encontrá tu próximo hogar temporal</h1>
+    <h1>
+        Encontrá tu próximo hogar temporal
+    </h1>
 
     <p>
         Departamentos amoblados · Estadías de 3 a 12 meses
@@ -607,144 +1266,193 @@ header p{
 </header>
 
 
+
 <div class="container">
 
 
-    <!-- =====================================================
-         FILTROS
-    ====================================================== -->
+<!-- =========================
+     FILTROS
+========================= -->
 
-    <div class="filtros">
+<section class="filtros">
 
 
-        <!-- AMBIENTES -->
+    <!-- AMBIENTES -->
 
-        <div class="filtro">
+    <div class="filtro">
 
-            <h3>
-                ¿Qué tipo de departamento estás buscando?
-            </h3>
-
-            <p>
-                Elegí la cantidad de ambientes que necesitás
-            </p>
-
-            <div
-                class="botones-filtro"
-                id="filtroAmbientes"
-            ></div>
-
+        <div class="filtro-titulo">
+            ¿Qué tipo de departamento estás buscando?
         </div>
 
-
-        <!-- MASCOTAS -->
-
-        <div class="filtro">
-
-            <h3>
-                ¿Tenés mascota?
-            </h3>
-
-            <p>
-                Seleccioná si necesitás que aceptemos mascotas
-            </p>
-
-            <div class="botones-filtro">
-
-                <button
-                    class="filtro-btn"
-                    data-mascota="perro"
-                    onclick="toggleMascota('perro')"
-                >
-                    🐶 Perro
-                </button>
-
-                <button
-                    class="filtro-btn"
-                    data-mascota="gato"
-                    onclick="toggleMascota('gato')"
-                >
-                    🐱 Gato
-                </button>
-
-            </div>
-
+        <div class="filtro-ayuda">
+            Elegí la cantidad de ambientes que necesitás
         </div>
 
+        <div
+            class="botones-filtro"
+            id="ambientesFiltro"
+        >
 
-        <!-- BARRIO -->
-
-        <div class="filtro">
-
-            <h3>
-                ¿En qué barrio te gustaría vivir?
-            </h3>
-
-            <p>
-                Podés elegir una zona o ver todas las opciones
-            </p>
-
-            <select
-                id="barrioSelect"
-                onchange="agregarBarrio(this.value)"
+            <button
+                class="filtro-btn"
+                data-ambientes="1"
+                onclick="toggleAmbiente('1', this)"
             >
+                1 ambiente
+            </button>
 
-                <option value="">
-                    Seleccioná un barrio
-                </option>
+            <button
+                class="filtro-btn"
+                data-ambientes="2"
+                onclick="toggleAmbiente('2', this)"
+            >
+                2 ambientes
+            </button>
 
-            </select>
+            <button
+                class="filtro-btn"
+                data-ambientes="3"
+                onclick="toggleAmbiente('3', this)"
+            >
+                3 ambientes
+            </button>
 
+            <button
+                class="filtro-btn"
+                data-ambientes="4"
+                onclick="toggleAmbiente('4', this)"
+            >
+                4 ambientes
+            </button>
 
-            <div id="barriosSeleccionados"></div>
+            <button
+                class="filtro-btn"
+                data-ambientes="5"
+                onclick="toggleAmbiente('5', this)"
+            >
+                5 ambientes
+            </button>
 
         </div>
-
 
     </div>
 
 
-    <!-- RESULTADOS -->
 
-    <div
-        class="resultados-info"
-        id="resultadosInfo"
-    ></div>
+    <!-- MASCOTAS -->
 
+    <div class="filtro">
 
-    <div
-        class="grid"
-        id="departamentos"
-    >
+        <div class="filtro-titulo">
+            ¿Tenés mascota?
+        </div>
 
-        <div class="loading">
-            Cargando departamentos...
+        <div class="filtro-ayuda">
+            Seleccioná si necesitás que aceptemos mascotas
+        </div>
+
+        <div class="botones-filtro">
+
+            <button
+                id="filtroPerro"
+                class="filtro-btn"
+                onclick="toggleMascota('perro', this)"
+            >
+                🐶 Perro
+            </button>
+
+            <button
+                id="filtroGato"
+                class="filtro-btn"
+                onclick="toggleMascota('gato', this)"
+            >
+                🐱 Gato
+            </button>
+
         </div>
 
     </div>
+
+
+
+    <!-- BARRIO -->
+
+    <div class="filtro">
+
+        <div class="filtro-titulo">
+            ¿En qué barrio te gustaría vivir?
+        </div>
+
+        <div class="filtro-ayuda">
+            Podés elegir una zona o ver todas las opciones
+        </div>
+
+        <select
+            id="barrioSelect"
+            onchange="agregarBarrio(this.value)"
+        >
+
+            <option value="">
+                Todos los barrios
+            </option>
+
+        </select>
+
+
+        <div id="barriosSeleccionados"></div>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================
+     RESULTADOS
+========================= -->
+
+<div
+    class="resultados-info"
+    id="resultadosInfo"
+>
+    Cargando departamentos...
+</div>
+
+
+
+<!-- =========================
+     GRID
+========================= -->
+
+<div
+    class="grid"
+    id="grid"
+></div>
 
 
 </div>
 
 
-<!-- =========================================================
+
+<!-- =========================
      MODAL GALERIA
-========================================================= -->
+========================= -->
 
 <div
     class="modal"
     id="modalGaleria"
 >
 
-    <div class="modal-contenido">
+    <div class="galeria-contenido">
 
         <button
             class="cerrar"
-            onclick="cerrarModal()"
+            onclick="cerrarModalGaleria()"
         >
             ×
         </button>
-
 
         <button
             class="flecha izquierda"
@@ -753,14 +1461,12 @@ header p{
             ‹
         </button>
 
-
         <img
-            id="imagenGaleria"
+            id="galeriaImagen"
             class="galeria-imagen"
             src=""
             alt=""
         >
-
 
         <button
             class="flecha derecha"
@@ -769,59 +1475,11 @@ header p{
             ›
         </button>
 
-
         <div
             class="contador"
             id="contadorFotos"
-        ></div>
-
-
-        <button
-            class="volver"
-            onclick="cerrarModal()"
         >
-            ← Volver
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- =========================================================
-     MODAL DESCRIPCION
-========================================================= -->
-
-<div
-    class="modal"
-    id="modalDescripcion"
->
-
-    <div class="modal-contenido">
-
-        <div class="descripcion-modal">
-
-            <button
-                class="cerrar"
-                onclick="cerrarModal()"
-            >
-                ×
-            </button>
-
-            <h2 id="descripcionTitulo"></h2>
-
-            <div
-                class="descripcion-texto"
-                id="descripcionTexto"
-            ></div>
-
-            <button
-                class="volver"
-                onclick="cerrarModal()"
-            >
-                ← Volver
-            </button>
-
+            1 / 1
         </div>
 
     </div>
@@ -829,78 +1487,127 @@ header p{
 </div>
 
 
-<!-- =========================================================
-     MODAL CONSULTA GENERAL
-========================================================= -->
+
+<!-- =========================
+     MODAL DESCRIPCION
+========================= -->
 
 <div
     class="modal"
-    id="modalFormulario"
+    id="modalDescripcion"
 >
 
-    <div class="modal-contenido">
+    <div class="descripcion-contenido">
 
-        <div class="formulario">
+        <button
+            class="cerrar"
+            onclick="cerrarModalDescripcion()"
+        >
+            ×
+        </button>
 
-            <button
-                class="cerrar"
-                onclick="cerrarModal()"
-            >
-                ×
-            </button>
+        <h2 id="descripcionTitulo">
+            Descripción
+        </h2>
+
+        <div
+            class="descripcion-texto"
+            id="descripcionTexto"
+        ></div>
+
+    </div>
+
+</div>
 
 
-            <h2>
-                Encontremos tu próximo hogar temporal
-            </h2>
+
+<!-- =========================
+     MODAL WHATSAPP
+========================= -->
+
+<div
+    class="modal"
+    id="modalWhatsApp"
+>
+
+    <div class="whatsapp-contenido">
+
+        <button
+            class="cerrar"
+            onclick="cerrarModalWhatsApp()"
+        >
+            ×
+        </button>
+
+        <h2>
+            Encontremos tu próximo hogar temporal
+        </h2>
 
 
-            <div class="form-group">
+        <form
+            id="formWhatsApp"
+            onsubmit="enviarConsultaGeneral(event)"
+        >
+
+
+            <div class="form-grupo">
 
                 <label>
                     ¿Cuál es tu nombre?
                 </label>
 
                 <input
-                    type="text"
                     id="nombreConsulta"
+                    type="text"
+                    required
+                    placeholder="Tu nombre"
                 >
 
             </div>
 
 
-            <div class="form-group">
+
+            <div class="form-grupo">
 
                 <label>
                     ¿Desde qué fecha estás buscando mudarte?
                 </label>
 
                 <input
-                    type="date"
                     id="fechaConsulta"
+                    type="date"
+                    required
                 >
 
             </div>
 
 
-            <div class="form-group">
+
+            <div class="form-grupo">
 
                 <label>
                     ¿Por cuántos meses?
                 </label>
 
-                <select id="mesesConsulta">
+                <select
+                    id="mesesConsulta"
+                    required
+                >
+
+                    <option value="">
+                        Seleccioná una opción
+                    </option>
 
                     <option value="3 a 6 meses">
-                        3–6 meses
+                        3 a 6 meses
                     </option>
 
                     <option value="6 a 9 meses">
-                        6–9 meses
+                        6 a 9 meses
                     </option>
 
                     <option value="9 a 12 meses">
-                        9–12 meses
+                        9 a 12 meses
                     </option>
 
                 </select>
@@ -908,13 +1615,21 @@ header p{
             </div>
 
 
-            <div class="form-group">
+
+            <div class="form-grupo">
 
                 <label>
                     ¿Cuántos ambientes?
                 </label>
 
-                <select id="ambientesConsulta">
+                <select
+                    id="ambientesConsulta"
+                    required
+                >
+
+                    <option value="">
+                        Seleccioná una opción
+                    </option>
 
                     <option value="1 ambiente">
                         1 ambiente
@@ -941,30 +1656,35 @@ header p{
             </div>
 
 
+
             <button
-                class="formulario-submit"
-                onclick="enviarConsultaGeneral()"
+                class="btn-whatsapp-form"
+                type="submit"
             >
-                Realizar consulta
+                💬 Realizar consulta
             </button>
 
-        </div>
+
+        </form>
 
     </div>
 
 </div>
 
 
-<!-- =========================================================
+
+<!-- =========================
      WHATSAPP FLOTANTE
-========================================================= -->
+========================= -->
 
 <div
     class="whatsapp-flotante"
-    onclick="abrirFormulario()"
+    onclick="abrirConsultaGeneral()"
+    title="Consultar"
 >
     💬
 </div>
+
 
 
 <script>
@@ -974,14 +1694,9 @@ header p{
    CONFIGURACION
 ========================================================= */
 
-const URL_CSV =
+const CSV_URL =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2E7ECUfY-ps4Ok0_1TJxTR1UPoYl-_ZYkGNlvhk9eZWHBslhsWtoCiTaPfCjQJ38kojq9pJBeoGep/pub?output=csv";
 
-
-/*
-   Número general de WhatsApp.
-   CAMBIAR por tu número.
-*/
 
 const WHATSAPP_GENERAL =
 "549XXXXXXXXXX";
@@ -999,22 +1714,37 @@ let mascotasSeleccionadas = [];
 
 let barriosSeleccionados = [];
 
-let fotosGaleria = [];
+let fotosActuales = [];
 
-let indiceFoto = 0;
+let fotoActual = 0;
 
-let modalAbierto = false;
+let modalActual = null;
 
 
 /* =========================================================
-   OBTENER TODAS LAS FOTOS
+   OBTENER CELDA
+========================================================= */
+
+function obtenerCelda(row, nombre){
+
+    const clave =
+        Object.keys(row).find(function(k){
+
+            return k.trim().toLowerCase() ===
+                nombre.trim().toLowerCase();
+
+        });
+
+    return clave ? row[clave] : "";
+
+}
+
+
+/* =========================================================
+   OBTENER FOTOS
 ========================================================= */
 
 function obtenerFotos(row){
-
-    /*
-       Columnas reales del Google Sheet
-    */
 
     const columnasFotos = [
         "Fotos",
@@ -1022,13 +1752,8 @@ function obtenerFotos(row){
         "Fotos3"
     ];
 
-
     let todasLasFotos = [];
 
-
-    /*
-       Buscar columna ignorando mayúsculas/minúsculas
-    */
 
     function obtenerColumna(nombre){
 
@@ -1036,34 +1761,19 @@ function obtenerFotos(row){
             Object.keys(row).find(function(k){
 
                 return k.trim().toLowerCase() ===
-                       nombre.trim().toLowerCase();
+                    nombre.trim().toLowerCase();
 
             });
-
 
         return clave ? row[clave] : "";
 
     }
 
 
-    /*
-       Convertir enlaces de Google Drive
-    */
-
     function convertirDrive(url){
 
         url = url.trim();
 
-
-        /*
-           Extraer ID de:
-
-           drive.google.com/open?id=XXXX
-
-           drive.google.com/file/d/XXXX/view
-
-           drive.google.com/uc?id=XXXX
-        */
 
         let match =
             url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
@@ -1089,15 +1799,10 @@ function obtenerFotos(row){
         }
 
 
-        /*
-           Si encontramos ID
-        */
-
         if(match){
 
             const id =
                 match[1];
-
 
             return (
                 "https://drive.google.com/thumbnail?id=" +
@@ -1112,10 +1817,6 @@ function obtenerFotos(row){
 
     }
 
-
-    /*
-       Recorrer Fotos, Fotos2 y Fotos3
-    */
 
     columnasFotos.forEach(function(columna){
 
@@ -1141,15 +1842,6 @@ function obtenerFotos(row){
         }
 
 
-        /*
-           Extraer URLs.
-
-           Funciona también cuando
-           están dentro de:
-
-           [URL](URL)
-        */
-
         const urls =
             texto.match(
                 /https?:\/\/[^\s\])"']+/g
@@ -1169,11 +1861,6 @@ function obtenerFotos(row){
                 url.trim();
 
 
-            /*
-               Limpiar caracteres
-               finales.
-            */
-
             url =
                 url.replace(
                     /[),.;]+$/,
@@ -1184,10 +1871,6 @@ function obtenerFotos(row){
             const foto =
                 convertirDrive(url);
 
-
-            /*
-               Evitar duplicados
-            */
 
             if(
                 foto &&
@@ -1219,7 +1902,9 @@ function obtenerFotos(row){
 ========================================================= */
 
 Papa.parse(
-    URL_CSV,
+
+    CSV_URL,
+
     {
 
         download:true,
@@ -1239,17 +1924,17 @@ Papa.parse(
             departamentos =
                 results.data.filter(function(row){
 
-                    return (
-                        obtenerCelda(row,"Dirección") ||
-                        obtenerCelda(row,"direccion")
+                    return obtenerCelda(
+                        row,
+                        "Dirección"
                     );
 
                 });
 
 
-            prepararFiltros();
+            cargarBarrios();
 
-            renderizar();
+            aplicarFiltros();
 
         },
 
@@ -1260,159 +1945,23 @@ Papa.parse(
                 error
             );
 
-
             document.getElementById(
-                "departamentos"
-            ).innerHTML = `
-                <div class="sin-resultados">
-                    No se pudieron cargar los departamentos.
-                </div>
-            `;
+                "resultadosInfo"
+            ).textContent =
+                "No se pudieron cargar los departamentos.";
 
         }
 
     }
+
 );
 
 
 /* =========================================================
-   OBTENER CELDA
+   CARGAR BARRIOS
 ========================================================= */
 
-function obtenerCelda(row,nombre){
-
-    const clave =
-        Object.keys(row).find(function(k){
-
-            return k.trim().toLowerCase() ===
-                   nombre.trim().toLowerCase();
-
-        });
-
-
-    return clave
-        ? String(row[clave] || "").trim()
-        : "";
-
-}
-
-
-/* =========================================================
-   PREPARAR FILTROS
-========================================================= */
-
-function prepararFiltros(){
-
-    const ambientes = [];
-
-
-    departamentos.forEach(function(row){
-
-        const ambiente =
-            obtenerCelda(row,"Ambientes");
-
-
-        if(
-            ambiente &&
-            !ambientes.includes(ambiente)
-        ){
-
-            ambientes.push(ambiente);
-
-        }
-
-    });
-
-
-    ambientes.sort(function(a,b){
-
-        return parseInt(a) - parseInt(b);
-
-    });
-
-
-    const contenedor =
-        document.getElementById(
-            "filtroAmbientes"
-        );
-
-
-    contenedor.innerHTML = "";
-
-
-    ambientes.forEach(function(ambiente){
-
-        const numero =
-            parseInt(ambiente);
-
-
-        const texto =
-            numero === 1
-                ? "1 ambiente"
-                : numero + " ambientes";
-
-
-        const boton =
-            document.createElement("button");
-
-
-        boton.className =
-            "filtro-btn";
-
-
-        boton.textContent =
-            texto;
-
-
-        boton.dataset.ambiente =
-            ambiente;
-
-
-        boton.onclick =
-            function(){
-
-                toggleAmbiente(
-                    ambiente,
-                    boton
-                );
-
-            };
-
-
-        contenedor.appendChild(
-            boton
-        );
-
-    });
-
-
-    /*
-       Barrios
-    */
-
-    const barrios = [];
-
-
-    departamentos.forEach(function(row){
-
-        const barrio =
-            obtenerCelda(row,"barrio");
-
-
-        if(
-            barrio &&
-            !barrios.includes(barrio)
-        ){
-
-            barrios.push(barrio);
-
-        }
-
-    });
-
-
-    barrios.sort();
-
+function cargarBarrios(){
 
     const select =
         document.getElementById(
@@ -1420,23 +1969,50 @@ function prepararFiltros(){
         );
 
 
-    barrios.forEach(function(barrio){
+    const barrios =
+        departamentos
+
+        .map(function(row){
+
+            return obtenerCelda(
+                row,
+                "barrio"
+            ).trim();
+
+        })
+
+        .filter(Boolean);
+
+
+    const unicos =
+        [...new Set(barrios)];
+
+
+    unicos.sort(function(a,b){
+
+        return a.localeCompare(
+            b,
+            "es",
+            {
+                sensitivity:"base"
+            }
+        );
+
+    });
+
+
+    unicos.forEach(function(barrio){
 
         const option =
             document.createElement("option");
 
-
         option.value =
             barrio;
-
 
         option.textContent =
             barrio;
 
-
-        select.appendChild(
-            option
-        );
+        select.appendChild(option);
 
     });
 
@@ -1444,29 +2020,24 @@ function prepararFiltros(){
 
 
 /* =========================================================
-   TOGGLE AMBIENTE
+   AMBIENTES
 ========================================================= */
 
-function toggleAmbiente(
-    ambiente,
-    boton
-){
+function toggleAmbiente(valor, boton){
 
     const indice =
         ambientesSeleccionados.indexOf(
-            ambiente
+            valor
         );
 
 
     if(indice === -1){
 
         ambientesSeleccionados.push(
-            ambiente
+            valor
         );
 
-        boton.classList.add(
-            "activo"
-        );
+        boton.classList.add("activo");
 
     }else{
 
@@ -1475,33 +2046,25 @@ function toggleAmbiente(
             1
         );
 
-        boton.classList.remove(
-            "activo"
-        );
+        boton.classList.remove("activo");
 
     }
 
 
-    renderizar();
+    aplicarFiltros();
 
 }
 
 
 /* =========================================================
-   TOGGLE MASCOTA
+   MASCOTAS
 ========================================================= */
 
-function toggleMascota(tipo){
+function toggleMascota(tipo, boton){
 
     const indice =
         mascotasSeleccionadas.indexOf(
             tipo
-        );
-
-
-    const boton =
-        document.querySelector(
-            `[data-mascota="${tipo}"]`
         );
 
 
@@ -1511,9 +2074,7 @@ function toggleMascota(tipo){
             tipo
         );
 
-        boton.classList.add(
-            "activo"
-        );
+        boton.classList.add("activo");
 
     }else{
 
@@ -1522,20 +2083,18 @@ function toggleMascota(tipo){
             1
         );
 
-        boton.classList.remove(
-            "activo"
-        );
+        boton.classList.remove("activo");
 
     }
 
 
-    renderizar();
+    aplicarFiltros();
 
 }
 
 
 /* =========================================================
-   AGREGAR BARRIO
+   BARRIOS
 ========================================================= */
 
 function agregarBarrio(barrio){
@@ -1565,9 +2124,9 @@ function agregarBarrio(barrio){
     ).value = "";
 
 
-    renderizarBarrios();
+    mostrarBarriosSeleccionados();
 
-    renderizar();
+    aplicarFiltros();
 
 }
 
@@ -1576,7 +2135,7 @@ function agregarBarrio(barrio){
    MOSTRAR BARRIOS
 ========================================================= */
 
-function renderizarBarrios(){
+function mostrarBarriosSeleccionados(){
 
     const contenedor =
         document.getElementById(
@@ -1592,24 +2151,39 @@ function renderizarBarrios(){
         const tag =
             document.createElement("div");
 
-
         tag.className =
             "barrio-tag";
 
 
-        tag.innerHTML = `
-            <span>${escapeHTML(barrio)}</span>
-            <button
-                onclick="quitarBarrio(${JSON.stringify(barrio)})"
-            >
-                ×
-            </button>
-        `;
+        const texto =
+            document.createElement("span");
+
+        texto.textContent =
+            barrio;
 
 
-        contenedor.appendChild(
-            tag
-        );
+        const boton =
+            document.createElement("button");
+
+        boton.textContent =
+            "×";
+
+
+        boton.onclick =
+            function(){
+
+                eliminarBarrio(
+                    barrio
+                );
+
+            };
+
+
+        tag.appendChild(texto);
+
+        tag.appendChild(boton);
+
+        contenedor.appendChild(tag);
 
     });
 
@@ -1617,194 +2191,234 @@ function renderizarBarrios(){
 
 
 /* =========================================================
-   QUITAR BARRIO
+   ELIMINAR BARRIO
 ========================================================= */
 
-function quitarBarrio(barrio){
+function eliminarBarrio(barrio){
 
     barriosSeleccionados =
         barriosSeleccionados.filter(
-            function(b){
-                return b !== barrio;
+            function(item){
+
+                return item !== barrio;
+
             }
         );
 
 
-    renderizarBarrios();
+    mostrarBarriosSeleccionados();
 
-    renderizar();
-
-}
-
-
-/* =========================================================
-   FILTRAR
-========================================================= */
-
-function obtenerDepartamentosFiltrados(){
-
-    return departamentos.filter(function(row){
-
-        /*
-           AMBIENTES
-        */
-
-        if(
-            ambientesSeleccionados.length > 0
-        ){
-
-            const ambiente =
-                obtenerCelda(
-                    row,
-                    "Ambientes"
-                );
-
-
-            if(
-                !ambientesSeleccionados.includes(
-                    ambiente
-                )
-            ){
-
-                return false;
-
-            }
-
-        }
-
-
-        /*
-           BARRIOS
-        */
-
-        if(
-            barriosSeleccionados.length > 0
-        ){
-
-            const barrio =
-                obtenerCelda(
-                    row,
-                    "barrio"
-                );
-
-
-            if(
-                !barriosSeleccionados.includes(
-                    barrio
-                )
-            ){
-
-                return false;
-
-            }
-
-        }
-
-
-        /*
-           MASCOTAS
-        */
-
-        if(
-            mascotasSeleccionadas.length > 0
-        ){
-
-            const perro =
-                obtenerCelda(
-                    row,
-                    "perro?"
-                ).toLowerCase();
-
-
-            const gato =
-                obtenerCelda(
-                    row,
-                    "gato?"
-                ).toLowerCase();
-
-
-            let acepta = false;
-
-
-            if(
-                mascotasSeleccionadas.includes(
-                    "perro"
-                ) &&
-                (
-                    perro === "si" ||
-                    perro === "sí"
-                )
-            ){
-
-                acepta = true;
-
-            }
-
-
-            if(
-                mascotasSeleccionadas.includes(
-                    "gato"
-                ) &&
-                (
-                    gato === "si" ||
-                    gato === "sí"
-                )
-            ){
-
-                acepta = true;
-
-            }
-
-
-            if(!acepta){
-
-                return false;
-
-            }
-
-        }
-
-
-        return true;
-
-    });
+    aplicarFiltros();
 
 }
 
 
 /* =========================================================
-   RENDERIZAR
+   NORMALIZAR AMBIENTES
 ========================================================= */
 
-function renderizar(){
+function normalizarAmbientes(valor){
 
-    const contenedor =
+    if(!valor){
+
+        return "";
+
+    }
+
+
+    const texto =
+        String(valor)
+        .toLowerCase()
+        .trim();
+
+
+    const match =
+        texto.match(/\d+/);
+
+
+    if(match){
+
+        return match[0];
+
+    }
+
+
+    return texto;
+
+}
+
+
+/* =========================================================
+   ACEPTA MASCOTA
+========================================================= */
+
+function aceptaMascota(row, tipo){
+
+    const columna =
+        tipo === "perro"
+            ? "perro?"
+            : "gato?";
+
+
+    const valor =
+        obtenerCelda(
+            row,
+            columna
+        )
+        .toLowerCase()
+        .trim();
+
+
+    return (
+        valor === "si" ||
+        valor === "sí" ||
+        valor === "yes" ||
+        valor === "true" ||
+        valor === "1"
+    );
+
+}
+
+
+/* =========================================================
+   FILTROS
+========================================================= */
+
+function aplicarFiltros(){
+
+    let resultados =
+        departamentos.slice();
+
+
+    /* AMBIENTES */
+
+    if(
+        ambientesSeleccionados.length > 0
+    ){
+
+        resultados =
+            resultados.filter(
+                function(row){
+
+                    const ambiente =
+                        normalizarAmbientes(
+                            obtenerCelda(
+                                row,
+                                "Ambientes"
+                            )
+                        );
+
+
+                    return ambientesSeleccionados.includes(
+                        ambiente
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* MASCOTAS */
+
+    if(
+        mascotasSeleccionadas.length > 0
+    ){
+
+        resultados =
+            resultados.filter(
+                function(row){
+
+                    return mascotasSeleccionadas.every(
+                        function(tipo){
+
+                            return aceptaMascota(
+                                row,
+                                tipo
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* BARRIOS */
+
+    if(
+        barriosSeleccionados.length > 0
+    ){
+
+        resultados =
+            resultados.filter(
+                function(row){
+
+                    const barrio =
+                        obtenerCelda(
+                            row,
+                            "barrio"
+                        )
+                        .trim();
+
+
+                    return barriosSeleccionados.includes(
+                        barrio
+                    );
+
+                }
+            );
+
+    }
+
+
+    mostrarResultados(
+        resultados
+    );
+
+}
+
+
+/* =========================================================
+   MOSTRAR RESULTADOS
+========================================================= */
+
+function mostrarResultados(resultados){
+
+    const grid =
         document.getElementById(
-            "departamentos"
+            "grid"
         );
 
 
-    const lista =
-        obtenerDepartamentosFiltrados();
+    const info =
+        document.getElementById(
+            "resultadosInfo"
+        );
 
 
-    document.getElementById(
-        "resultadosInfo"
-    ).textContent =
-        lista.length +
+    grid.innerHTML = "";
+
+
+    info.textContent =
+        resultados.length +
         (
-            lista.length === 1
+            resultados.length === 1
                 ? " departamento encontrado"
                 : " departamentos encontrados"
         );
 
 
-    if(lista.length === 0){
+    if(
+        resultados.length === 0
+    ){
 
-        contenedor.innerHTML = `
+        grid.innerHTML = `
             <div class="sin-resultados">
                 No encontramos departamentos
-                con esos filtros.
+                con los filtros seleccionados.
             </div>
         `;
 
@@ -1813,12 +2427,9 @@ function renderizar(){
     }
 
 
-    contenedor.innerHTML = "";
+    resultados.forEach(function(row){
 
-
-    lista.forEach(function(row){
-
-        contenedor.appendChild(
+        grid.appendChild(
             crearCard(row)
         );
 
@@ -1841,16 +2452,6 @@ function crearCard(row){
         "card";
 
 
-    const fotos =
-        obtenerFotos(row);
-
-
-    const primeraFoto =
-        fotos.length > 0
-            ? fotos[0]
-            : "";
-
-
     const barrio =
         obtenerCelda(
             row,
@@ -1866,9 +2467,11 @@ function crearCard(row){
 
 
     const ambientes =
-        obtenerCelda(
-            row,
-            "Ambientes"
+        normalizarAmbientes(
+            obtenerCelda(
+                row,
+                "Ambientes"
+            )
         );
 
 
@@ -1886,38 +2489,31 @@ function crearCard(row){
         );
 
 
-    const perro =
-        obtenerCelda(
-            row,
-            "perro?"
-        ).toLowerCase();
-
-
-    const gato =
-        obtenerCelda(
-            row,
-            "gato?"
-        ).toLowerCase();
-
-
     const descripcion =
         obtenerCelda(
             row,
             "descripcion"
-        ) ||
+        )
+        ||
         obtenerCelda(
             row,
             "DescripcioN"
-        );
+        )
+        ||
+        incluye;
 
 
-    const textoAmbientes =
-        parseInt(ambientes) === 1
-            ? "1 ambiente"
-            : ambientes + " ambientes";
+    const fotos =
+        obtenerFotos(row);
 
 
-    let imagenHTML;
+    const primeraFoto =
+        fotos.length > 0
+            ? fotos[0]
+            : "";
+
+
+    let imagenHTML = "";
 
 
     if(primeraFoto){
@@ -1929,7 +2525,9 @@ function crearCard(row){
                 alt="${escapeHTML(direccion)}"
                 loading="lazy"
                 onclick="abrirGaleriaDesdeCard(this)"
-                data-fotos='${escapeHTML(JSON.stringify(fotos))}'
+                data-fotos='${escapeHTML(
+                    JSON.stringify(fotos)
+                )}'
                 onerror="imagenFallida(this)"
             >
         `;
@@ -1937,8 +2535,16 @@ function crearCard(row){
     }else{
 
         imagenHTML = `
-            <div class="imagen-error">
-                Sin foto
+            <div
+                class="card-imagen"
+                style="
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    color:#64748b;
+                "
+            >
+                Sin foto disponible
             </div>
         `;
 
@@ -1949,13 +2555,15 @@ function crearCard(row){
 
 
     if(
-        perro === "si" ||
-        perro === "sí"
+        aceptaMascota(
+            row,
+            "perro"
+        )
     ){
 
         mascotasHTML += `
             <span class="mascota">
-                🐶 Perro
+                🐶 Acepta perro
             </span>
         `;
 
@@ -1963,17 +2571,27 @@ function crearCard(row){
 
 
     if(
-        gato === "si" ||
-        gato === "sí"
+        aceptaMascota(
+            row,
+            "gato"
+        )
     ){
 
         mascotasHTML += `
             <span class="mascota">
-                🐱 Gato
+                🐱 Acepta gato
             </span>
         `;
 
     }
+
+
+    const textoAmbientes =
+        ambientes === "1"
+            ? "1 ambiente"
+            : ambientes
+                ? ambientes + " ambientes"
+                : "Consultar";
 
 
     card.innerHTML = `
@@ -1983,71 +2601,79 @@ function crearCard(row){
         <div class="card-contenido">
 
             <div class="card-barrio">
-                ${escapeHTML(barrio)}
+                ${escapeHTML(
+                    barrio || "Consultar"
+                )}
             </div>
 
-            <h2>
-                ${escapeHTML(textoAmbientes)}
-            </h2>
+            <div class="card-titulo">
+                ${escapeHTML(
+                    textoAmbientes
+                )}
+            </div>
 
             <div class="card-direccion">
-                📍 ${escapeHTML(direccion)}
+                📍 ${escapeHTML(
+                    direccion || "Consultar"
+                )}
             </div>
 
             <div class="card-valor">
-                💰 ${escapeHTML(valor)}
+                💰 ${escapeHTML(
+                    valor || "Consultar"
+                )}
             </div>
 
             ${
                 incluye
-                ?
-                `
-                <div class="card-incluye">
-                    ${escapeHTML(incluye)}
-                </div>
-                `
-                :
-                ""
+                    ? `
+                    <div class="card-incluye">
+                        ${escapeHTML(incluye)}
+                    </div>
+                    `
+                    : ""
             }
 
             ${
                 mascotasHTML
-                ?
-                `<div class="mascotas">
-                    ${mascotasHTML}
-                </div>`
-                :
-                ""
+                    ? `
+                    <div class="card-mascotas">
+                        ${mascotasHTML}
+                    </div>
+                    `
+                    : ""
             }
-
 
             <div class="card-botones">
 
                 <button
                     class="card-btn btn-fotos"
-                    onclick='abrirGaleria(${JSON.stringify(fotos)})'
+                    onclick='abrirGaleria(${JSON.stringify(
+                        fotos
+                    )})'
                 >
                     📸 Fotos
                 </button>
 
-
                 <button
                     class="card-btn btn-descripcion"
-                    onclick='abrirDescripcion(${JSON.stringify(
-                        descripcion
-                    )},${JSON.stringify(
-                        direccion
-                    )})'
+                    onclick='abrirDescripcion(
+                        ${JSON.stringify(
+                            direccion
+                        )},
+                        ${JSON.stringify(
+                            descripcion
+                        )}
+                    )'
                 >
                     📋 Descripción
                 </button>
 
-
                 <button
                     class="card-btn btn-contacto"
-                    onclick='contactarWhatsApp(${JSON.stringify(
-                        row
-                    )})'
+                    onclick='contactarWhatsApp(
+                        ${JSON.stringify(row)}
+                    )'
                 >
                     💬 Contacto
                 </button>
@@ -2080,22 +2706,22 @@ function imagenFallida(img){
         img.parentElement;
 
 
-    const placeholder =
+    const mensaje =
         document.createElement(
             "div"
         );
 
 
-    placeholder.className =
+    mensaje.className =
         "imagen-error";
 
 
-    placeholder.textContent =
-        "Imagen no disponible";
+    mensaje.textContent =
+        "Foto no disponible";
 
 
     contenedor.insertBefore(
-        placeholder,
+        mensaje,
         img
     );
 
@@ -2103,7 +2729,7 @@ function imagenFallida(img){
 
 
 /* =========================================================
-   GALERIA DESDE CARD
+   GALERIA
 ========================================================= */
 
 function abrirGaleriaDesdeCard(img){
@@ -2116,20 +2742,21 @@ function abrirGaleriaDesdeCard(img){
             );
 
 
-        abrirGaleria(fotos);
+        abrirGaleria(
+            fotos
+        );
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "Error leyendo fotos:",
+            error
+        );
 
     }
 
 }
 
-
-/* =========================================================
-   ABRIR GALERIA
-========================================================= */
 
 function abrirGaleria(fotos){
 
@@ -2143,44 +2770,27 @@ function abrirGaleria(fotos){
     }
 
 
-    fotosGaleria =
+    fotosActuales =
         fotos;
 
 
-    indiceFoto = 0;
-
-
-    modalAbierto = true;
-
-
-    history.pushState(
-        {
-            modal:true
-        },
-        ""
-    );
-
-
-    document.getElementById(
-        "modalGaleria"
-    ).classList.add(
-        "activo"
-    );
+    fotoActual = 0;
 
 
     mostrarFoto();
 
+
+    abrirModal(
+        "modalGaleria"
+    );
+
 }
 
-
-/* =========================================================
-   MOSTRAR FOTO
-========================================================= */
 
 function mostrarFoto(){
 
     if(
-        fotosGaleria.length === 0
+        fotosActuales.length === 0
     ){
 
         return;
@@ -2190,37 +2800,33 @@ function mostrarFoto(){
 
     const imagen =
         document.getElementById(
-            "imagenGaleria"
+            "galeriaImagen"
         );
 
 
     imagen.src =
-        fotosGaleria[indiceFoto];
-
-
-    imagen.alt =
-        "Foto " +
-        (indiceFoto + 1);
+        fotosActuales[
+            fotoActual
+        ];
 
 
     document.getElementById(
         "contadorFotos"
     ).textContent =
-        (indiceFoto + 1) +
+
+        (
+            fotoActual + 1
+        ) +
         " / " +
-        fotosGaleria.length;
+        fotosActuales.length;
 
 }
 
 
-/* =========================================================
-   FOTO ANTERIOR
-========================================================= */
-
-function fotoAnterior(){
+function fotoSiguiente(){
 
     if(
-        fotosGaleria.length === 0
+        fotosActuales.length === 0
     ){
 
         return;
@@ -2228,17 +2834,12 @@ function fotoAnterior(){
     }
 
 
-    indiceFoto--;
-
-
-    if(
-        indiceFoto < 0
-    ){
-
-        indiceFoto =
-            fotosGaleria.length - 1;
-
-    }
+    fotoActual =
+        (
+            fotoActual + 1
+        )
+        %
+        fotosActuales.length;
 
 
     mostrarFoto();
@@ -2246,14 +2847,10 @@ function fotoAnterior(){
 }
 
 
-/* =========================================================
-   FOTO SIGUIENTE
-========================================================= */
-
-function fotoSiguiente(){
+function fotoAnterior(){
 
     if(
-        fotosGaleria.length === 0
+        fotosActuales.length === 0
     ){
 
         return;
@@ -2261,17 +2858,13 @@ function fotoSiguiente(){
     }
 
 
-    indiceFoto++;
-
-
-    if(
-        indiceFoto >=
-        fotosGaleria.length
-    ){
-
-        indiceFoto = 0;
-
-    }
+    fotoActual =
+        (
+            fotoActual - 1 +
+            fotosActuales.length
+        )
+        %
+        fotosActuales.length;
 
 
     mostrarFoto();
@@ -2284,26 +2877,14 @@ function fotoSiguiente(){
 ========================================================= */
 
 function abrirDescripcion(
-    descripcion,
-    direccion
+    direccion,
+    descripcion
 ){
-
-    modalAbierto = true;
-
-
-    history.pushState(
-        {
-            modal:true
-        },
-        ""
-    );
-
 
     document.getElementById(
         "descripcionTitulo"
     ).textContent =
-        direccion ||
-        "Departamento";
+        direccion || "Descripción";
 
 
     document.getElementById(
@@ -2313,56 +2894,327 @@ function abrirDescripcion(
         "No hay descripción disponible.";
 
 
-    document.getElementById(
+    abrirModal(
         "modalDescripcion"
-    ).classList.add(
-        "activo"
     );
 
 }
 
 
 /* =========================================================
-   FORMULARIO GENERAL
+   WHATSAPP
 ========================================================= */
 
-function abrirFormulario(){
+function contactarWhatsApp(row){
 
-    modalAbierto = true;
+    let telefono =
+        obtenerCelda(
+            row,
+            "Vendedor"
+        );
+
+
+    telefono =
+        String(telefono)
+        .replace(
+            /\D/g,
+            ""
+        );
+
+
+    if(!telefono){
+
+        alert(
+            "No hay un número de WhatsApp disponible para este departamento."
+        );
+
+        return;
+
+    }
+
+
+    const direccion =
+        obtenerCelda(
+            row,
+            "Dirección"
+        )
+        ||
+        "Consultar";
+
+
+    const ambientes =
+        normalizarAmbientes(
+            obtenerCelda(
+                row,
+                "Ambientes"
+            )
+        );
+
+
+    const textoAmbientes =
+        ambientes === "1"
+            ? "1 ambiente"
+            : ambientes
+                ? ambientes + " ambientes"
+                : "Consultar";
+
+
+    const valor =
+        obtenerCelda(
+            row,
+            "Valor:"
+        )
+        ||
+        "Consultar";
+
+
+    const mensaje =
+`Hola, ¿cómo estás?
+
+Vi este departamento en @alquilar.temporario y me gustaría consultar por su disponibilidad.
+
+📍 Dirección:
+${direccion}
+
+🏠 Características:
+${textoAmbientes}
+
+💰 Valor:
+${valor}
+
+¿Podrías indicarme si está disponible y contarme un poco más sobre las condiciones del alquiler?
+
+¡Muchas gracias!`;
+
+
+    const url =
+        "https://wa.me/" +
+        telefono +
+        "?text=" +
+        encodeURIComponent(
+            mensaje
+        );
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* =========================================================
+   CONSULTA GENERAL
+========================================================= */
+
+function abrirConsultaGeneral(){
+
+    abrirModal(
+        "modalWhatsApp"
+    );
+
+}
+
+
+function enviarConsultaGeneral(event){
+
+    event.preventDefault();
+
+
+    const nombre =
+        document.getElementById(
+            "nombreConsulta"
+        ).value;
+
+
+    const fecha =
+        document.getElementById(
+            "fechaConsulta"
+        ).value;
+
+
+    const meses =
+        document.getElementById(
+            "mesesConsulta"
+        ).value;
+
+
+    const ambientes =
+        document.getElementById(
+            "ambientesConsulta"
+        ).value;
+
+
+    const mensaje =
+`Hola, ¿cómo estás?
+
+Quiero consultar por un alquiler temporal.
+
+👤 Nombre:
+${nombre}
+
+📅 Fecha estimada de mudanza:
+${fecha}
+
+📆 Duración:
+${meses}
+
+🏠 Ambientes:
+${ambientes}
+
+Estoy buscando un departamento amoblado para una estadía temporal.
+
+¡Muchas gracias!`;
+
+
+    const numero =
+        WHATSAPP_GENERAL
+        .replace(
+            /\D/g,
+            ""
+        );
+
+
+    if(
+        !numero ||
+        numero === "549XXXXXXXXXX"
+    ){
+
+        alert(
+            "Configurá primero el número de WhatsApp general en el código."
+        );
+
+        return;
+
+    }
+
+
+    const url =
+        "https://wa.me/" +
+        numero +
+        "?text=" +
+        encodeURIComponent(
+            mensaje
+        );
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* =========================================================
+   MODALES
+========================================================= */
+
+function abrirModal(id){
+
+    const modal =
+        document.getElementById(id);
+
+
+    modal.classList.add(
+        "activo"
+    );
+
+
+    modalActual =
+        id;
+
+
+    document.body.style.overflow =
+        "hidden";
 
 
     history.pushState(
         {
-            modal:true
+            modal:id
         },
         ""
-    );
-
-
-    document.getElementById(
-        "modalFormulario"
-    ).classList.add(
-        "activo"
     );
 
 }
 
 
-/* =========================================================
-   CERRAR MODAL
-========================================================= */
+function cerrarModalGaleria(
+    usarHistorial = true
+){
 
-function cerrarModal(){
+    document.getElementById(
+        "modalGaleria"
+    ).classList.remove(
+        "activo"
+    );
 
-    if(
-        modalAbierto
-    ){
+
+    document.body.style.overflow =
+        "";
+
+
+    modalActual = null;
+
+
+    if(usarHistorial){
 
         history.back();
 
-    }else{
+    }
 
-        cerrarModalDirectamente();
+}
+
+
+function cerrarModalDescripcion(
+    usarHistorial = true
+){
+
+    document.getElementById(
+        "modalDescripcion"
+    ).classList.remove(
+        "activo"
+    );
+
+
+    document.body.style.overflow =
+        "";
+
+
+    modalActual = null;
+
+
+    if(usarHistorial){
+
+        history.back();
+
+    }
+
+}
+
+
+function cerrarModalWhatsApp(
+    usarHistorial = true
+){
+
+    document.getElementById(
+        "modalWhatsApp"
+    ).classList.remove(
+        "activo"
+    );
+
+
+    document.body.style.overflow =
+        "";
+
+
+    modalActual = null;
+
+
+    if(usarHistorial){
+
+        history.back();
 
     }
 
@@ -2370,59 +3222,119 @@ function cerrarModal(){
 
 
 /* =========================================================
-   CERRAR MODAL DIRECTAMENTE
-========================================================= */
-
-function cerrarModalDirectamente(){
-
-    document
-        .querySelectorAll(".modal")
-        .forEach(function(modal){
-
-            modal.classList.remove(
-                "activo"
-            );
-
-        });
-
-
-    modalAbierto = false;
-
-}
-
-
-/* =========================================================
-   HISTORIAL
+   BOTON ATRAS
 ========================================================= */
 
 window.addEventListener(
     "popstate",
     function(){
 
-        cerrarModalDirectamente();
+        if(
+            modalActual ===
+            "modalGaleria"
+        ){
+
+            cerrarModalGaleria(
+                false
+            );
+
+        }
+
+        else if(
+            modalActual ===
+            "modalDescripcion"
+        ){
+
+            cerrarModalDescripcion(
+                false
+            );
+
+        }
+
+        else if(
+            modalActual ===
+            "modalWhatsApp"
+        ){
+
+            cerrarModalWhatsApp(
+                false
+            );
+
+        }
 
     }
 );
 
 
 /* =========================================================
-   TECLADO GALERIA
+   CERRAR CLICK AFUERA
+========================================================= */
+
+document.getElementById(
+    "modalGaleria"
+).addEventListener(
+    "click",
+    function(event){
+
+        if(
+            event.target === this
+        ){
+
+            cerrarModalGaleria();
+
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "modalDescripcion"
+).addEventListener(
+    "click",
+    function(event){
+
+        if(
+            event.target === this
+        ){
+
+            cerrarModalDescripcion();
+
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "modalWhatsApp"
+).addEventListener(
+    "click",
+    function(event){
+
+        if(
+            event.target === this
+        ){
+
+            cerrarModalWhatsApp();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   TECLADO
 ========================================================= */
 
 document.addEventListener(
     "keydown",
     function(event){
 
-        const galeria =
-            document.getElementById(
-                "modalGaleria"
-            );
-
-
         if(
-            !galeria.classList.contains(
-                "activo"
-            )
+            modalActual !==
+            "modalGaleria"
         ){
 
             return;
@@ -2452,7 +3364,7 @@ document.addEventListener(
             event.key === "Escape"
         ){
 
-            cerrarModal();
+            cerrarModalGaleria();
 
         }
 
@@ -2461,239 +3373,53 @@ document.addEventListener(
 
 
 /* =========================================================
-   CONTACTO WHATSAPP
-========================================================= */
-
-function contactarWhatsApp(row){
-
-    const vendedor =
-        obtenerCelda(
-            row,
-            "Vendedor"
-        );
-
-
-    if(!vendedor){
-
-        alert(
-            "No hay número de WhatsApp cargado para este departamento."
-        );
-
-        return;
-
-    }
-
-
-    /*
-       Limpiar número
-    */
-
-    const telefono =
-        vendedor.replace(
-            /\D/g,
-            ""
-        );
-
-
-    const direccion =
-        obtenerCelda(
-            row,
-            "Dirección"
-        );
-
-
-    const ambientes =
-        obtenerCelda(
-            row,
-            "Ambientes"
-        );
-
-
-    const valor =
-        obtenerCelda(
-            row,
-            "Valor:"
-        );
-
-
-    const textoAmbientes =
-        parseInt(ambientes) === 1
-            ? "1 ambiente"
-            : ambientes + " ambientes";
-
-
-    const mensaje =
-`Hola! Me gustaría saber mas sobre este departamento
-
-📍 Dirección:
-${direccion || "Consultar"}
-
-🏠 Características:
-${textoAmbientes}
-
-💰 Valor:
-${valor || "Consultar"}
-
-¡Muchas gracias!`;
-
-
-    const url =
-        "https://wa.me/" +
-        telefono +
-        "?text=" +
-        encodeURIComponent(
-            mensaje
-        );
-
-
-    window.open(
-        url,
-        "_blank"
-    );
-
-}
-
-
-/* =========================================================
-   CONSULTA GENERAL
-========================================================= */
-
-function enviarConsultaGeneral(){
-
-    const nombre =
-        document.getElementById(
-            "nombreConsulta"
-        ).value.trim();
-
-
-    const fecha =
-        document.getElementById(
-            "fechaConsulta"
-        ).value;
-
-
-    const meses =
-        document.getElementById(
-            "mesesConsulta"
-        ).value;
-
-
-    const ambientes =
-        document.getElementById(
-            "ambientesConsulta"
-        ).value;
-
-
-    if(!nombre){
-
-        alert(
-            "Por favor ingresá tu nombre."
-        );
-
-        return;
-
-    }
-
-
-    const mensaje =
-`Hola, ¿cómo estás?
-
-Me gustaría consultar por un departamento temporal.
-
-👤 Nombre:
-${nombre}
-
-📅 Fecha estimada de mudanza:
-${fecha || "A confirmar"}
-
-📆 Duración:
-${meses}
-
-🏠 Ambientes:
-${ambientes}
-
-Estoy buscando opciones de alquiler temporal.
-
-¡Muchas gracias!`;
-
-
-    const url =
-        "https://wa.me/" +
-        WHATSAPP_GENERAL +
-        "?text=" +
-        encodeURIComponent(
-            mensaje
-        );
-
-
-    window.open(
-        url,
-        "_blank"
-    );
-
-}
-
-
-/* =========================================================
    ESCAPE HTML
 ========================================================= */
 
 function escapeHTML(valor){
 
-    return String(
-        valor || ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
+    if(
+        valor === null ||
+        valor === undefined
+    ){
+
+        return "";
+
+    }
+
+
+    return String(valor)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
-
-/* =========================================================
-   CERRAR MODAL AL TOCAR FONDO
-========================================================= */
-
-document
-    .querySelectorAll(".modal")
-    .forEach(function(modal){
-
-        modal.addEventListener(
-            "click",
-            function(event){
-
-                if(
-                    event.target === modal
-                ){
-
-                    cerrarModal();
-
-                }
-
-            }
-        );
-
-    });
-
-
 </script>
 
+
 </body>
+
 </html>
