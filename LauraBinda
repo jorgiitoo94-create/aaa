@@ -1,0 +1,5471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Alquiler Temporarios</title>
+
+  <meta
+    name="description"
+    content="Encontrá departamentos temporarios disponibles."
+  >
+
+  <meta
+    name="theme-color"
+    content="#006eff"
+  >
+
+  <style>
+
+    /* =========================================================
+       RESET
+    ========================================================= */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      background: #f5f7fa;
+
+      color: #172033;
+
+      line-height: 1.5;
+
+      -webkit-font-smoothing: antialiased;
+
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+
+    /* =========================================================
+       VARIABLES
+    ========================================================= */
+
+    :root {
+
+      --primary: #006eff;
+
+      --primary-dark: #0056cc;
+
+      --active: #16a34a;
+
+      --active-dark: #15803d;
+
+      --text: #172033;
+
+      --text-soft: #667085;
+
+      --background: #f5f7fa;
+
+      --white: #ffffff;
+
+      --border: #e5e7eb;
+
+      --success: #16a34a;
+
+      --danger: #dc3545;
+
+      --shadow-sm:
+        0 2px 8px rgba(16, 24, 40, 0.06);
+
+      --shadow:
+        0 8px 30px rgba(16, 24, 40, 0.08);
+
+      --shadow-lg:
+        0 20px 60px rgba(16, 24, 40, 0.16);
+
+      --radius: 18px;
+
+      --radius-sm: 12px;
+
+    }
+
+
+    /* =========================================================
+       HERO
+    ========================================================= */
+
+    .hero {
+
+      width: 100%;
+
+      background: var(--primary);
+
+      overflow: hidden;
+
+    }
+
+
+    /*
+     * FOTO SUPERIOR
+     */
+
+    .hero-image {
+
+      position: relative;
+
+      width: 100%;
+
+      height: 330px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #e8edf3,
+          #dfe5ec
+        );
+
+      overflow: hidden;
+
+    }
+
+
+    .hero-background {
+
+      position: absolute;
+
+      inset: 0;
+
+      background-position: center;
+
+      background-size: cover;
+
+      background-repeat: no-repeat;
+
+    }
+
+
+    .hero-image-overlay {
+
+      position: absolute;
+
+      inset: 0;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.04),
+          rgba(0, 0, 0, 0.20)
+        );
+
+      pointer-events: none;
+
+    }
+
+
+    /*
+     * ZONA UNIFORME
+     */
+
+    .hero-bottom {
+
+      width: 100%;
+
+      background: var(--primary);
+
+      color: white;
+
+      text-align: center;
+
+      padding:
+        30px 20px 34px;
+
+    }
+
+
+    .hero-content {
+
+      width:
+        min(
+          1100px,
+          calc(100% - 20px)
+        );
+
+      margin: 0 auto;
+
+    }
+
+
+    .hero-title {
+
+      font-size:
+        clamp(
+          2rem,
+          5vw,
+          3.8rem
+        );
+
+      font-weight: 800;
+
+      letter-spacing: -0.04em;
+
+      line-height: 1.05;
+
+      margin-bottom: 10px;
+
+    }
+
+
+    .hero-subtitle {
+
+      font-size:
+        clamp(
+          1rem,
+          2vw,
+          1.25rem
+        );
+
+      font-weight: 400;
+
+      opacity: 0.95;
+
+      max-width: 700px;
+
+      margin: 0 auto;
+
+    }
+
+
+    /* =========================================================
+       MAIN
+    ========================================================= */
+
+    main {
+
+      width:
+        min(
+          1200px,
+          calc(100% - 32px)
+        );
+
+      margin: 0 auto;
+
+      padding:
+        32px 0 100px;
+
+    }
+
+
+    /* =========================================================
+       FILTER PANEL
+    ========================================================= */
+
+    .filters {
+
+      background: white;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: var(--radius);
+
+      box-shadow: var(--shadow);
+
+      padding: 22px;
+
+      margin-bottom: 32px;
+
+      position: relative;
+
+      z-index: 10;
+
+    }
+
+
+    .filters-header {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      gap: 16px;
+
+      margin-bottom: 20px;
+
+    }
+
+
+    .filters-title {
+
+      font-size: 19px;
+
+      font-weight: 800;
+
+      letter-spacing: -0.02em;
+
+    }
+
+
+    .results-count {
+
+      color: var(--text-soft);
+
+      font-size: 14px;
+
+      margin-top: 2px;
+
+    }
+
+
+    .filter-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1.25fr)
+        minmax(250px, 0.75fr);
+
+      gap: 20px;
+
+    }
+
+
+    .filter-group {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 9px;
+
+    }
+
+
+    .filter-label {
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      color: var(--text-soft);
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.06em;
+
+    }
+
+
+    /* =========================================================
+       ENVIRONMENT BUTTONS
+    ========================================================= */
+
+    .environment-buttons {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          auto-fit,
+          minmax(85px, 1fr)
+        );
+
+      gap: 8px;
+
+      width: 100%;
+
+    }
+
+
+    .environment-button {
+
+      min-height: 44px;
+
+      border:
+        1px solid
+        var(--border);
+
+      background: #fff;
+
+      color: var(--text);
+
+      border-radius: 10px;
+
+      font-weight: 700;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+    }
+
+
+    .environment-button:hover {
+
+      border-color: var(--active);
+
+      transform: translateY(-1px);
+
+    }
+
+
+    /*
+     * ACTIVO = VERDE
+     */
+
+    .environment-button.active {
+
+      background: var(--active);
+
+      border-color: var(--active);
+
+      color: white;
+
+      box-shadow:
+        0 4px 12px
+        rgba(22, 163, 74, 0.22);
+
+    }
+
+
+    /* =========================================================
+       BARRIO SELECT
+    ========================================================= */
+
+    .select-wrapper {
+
+      position: relative;
+
+    }
+
+
+    .select-wrapper::after {
+
+      content: "⌄";
+
+      position: absolute;
+
+      right: 15px;
+
+      top: 50%;
+
+      transform: translateY(-55%);
+
+      color: #667085;
+
+      pointer-events: none;
+
+      font-size: 18px;
+
+    }
+
+
+    .neighborhood-select {
+
+      width: 100%;
+
+      min-height: 46px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 11px;
+
+      background: white;
+
+      padding:
+        0 42px 0 14px;
+
+      outline: none;
+
+      color: var(--text);
+
+      appearance: none;
+
+      cursor: pointer;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+    }
+
+
+    .neighborhood-select:focus {
+
+      border-color: var(--active);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(22, 163, 74, 0.12);
+
+    }
+
+
+    /* =========================================================
+       AMENITIES FILTERS
+    ========================================================= */
+
+    .amenity-filters {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 9px;
+
+      margin-top: 18px;
+
+    }
+
+
+    .amenity-button {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 7px;
+
+      min-height: 42px;
+
+      padding:
+        0 15px;
+
+      border:
+        1px solid
+        var(--border);
+
+      background: #fff;
+
+      color: var(--text);
+
+      border-radius: 999px;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      transition: all 0.2s ease;
+
+    }
+
+
+    .amenity-button:hover {
+
+      border-color: var(--active);
+
+    }
+
+
+    .amenity-button.active {
+
+      background: var(--active);
+
+      color: white;
+
+      border-color: var(--active);
+
+      box-shadow:
+        0 4px 12px
+        rgba(22, 163, 74, 0.20);
+
+    }
+
+
+    /* =========================================================
+       CLEAR FILTERS
+    ========================================================= */
+
+    .clear-filters {
+
+      border: none;
+
+      background: transparent;
+
+      color: var(--text-soft);
+
+      font-weight: 700;
+
+      font-size: 14px;
+
+      padding: 4px 0;
+
+      transition: color 0.2s ease;
+
+    }
+
+
+    .clear-filters:hover {
+
+      color: var(--active);
+
+      text-decoration: underline;
+
+    }
+
+
+    /* =========================================================
+       PROPERTY GRID
+    ========================================================= */
+
+    .properties-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          auto-fill,
+          minmax(340px, 1fr)
+        );
+
+      gap: 24px;
+
+    }
+
+
+    /* =========================================================
+       PROPERTY CARD
+    ========================================================= */
+
+    .property-card {
+
+      background: white;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: var(--radius);
+
+      overflow: hidden;
+
+      box-shadow: var(--shadow-sm);
+
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+
+      display: flex;
+
+      flex-direction: column;
+
+      min-width: 0;
+
+    }
+
+
+    .property-card:hover {
+
+      transform: translateY(-4px);
+
+      box-shadow: var(--shadow-lg);
+
+    }
+
+
+    /* =========================================================
+       PROPERTY IMAGE
+    ========================================================= */
+
+    .property-image-container {
+
+      position: relative;
+
+      width: 100%;
+
+      height: 255px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #e8edf3,
+          #f5f7fa
+        );
+
+      overflow: hidden;
+
+    }
+
+
+    .property-image {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+      transition:
+        transform 0.5s ease;
+
+      cursor: pointer;
+
+    }
+
+
+    .property-card:hover
+    .property-image {
+
+      transform: scale(1.035);
+
+    }
+
+
+    .property-image-placeholder {
+
+      width: 100%;
+
+      height: 100%;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      flex-direction: column;
+
+      gap: 8px;
+
+      color: #98a2b3;
+
+      font-size: 14px;
+
+    }
+
+
+    /* =========================================================
+       IMAGE BADGES
+    ========================================================= */
+
+    .image-badge {
+
+      position: absolute;
+
+      top: 14px;
+
+      left: 14px;
+
+      z-index: 2;
+
+      padding:
+        7px 11px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(255, 255, 255, 0.94);
+
+      backdrop-filter: blur(8px);
+
+      color: var(--text);
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      box-shadow:
+        0 4px 12px
+        rgba(0, 0, 0, 0.10);
+
+    }
+
+
+    .image-badge.available {
+
+      color: var(--success);
+
+    }
+
+
+    .photos-badge {
+
+      position: absolute;
+
+      right: 14px;
+
+      bottom: 14px;
+
+      z-index: 2;
+
+      padding:
+        7px 11px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(0, 0, 0, 0.68);
+
+      color: white;
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+      backdrop-filter: blur(8px);
+
+    }
+
+
+    /* =========================================================
+       CARD CONTENT
+    ========================================================= */
+
+    .property-content {
+
+      padding: 20px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 14px;
+
+      flex: 1;
+
+    }
+
+
+    .property-location {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 6px;
+
+      color: var(--text-soft);
+
+      font-size: 14px;
+
+      font-weight: 650;
+
+    }
+
+
+    .property-title {
+
+      font-size: 22px;
+
+      font-weight: 850;
+
+      line-height: 1.15;
+
+      color: var(--text);
+
+      letter-spacing: -0.025em;
+
+    }
+
+
+    .property-address {
+
+      color: var(--text-soft);
+
+      font-size: 14px;
+
+      line-height: 1.45;
+
+      min-height: 20px;
+
+    }
+
+
+    /* =========================================================
+       PRICE
+    ========================================================= */
+
+    .property-price {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 12px;
+
+      padding:
+        15px 0;
+
+      border-top:
+        1px solid
+        var(--border);
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+    }
+
+
+    .price-label {
+
+      font-size: 11px;
+
+      color: var(--text-soft);
+
+      text-transform: uppercase;
+
+      font-weight: 800;
+
+      letter-spacing: 0.06em;
+
+    }
+
+
+    .price-value {
+
+      color: var(--primary);
+
+      font-size: 25px;
+
+      font-weight: 850;
+
+      text-align: right;
+
+      line-height: 1.1;
+
+    }
+
+
+    /* =========================================================
+       COSTS
+    ========================================================= */
+
+    .property-costs {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap: 10px;
+
+    }
+
+
+    .cost-box {
+
+      background: #f8fafc;
+
+      border:
+        1px solid
+        #eef1f5;
+
+      border-radius: 11px;
+
+      padding: 11px;
+
+    }
+
+
+    .cost-label {
+
+      display: block;
+
+      color: var(--text-soft);
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+      text-transform: uppercase;
+
+      margin-bottom: 3px;
+
+      letter-spacing: 0.04em;
+
+    }
+
+
+    .cost-value {
+
+      display: block;
+
+      color: var(--text);
+
+      font-size: 14px;
+
+      font-weight: 750;
+
+      word-break: break-word;
+
+    }
+
+
+    /* =========================================================
+       AMENITIES
+    ========================================================= */
+
+    .property-amenities {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 7px;
+
+    }
+
+
+    .amenity-chip {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 5px;
+
+      padding:
+        7px 10px;
+
+      border-radius: 8px;
+
+      background: #f2f4f7;
+
+      color: #475467;
+
+      font-size: 12px;
+
+      font-weight: 650;
+
+    }
+
+
+    /* =========================================================
+       DESCRIPTION BUTTON
+    ========================================================= */
+
+    .description-button {
+
+      width: 100%;
+
+      min-height: 42px;
+
+      border:
+        1px solid
+        var(--border);
+
+      background: white;
+
+      color: var(--text);
+
+      border-radius: 10px;
+
+      font-size: 14px;
+
+      font-weight: 750;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 7px;
+
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+
+    }
+
+
+    .description-button:hover {
+
+      background: #f8fafc;
+
+      border-color: var(--active);
+
+      color: var(--active);
+
+    }
+
+
+    /* =========================================================
+       CARD BUTTON
+    ========================================================= */
+
+    .property-actions {
+
+      margin-top: auto;
+
+      padding-top: 2px;
+
+    }
+
+
+    .whatsapp-button {
+
+      width: 100%;
+
+      min-height: 49px;
+
+      border: none;
+
+      border-radius: 11px;
+
+      background: #18b957;
+
+      color: white;
+
+      font-weight: 800;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 9px;
+
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+      box-shadow:
+        0 5px 15px
+        rgba(24, 185, 87, 0.16);
+
+    }
+
+
+    .whatsapp-button:hover {
+
+      background: #109b49;
+
+      transform: translateY(-1px);
+
+      box-shadow:
+        0 7px 18px
+        rgba(24, 185, 87, 0.23);
+
+    }
+
+
+    /* =========================================================
+       DESCRIPTION MODAL
+    ========================================================= */
+
+    .description-modal {
+
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 2000;
+
+      display: none;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 20px;
+
+      background:
+        rgba(0, 0, 0, 0.55);
+
+      backdrop-filter: blur(5px);
+
+    }
+
+
+    .description-modal.active {
+
+      display: flex;
+
+    }
+
+
+    .description-panel {
+
+      width:
+        min(
+          680px,
+          100%
+        );
+
+      max-height:
+        min(
+          720px,
+          85vh
+        );
+
+      overflow-y: auto;
+
+      background: white;
+
+      border-radius: 20px;
+
+      box-shadow: var(--shadow-lg);
+
+      padding: 26px;
+
+      position: relative;
+
+      animation:
+        modalIn
+        0.22s
+        ease
+        both;
+
+    }
+
+
+    @keyframes modalIn {
+
+      from {
+
+        opacity: 0;
+
+        transform:
+          translateY(15px)
+          scale(0.98);
+
+      }
+
+      to {
+
+        opacity: 1;
+
+        transform:
+          translateY(0)
+          scale(1);
+
+      }
+
+    }
+
+
+    .description-close {
+
+      position: absolute;
+
+      top: 14px;
+
+      right: 14px;
+
+      width: 40px;
+
+      height: 40px;
+
+      border: none;
+
+      border-radius: 50%;
+
+      background: #f2f4f7;
+
+      color: var(--text);
+
+      font-size: 24px;
+
+      line-height: 1;
+
+    }
+
+
+    .description-close:hover {
+
+      background: #e5e7eb;
+
+    }
+
+
+    .description-modal-title {
+
+      padding-right: 48px;
+
+      font-size: 24px;
+
+      font-weight: 850;
+
+      line-height: 1.2;
+
+      margin-bottom: 7px;
+
+    }
+
+
+    .description-modal-location {
+
+      color: var(--text-soft);
+
+      font-size: 14px;
+
+      margin-bottom: 20px;
+
+    }
+
+
+    .description-modal-text {
+
+      color: #344054;
+
+      font-size: 15px;
+
+      line-height: 1.7;
+
+      white-space: pre-line;
+
+    }
+
+
+    /* =========================================================
+       EMPTY STATE
+    ========================================================= */
+
+    .empty-state {
+
+      grid-column: 1 / -1;
+
+      background: white;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: var(--radius);
+
+      padding: 70px 20px;
+
+      text-align: center;
+
+    }
+
+
+    .empty-icon {
+
+      font-size: 42px;
+
+      margin-bottom: 15px;
+
+    }
+
+
+    .empty-title {
+
+      font-size: 21px;
+
+      font-weight: 800;
+
+      margin-bottom: 7px;
+
+    }
+
+
+    .empty-text {
+
+      color: var(--text-soft);
+
+      margin-bottom: 20px;
+
+    }
+
+
+    /* =========================================================
+       LOADING
+    ========================================================= */
+
+    .loading {
+
+      grid-column: 1 / -1;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      min-height: 300px;
+
+      flex-direction: column;
+
+      gap: 14px;
+
+      color: var(--text-soft);
+
+    }
+
+
+    .spinner {
+
+      width: 42px;
+
+      height: 42px;
+
+      border:
+        4px solid
+        #e5e7eb;
+
+      border-top-color:
+        var(--primary);
+
+      border-radius: 50%;
+
+      animation:
+        spin
+        0.8s
+        linear
+        infinite;
+
+    }
+
+
+    @keyframes spin {
+
+      to {
+        transform: rotate(360deg);
+      }
+
+    }
+
+
+    /* =========================================================
+       ERROR
+    ========================================================= */
+
+    .error-state {
+
+      grid-column: 1 / -1;
+
+      background: white;
+
+      border:
+        1px solid
+        #fecaca;
+
+      border-radius: var(--radius);
+
+      padding: 40px 20px;
+
+      text-align: center;
+
+      color: #991b1b;
+
+    }
+
+
+    .retry-button {
+
+      margin-top: 18px;
+
+      padding:
+        10px 17px;
+
+      border: none;
+
+      border-radius: 9px;
+
+      background: var(--primary);
+
+      color: white;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+    }
+
+
+    /* =========================================================
+       FLOATING WHATSAPP
+    ========================================================= */
+
+    .floating-whatsapp {
+
+      position: fixed;
+
+      right: 22px;
+
+      bottom: 22px;
+
+      width: 60px;
+
+      height: 60px;
+
+      border-radius: 50%;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background: #18b957;
+
+      color: white;
+
+      text-decoration: none;
+
+      font-size: 27px;
+
+      box-shadow:
+        0 8px 24px
+        rgba(0, 0, 0, 0.20);
+
+      z-index: 100;
+
+      transition:
+        transform 0.2s ease;
+
+    }
+
+
+    .floating-whatsapp:hover {
+
+      transform: scale(1.07);
+
+    }
+
+
+    /* =========================================================
+       GALLERY
+    ========================================================= */
+
+    .gallery {
+
+      position: fixed;
+
+      inset: 0;
+
+      background:
+        rgba(0, 0, 0, 0.94);
+
+      z-index: 3000;
+
+      display: none;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 20px;
+
+    }
+
+
+    .gallery.active {
+
+      display: flex;
+
+    }
+
+
+    .gallery-image {
+
+      max-width:
+        min(
+          1100px,
+          92vw
+        );
+
+      max-height: 85vh;
+
+      object-fit: contain;
+
+      border-radius: 10px;
+
+      user-select: none;
+
+    }
+
+
+    .gallery-close {
+
+      position: absolute;
+
+      top: 18px;
+
+      right: 22px;
+
+      width: 46px;
+
+      height: 46px;
+
+      border: none;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255, 255, 255, 0.14);
+
+      color: white;
+
+      font-size: 26px;
+
+      z-index: 10;
+
+    }
+
+
+    .gallery-close:hover {
+
+      background:
+        rgba(255, 255, 255, 0.25);
+
+    }
+
+
+    .gallery-prev,
+    .gallery-next {
+
+      position: absolute;
+
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      width: 48px;
+
+      height: 48px;
+
+      border: none;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255, 255, 255, 0.14);
+
+      color: white;
+
+      font-size: 24px;
+
+      z-index: 10;
+
+    }
+
+
+    .gallery-prev {
+      left: 22px;
+    }
+
+
+    .gallery-next {
+      right: 22px;
+    }
+
+
+    .gallery-counter {
+
+      position: absolute;
+
+      bottom: 20px;
+
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      color: white;
+
+      background:
+        rgba(0, 0, 0, 0.45);
+
+      padding:
+        7px 12px;
+
+      border-radius: 999px;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+    }
+
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @media (max-width: 800px) {
+
+      .hero-image {
+
+        height: 270px;
+
+      }
+
+
+      .hero-bottom {
+
+        padding:
+          25px 16px 29px;
+
+      }
+
+
+      main {
+
+        width:
+          min(
+            calc(100% - 20px),
+            1200px
+          );
+
+        padding-top: 20px;
+
+      }
+
+
+      .filters {
+
+        padding: 16px;
+
+        border-radius: 14px;
+
+      }
+
+
+      .filters-header {
+
+        align-items: flex-start;
+
+      }
+
+
+      .filter-grid {
+
+        grid-template-columns: 1fr;
+
+      }
+
+
+      .properties-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+
+      }
+
+
+      .property-image-container {
+
+        height: 235px;
+
+      }
+
+
+      .floating-whatsapp {
+
+        width: 56px;
+
+        height: 56px;
+
+        right: 16px;
+
+        bottom: 16px;
+
+      }
+
+
+      .description-panel {
+
+        max-height: 88vh;
+
+        padding: 22px;
+
+        border-radius: 17px;
+
+      }
+
+
+      .gallery-prev {
+
+        left: 10px;
+
+      }
+
+
+      .gallery-next {
+
+        right: 10px;
+
+      }
+
+    }
+
+
+    @media (max-width: 450px) {
+
+      .hero-image {
+
+        height: 230px;
+
+      }
+
+
+      .hero-title {
+
+        font-size: 2rem;
+
+      }
+
+
+      .hero-subtitle {
+
+        font-size: 0.95rem;
+
+      }
+
+
+      .property-content {
+
+        padding: 17px;
+
+      }
+
+
+      .property-price {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 6px;
+
+      }
+
+
+      .price-value {
+
+        text-align: left;
+
+      }
+
+
+      .property-costs {
+
+        grid-template-columns: 1fr;
+
+      }
+
+
+      .amenity-filters {
+
+        display: grid;
+
+        grid-template-columns: 1fr;
+
+      }
+
+
+      .amenity-button {
+
+        width: 100%;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- =======================================================
+       HERO
+  ======================================================== -->
+
+  <header class="hero">
+
+
+    <!-- FOTO -->
+
+    <div class="hero-image">
+
+      <div
+        id="heroBackground"
+        class="hero-background"
+      ></div>
+
+      <div class="hero-image-overlay"></div>
+
+    </div>
+
+
+    <!-- FONDO UNIFORME -->
+
+    <div
+      id="heroBottom"
+      class="hero-bottom"
+    >
+
+      <div class="hero-content">
+
+        <h1
+          id="heroTitle"
+          class="hero-title"
+        >
+          Alquiler Temporarios
+        </h1>
+
+        <p
+          id="heroSubtitle"
+          class="hero-subtitle"
+        >
+          Encontrá tu próximo hogar
+        </p>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =======================================================
+       MAIN
+  ======================================================== -->
+
+  <main>
+
+
+    <!-- =====================================================
+         FILTERS
+    ====================================================== -->
+
+    <section class="filters">
+
+
+      <div class="filters-header">
+
+        <div>
+
+          <div class="filters-title">
+            Encontrá tu departamento
+          </div>
+
+          <div
+            id="resultsCount"
+            class="results-count"
+          >
+            Cargando propiedades...
+          </div>
+
+        </div>
+
+
+        <button
+          id="clearFilters"
+          class="clear-filters"
+          type="button"
+        >
+          Limpiar filtros
+        </button>
+
+      </div>
+
+
+      <div class="filter-grid">
+
+
+        <!-- AMBIENTES -->
+
+        <div class="filter-group">
+
+          <label class="filter-label">
+            Ambientes
+          </label>
+
+          <div
+            id="environmentButtons"
+            class="environment-buttons"
+          ></div>
+
+        </div>
+
+
+        <!-- BARRIO -->
+
+        <div class="filter-group">
+
+          <label
+            class="filter-label"
+            for="neighborhoodSelect"
+          >
+            Barrio
+          </label>
+
+          <div class="select-wrapper">
+
+            <select
+              id="neighborhoodSelect"
+              class="neighborhood-select"
+            >
+
+              <option value="">
+                Todos los barrios
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- AMENITIES -->
+
+      <div class="amenity-filters">
+
+
+        <button
+          id="filterDog"
+          class="amenity-button"
+          type="button"
+        >
+          🐶 Apto perro
+        </button>
+
+
+        <button
+          id="filterCat"
+          class="amenity-button"
+          type="button"
+        >
+          🐱 Apto gato
+        </button>
+
+
+        <button
+          id="filterLaundry"
+          class="amenity-button"
+          type="button"
+        >
+          🧺 Lavarropas
+        </button>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PROPERTIES
+    ====================================================== -->
+
+    <section
+      id="propertiesContainer"
+      class="properties-grid"
+    >
+
+      <div class="loading">
+
+        <div class="spinner"></div>
+
+        <div>
+          Cargando departamentos...
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =======================================================
+       FLOATING WHATSAPP
+  ======================================================== -->
+
+  <a
+    id="floatingWhatsapp"
+    class="floating-whatsapp"
+    href="#"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Contactar por WhatsApp"
+  >
+    ☎
+  </a>
+
+
+  <!-- =======================================================
+       DESCRIPTION MODAL
+  ======================================================== -->
+
+  <div
+    id="descriptionModal"
+    class="description-modal"
+    aria-hidden="true"
+  >
+
+    <div class="description-panel">
+
+
+      <button
+        id="descriptionClose"
+        class="description-close"
+        type="button"
+        aria-label="Cerrar descripción"
+      >
+        ×
+      </button>
+
+
+      <h2
+        id="descriptionModalTitle"
+        class="description-modal-title"
+      >
+        Departamento
+      </h2>
+
+
+      <div
+        id="descriptionModalLocation"
+        class="description-modal-location"
+      ></div>
+
+
+      <div
+        id="descriptionModalText"
+        class="description-modal-text"
+      ></div>
+
+
+    </div>
+
+  </div>
+
+
+  <!-- =======================================================
+       GALLERY
+  ======================================================== -->
+
+  <div
+    id="gallery"
+    class="gallery"
+    aria-hidden="true"
+  >
+
+
+    <button
+      id="galleryClose"
+      class="gallery-close"
+      type="button"
+      aria-label="Cerrar"
+    >
+      ×
+    </button>
+
+
+    <button
+      id="galleryPrev"
+      class="gallery-prev"
+      type="button"
+      aria-label="Foto anterior"
+    >
+      ‹
+    </button>
+
+
+    <img
+      id="galleryImage"
+      class="gallery-image"
+      src=""
+      alt="Foto del departamento"
+    >
+
+
+    <button
+      id="galleryNext"
+      class="gallery-next"
+      type="button"
+      aria-label="Foto siguiente"
+    >
+      ›
+    </button>
+
+
+    <div
+      id="galleryCounter"
+      class="gallery-counter"
+    >
+      1 / 1
+    </div>
+
+
+  </div>
+
+
+  <!-- =======================================================
+       PAPAPARSE
+  ======================================================== -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+
+  <script>
+
+    /* =========================================================
+       CONFIGURACIÓN
+    ========================================================= */
+
+    const CSV_URL =
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vQka5UoeTB1hjGIhr237hfo2CkU78GdtdjIwY21Y2BvxuqghragitmjCSDspPv9cD14JBuYcu1mgQ2Z/pub?output=csv";
+
+
+    const API_URL =
+      "https://script.google.com/macros/s/AKfycbzmDMeHM4DDO_mtVnJQXyRs7r_3V4VIzdpBhYNKHwYw-WKAzHrWofsF_7N6Ub3nh17Hwg/exec";
+
+
+    /* =========================================================
+       ESTADO
+    ========================================================= */
+
+    const state = {
+
+      properties: [],
+
+      filteredProperties: [],
+
+      environments: [],
+
+      neighborhoods: [],
+
+      selectedEnvironment: "",
+
+      neighborhood: "",
+
+      dog: false,
+
+      cat: false,
+
+      laundry: false,
+
+      whatsapp: "5491125772852",
+
+      description: {
+
+        open: false,
+
+        property: null,
+
+        scrollPosition: 0
+
+      },
+
+      gallery: {
+
+        open: false,
+
+        images: [],
+
+        index: 0,
+
+        scrollPosition: 0
+
+      }
+
+    };
+
+
+    /* =========================================================
+       DOM
+    ========================================================= */
+
+    const elements = {
+
+      heroBackground:
+        document.getElementById(
+          "heroBackground"
+        ),
+
+      heroBottom:
+        document.getElementById(
+          "heroBottom"
+        ),
+
+      heroTitle:
+        document.getElementById(
+          "heroTitle"
+        ),
+
+      heroSubtitle:
+        document.getElementById(
+          "heroSubtitle"
+        ),
+
+      propertiesContainer:
+        document.getElementById(
+          "propertiesContainer"
+        ),
+
+      environmentButtons:
+        document.getElementById(
+          "environmentButtons"
+        ),
+
+      neighborhoodSelect:
+        document.getElementById(
+          "neighborhoodSelect"
+        ),
+
+      filterDog:
+        document.getElementById(
+          "filterDog"
+        ),
+
+      filterCat:
+        document.getElementById(
+          "filterCat"
+        ),
+
+      filterLaundry:
+        document.getElementById(
+          "filterLaundry"
+        ),
+
+      clearFilters:
+        document.getElementById(
+          "clearFilters"
+        ),
+
+      resultsCount:
+        document.getElementById(
+          "resultsCount"
+        ),
+
+      floatingWhatsapp:
+        document.getElementById(
+          "floatingWhatsapp"
+        ),
+
+      descriptionModal:
+        document.getElementById(
+          "descriptionModal"
+        ),
+
+      descriptionPanel:
+        document.querySelector(
+          ".description-panel"
+        ),
+
+      descriptionClose:
+        document.getElementById(
+          "descriptionClose"
+        ),
+
+      descriptionModalTitle:
+        document.getElementById(
+          "descriptionModalTitle"
+        ),
+
+      descriptionModalLocation:
+        document.getElementById(
+          "descriptionModalLocation"
+        ),
+
+      descriptionModalText:
+        document.getElementById(
+          "descriptionModalText"
+        ),
+
+      gallery:
+        document.getElementById(
+          "gallery"
+        ),
+
+      galleryImage:
+        document.getElementById(
+          "galleryImage"
+        ),
+
+      galleryClose:
+        document.getElementById(
+          "galleryClose"
+        ),
+
+      galleryPrev:
+        document.getElementById(
+          "galleryPrev"
+        ),
+
+      galleryNext:
+        document.getElementById(
+          "galleryNext"
+        ),
+
+      galleryCounter:
+        document.getElementById(
+          "galleryCounter"
+        )
+
+    };
+
+
+    /* =========================================================
+       NORMALIZAR TEXTO
+    ========================================================= */
+
+    function normalizarTexto(valor) {
+
+      if (
+        valor === null ||
+        valor === undefined
+      ) {
+
+        return "";
+
+      }
+
+
+      return String(valor)
+
+        .trim()
+
+        .toLowerCase()
+
+        .normalize("NFD")
+
+        .replace(
+          /[\u0300-\u036f]/g,
+          ""
+        );
+
+    }
+
+
+    /* =========================================================
+       NORMALIZAR CLAVE
+    ========================================================= */
+
+    function normalizarClave(valor) {
+
+      return normalizarTexto(valor)
+
+        .replace(
+          /[^a-z0-9]/g,
+          ""
+        );
+
+    }
+
+
+    /* =========================================================
+       OBTENER CAMPO
+    ========================================================= */
+
+    function obtenerCampo(
+      propiedad,
+      nombres
+    ) {
+
+      for (
+        const nombre of nombres
+      ) {
+
+        const clave =
+          normalizarClave(nombre);
+
+
+        if (
+          Object.prototype.hasOwnProperty.call(
+            propiedad,
+            clave
+          )
+        ) {
+
+          const valor =
+            propiedad[clave];
+
+
+          if (
+            valor !== null &&
+            valor !== undefined &&
+            String(valor).trim() !== ""
+          ) {
+
+            return String(valor).trim();
+
+          }
+
+        }
+
+      }
+
+
+      return "";
+
+    }
+
+
+    /* =========================================================
+       VERDADERO
+    ========================================================= */
+
+    function esVerdadero(valor) {
+
+      const texto =
+        normalizarTexto(valor);
+
+
+      if (!texto) {
+
+        return false;
+
+      }
+
+
+      return [
+
+        "si",
+        "yes",
+        "true",
+        "1",
+        "apto",
+        "acepta",
+        "permitido",
+        "permitida",
+        "incluido",
+        "incluida",
+        "disponible"
+
+      ].includes(texto);
+
+    }
+
+
+    /* =========================================================
+       DRIVE
+    ========================================================= */
+
+    function extraerDriveId(url) {
+
+      if (!url) {
+
+        return "";
+
+      }
+
+
+      const texto =
+        String(url).trim();
+
+
+      let match =
+        texto.match(
+          /\/file\/d\/([a-zA-Z0-9_-]+)/
+        );
+
+
+      if (match) {
+
+        return match[1];
+
+      }
+
+
+      match =
+        texto.match(
+          /[?&]id=([a-zA-Z0-9_-]+)/
+        );
+
+
+      if (match) {
+
+        return match[1];
+
+      }
+
+
+      match =
+        texto.match(
+          /\/d\/([a-zA-Z0-9_-]+)/
+        );
+
+
+      if (match) {
+
+        return match[1];
+
+      }
+
+
+      if (
+        /^[a-zA-Z0-9_-]{20,}$/.test(
+          texto
+        )
+      ) {
+
+        return texto;
+
+      }
+
+
+      return "";
+
+    }
+
+
+    function convertirImagenDrive(url) {
+
+      if (!url) {
+
+        return "";
+
+      }
+
+
+      const id =
+        extraerDriveId(url);
+
+
+      if (!id) {
+
+        return url;
+
+      }
+
+
+      return (
+        "https://drive.google.com/thumbnail" +
+        "?id=" +
+        encodeURIComponent(id) +
+        "&sz=w1200"
+      );
+
+    }
+
+
+    /* =========================================================
+       FOTOS
+    ========================================================= */
+
+    function obtenerFotos(propiedad) {
+
+      const fotos = [];
+
+
+      Object.keys(propiedad)
+
+        .filter(
+          clave =>
+            clave === "fotos" ||
+            /^fotos\d+$/.test(clave)
+        )
+
+        .sort(
+          (a, b) => {
+
+            if (a === "fotos") {
+
+              return -1;
+
+            }
+
+
+            if (b === "fotos") {
+
+              return 1;
+
+            }
+
+
+            const na =
+              parseInt(
+                a.replace(
+                  "fotos",
+                  ""
+                )
+              ) || 0;
+
+
+            const nb =
+              parseInt(
+                b.replace(
+                  "fotos",
+                  ""
+                )
+              ) || 0;
+
+
+            return na - nb;
+
+          }
+        )
+
+        .forEach(
+          clave => {
+
+            const valor =
+              propiedad[clave];
+
+
+            if (!valor) {
+
+              return;
+
+            }
+
+
+            const urls =
+              String(valor)
+
+                .split(
+                  /\s*,\s*|\n+/
+                )
+
+                .map(
+                  x => x.trim()
+                )
+
+                .filter(Boolean);
+
+
+            urls.forEach(
+              url => {
+
+                const imagen =
+                  convertirImagenDrive(
+                    url
+                  );
+
+
+                if (
+                  imagen &&
+                  !fotos.includes(
+                    imagen
+                  )
+                ) {
+
+                  fotos.push(
+                    imagen
+                  );
+
+                }
+
+              }
+            );
+
+          }
+        );
+
+
+      return fotos;
+
+    }
+
+
+    /* =========================================================
+       ESCAPAR HTML
+    ========================================================= */
+
+    function escaparHTML(valor) {
+
+      return String(
+        valor ?? ""
+      )
+
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+
+        .replace(
+          /</g,
+          "&lt;"
+        )
+
+        .replace(
+          />/g,
+          "&gt;"
+        )
+
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    /* =========================================================
+       PRECIO
+    ========================================================= */
+
+    function formatearPrecio(valor) {
+
+      if (!valor) {
+
+        return "Consultar";
+
+      }
+
+
+      return String(valor).trim();
+
+    }
+
+
+    /* =========================================================
+       CONFIGURACIÓN
+    ========================================================= */
+
+    async function cargarConfiguracion() {
+
+      try {
+
+        const response =
+          await fetch(
+            API_URL +
+            "?t=" +
+            Date.now()
+          );
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            "No se pudo cargar CONFIG"
+          );
+
+        }
+
+
+        const data =
+          await response.json();
+
+
+        if (!data.ok) {
+
+          return;
+
+        }
+
+
+        const config =
+          data.config || {};
+
+
+        /* TITULO */
+
+        if (config.titulo) {
+
+          elements.heroTitle.textContent =
+            config.titulo;
+
+        }
+
+
+        /* SUBTITULO */
+
+        if (config.subtitulo) {
+
+          elements.heroSubtitle.textContent =
+            config.subtitulo;
+
+        }
+
+
+        /* COLOR */
+
+        if (config.color_portada) {
+
+          document.documentElement.style
+            .setProperty(
+              "--primary",
+              config.color_portada
+            );
+
+        }
+
+
+        /* FOTO */
+
+        if (config.foto_portada) {
+
+          const portada =
+            convertirImagenDrive(
+              config.foto_portada
+            );
+
+
+          if (portada) {
+
+            elements.heroBackground.style
+              .backgroundImage =
+              `url("${portada}")`;
+
+          }
+
+        }
+
+
+        /* WHATSAPP */
+
+        if (config.whatsapp) {
+
+          state.whatsapp =
+            String(
+              config.whatsapp
+            ).replace(
+              /\D/g,
+              ""
+            );
+
+        }
+
+
+        actualizarWhatsApp();
+
+      }
+
+      catch (error) {
+
+        console.warn(
+          "No se pudo cargar CONFIG:",
+          error
+        );
+
+      }
+
+    }
+
+
+    /* =========================================================
+       WHATSAPP
+    ========================================================= */
+
+    function actualizarWhatsApp() {
+
+      const numero =
+        state.whatsapp ||
+        "5491125772852";
+
+
+      elements.floatingWhatsapp.href =
+        `https://wa.me/${numero}`;
+
+    }
+
+
+    function abrirWhatsApp(propiedad) {
+
+      const barrio =
+        propiedad.barrio;
+
+      const direccion =
+        propiedad.direccion;
+
+      const ambientes =
+        propiedad.ambientes;
+
+      const valor =
+        propiedad.valor;
+
+
+      let mensaje =
+        "Hola! Me interesa un departamento.";
+
+
+      if (ambientes) {
+
+        mensaje +=
+          ` Ambientes: ${ambientes}.`;
+
+      }
+
+
+      if (barrio) {
+
+        mensaje +=
+          ` Barrio: ${barrio}.`;
+
+      }
+
+
+      if (direccion) {
+
+        mensaje +=
+          ` Dirección: ${direccion}.`;
+
+      }
+
+
+      if (valor) {
+
+        mensaje +=
+          ` Valor: ${valor}.`;
+
+      }
+
+
+      const url =
+        `https://wa.me/${state.whatsapp}` +
+        `?text=` +
+        encodeURIComponent(
+          mensaje
+        );
+
+
+      window.open(
+        url,
+        "_blank",
+        "noopener,noreferrer"
+      );
+
+    }
+
+
+    /* =========================================================
+       CARGAR CSV
+    ========================================================= */
+
+    async function cargarPropiedades() {
+
+      try {
+
+        mostrarLoading();
+
+
+        const response =
+          await fetch(
+            CSV_URL +
+            "&t=" +
+            Date.now()
+          );
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            "No se pudo descargar el CSV"
+          );
+
+        }
+
+
+        const csv =
+          await response.text();
+
+
+        Papa.parse(
+          csv,
+          {
+
+            header: true,
+
+            skipEmptyLines: true,
+
+            transformHeader:
+              header =>
+                normalizarClave(
+                  header
+                ),
+
+            complete:
+              resultado => {
+
+                try {
+
+                  procesarPropiedades(
+                    resultado.data
+                  );
+
+                }
+
+                catch (error) {
+
+                  console.error(
+                    error
+                  );
+
+                  mostrarError();
+
+                }
+
+              },
+
+            error:
+              error => {
+
+                console.error(
+                  error
+                );
+
+                mostrarError();
+
+              }
+
+          }
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Error cargando CSV:",
+          error
+        );
+
+        mostrarError();
+
+      }
+
+    }
+
+
+    /* =========================================================
+       PROCESAR PROPIEDADES
+    ========================================================= */
+
+    function procesarPropiedades(
+      propiedades
+    ) {
+
+      state.properties =
+        propiedades
+
+          .filter(
+            propiedad =>
+              Object.values(
+                propiedad
+              ).some(
+                valor =>
+                  String(
+                    valor || ""
+                  ).trim() !== ""
+              )
+          )
+
+          .map(
+            propiedad => {
+
+              return {
+
+                raw:
+                  propiedad,
+
+                fotos:
+                  obtenerFotos(
+                    propiedad
+                  ),
+
+                ambientes:
+                  obtenerCampo(
+                    propiedad,
+                    [
+                      "ambientes"
+                    ]
+                  ),
+
+                barrio:
+                  obtenerCampo(
+                    propiedad,
+                    [
+                      "barrio"
+                    ]
+                  ),
+
+                direccion:
+                  obtenerCampo(
+                    propiedad,
+                    [
+                      "direccion"
+                    ]
+                  ),
+
+                valor:
+                  obtenerCampo(
+                    propiedad,
+                    [
+                      "valor",
+                      "precio"
+                    ]
+                  ),
+
+                expensas:
+                  obtenerCampo(
+                    propiedad,
+                    [
+                      "expensas"
+                    ]
+                  ),
+
+                gastos:
+                  obtenerCampo(
+                    propiedad,
+                    [
+                      "gastos"
+                    ]
+                  ),
+
+                perro:
+                  obtenerCampo(
+                    propiedad,
+                    [
+                      "perro"
+                    ]
+                  ),
+
+                gato:
+                  obtenerCampo(
+                    propiedad,
+                    [
+                      "gato"
+                    ]
+                  ),
+
+                lavado:
+                  obtenerCampo(
+                    propiedad,
+                    [
+                      "lavado",
+                      "lavarropas",
+                      "lavadora"
+                    ]
+                  ),
+
+                disponibilidad:
+                  obtenerCampo(
+                    propiedad,
+                    [
+                      "disponibilidad",
+                      "disponible"
+                    ]
+                  ),
+
+                descripcion:
+                  obtenerCampo(
+                    propiedad,
+                    [
+                      "descripcion",
+                      "descripción"
+                    ]
+                  )
+
+              };
+
+            }
+          );
+
+
+      construirFiltros();
+
+      aplicarFiltros();
+
+    }
+
+
+    /* =========================================================
+       CONSTRUIR FILTROS
+    ========================================================= */
+
+    function construirFiltros() {
+
+
+      /*
+       * AMBIENTES
+       */
+
+      const ambientes =
+        state.properties
+
+          .map(
+            propiedad =>
+              propiedad.ambientes
+          )
+
+          .filter(Boolean);
+
+
+      state.environments =
+        [
+          ...new Set(
+            ambientes.map(
+              valor =>
+                String(
+                  valor
+                ).trim()
+            )
+          )
+        ];
+
+
+      state.environments.sort(
+        ordenarValores
+      );
+
+
+      elements.environmentButtons
+        .innerHTML = "";
+
+
+      elements.environmentButtons
+        .appendChild(
+          crearBotonAmbientes(
+            "Todos",
+            ""
+          )
+        );
+
+
+      state.environments
+        .forEach(
+          ambiente => {
+
+            elements.environmentButtons
+              .appendChild(
+                crearBotonAmbientes(
+                  ambiente,
+                  ambiente
+                )
+              );
+
+          }
+        );
+
+
+      /*
+       * BARRIOS
+       */
+
+      const barrios =
+        state.properties
+
+          .map(
+            propiedad =>
+              propiedad.barrio
+          )
+
+          .filter(Boolean);
+
+
+      state.neighborhoods =
+        [
+          ...new Set(
+            barrios
+              .map(
+                barrio =>
+                  String(
+                    barrio
+                  ).trim()
+              )
+          )
+        ];
+
+
+      state.neighborhoods.sort(
+        (a, b) =>
+          a.localeCompare(
+            b,
+            "es",
+            {
+              sensitivity:
+                "base"
+            }
+          )
+      );
+
+
+      elements.neighborhoodSelect
+        .innerHTML =
+        `
+          <option value="">
+            Todos los barrios
+          </option>
+        `;
+
+
+      state.neighborhoods
+        .forEach(
+          barrio => {
+
+            const option =
+              document.createElement(
+                "option"
+              );
+
+
+            option.value =
+              barrio;
+
+
+            option.textContent =
+              barrio;
+
+
+            elements.neighborhoodSelect
+              .appendChild(
+                option
+              );
+
+          }
+        );
+
+    }
+
+
+    function ordenarValores(
+      a,
+      b
+    ) {
+
+      const na =
+        parseFloat(
+          String(a)
+            .replace(",", ".")
+        );
+
+
+      const nb =
+        parseFloat(
+          String(b)
+            .replace(",", ".")
+        );
+
+
+      if (
+        !Number.isNaN(na) &&
+        !Number.isNaN(nb)
+      ) {
+
+        return na - nb;
+
+      }
+
+
+      return String(a)
+        .localeCompare(
+          String(b),
+          "es",
+          {
+            sensitivity:
+              "base"
+          }
+        );
+
+    }
+
+
+    /* =========================================================
+       BOTONES AMBIENTES
+    ========================================================= */
+
+    function crearBotonAmbientes(
+      texto,
+      valor
+    ) {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.type =
+        "button";
+
+
+      button.className =
+        "environment-button";
+
+
+      button.textContent =
+        texto;
+
+
+      if (
+        state.selectedEnvironment ===
+        valor
+      ) {
+
+        button.classList.add(
+          "active"
+        );
+
+      }
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          state.selectedEnvironment =
+            valor;
+
+
+          actualizarBotonesAmbientes();
+
+          aplicarFiltros();
+
+        }
+      );
+
+
+      return button;
+
+    }
+
+
+    function actualizarBotonesAmbientes() {
+
+      document
+        .querySelectorAll(
+          ".environment-button"
+        )
+
+        .forEach(
+          button => {
+
+            const valor =
+              button.dataset.value;
+
+
+            button.classList.toggle(
+              "active",
+              valor ===
+              state.selectedEnvironment
+            );
+
+          }
+        );
+
+    }
+
+
+    /*
+     * Corrección: guardar valor real
+     */
+
+    const crearBotonAmbientesOriginal =
+      crearBotonAmbientes;
+
+
+    /* =========================================================
+       APLICAR DATA-VALUE
+    ========================================================= */
+
+    function prepararBotonesAmbientes() {
+
+      document
+        .querySelectorAll(
+          ".environment-button"
+        )
+        .forEach(
+          button => {
+
+            if (
+              button.textContent ===
+              "Todos"
+            ) {
+
+              button.dataset.value =
+                "";
+
+            }
+
+            else {
+
+              button.dataset.value =
+                button.textContent;
+
+            }
+
+          }
+        );
+
+    }
+
+
+    /* =========================================================
+       APLICAR FILTROS
+    ========================================================= */
+
+    function aplicarFiltros() {
+
+      const ambienteSeleccionado =
+        normalizarTexto(
+          state.selectedEnvironment
+        );
+
+
+      const barrioSeleccionado =
+        normalizarTexto(
+          state.neighborhood
+        );
+
+
+      state.filteredProperties =
+        state.properties.filter(
+          propiedad => {
+
+
+            /*
+             * AMBIENTES
+             */
+
+            if (
+              ambienteSeleccionado
+            ) {
+
+              const ambiente =
+                normalizarTexto(
+                  propiedad.ambientes
+                );
+
+
+              if (
+                ambiente !==
+                ambienteSeleccionado
+              ) {
+
+                return false;
+
+              }
+
+            }
+
+
+            /*
+             * BARRIO
+             */
+
+            if (
+              barrioSeleccionado
+            ) {
+
+              const barrio =
+                normalizarTexto(
+                  propiedad.barrio
+                );
+
+
+              if (
+                barrio !==
+                barrioSeleccionado
+              ) {
+
+                return false;
+
+              }
+
+            }
+
+
+            /*
+             * PERRO
+             */
+
+            if (
+              state.dog &&
+              !esVerdadero(
+                propiedad.perro
+              )
+            ) {
+
+              return false;
+
+            }
+
+
+            /*
+             * GATO
+             */
+
+            if (
+              state.cat &&
+              !esVerdadero(
+                propiedad.gato
+              )
+            ) {
+
+              return false;
+
+            }
+
+
+            /*
+             * LAVARROPAS
+             */
+
+            if (
+              state.laundry &&
+              !esVerdadero(
+                propiedad.lavado
+              )
+            ) {
+
+              return false;
+
+            }
+
+
+            return true;
+
+          }
+        );
+
+
+      renderizarPropiedades();
+
+      actualizarContador();
+
+    }
+
+
+    /* =========================================================
+       CONTADOR
+    ========================================================= */
+
+    function actualizarContador() {
+
+      const cantidad =
+        state.filteredProperties.length;
+
+
+      if (cantidad === 1) {
+
+        elements.resultsCount.textContent =
+          "1 departamento encontrado";
+
+      }
+
+      else {
+
+        elements.resultsCount.textContent =
+          `${cantidad} departamentos encontrados`;
+
+      }
+
+    }
+
+
+    /* =========================================================
+       RENDER
+    ========================================================= */
+
+    function renderizarPropiedades() {
+
+      elements.propertiesContainer
+        .innerHTML = "";
+
+
+      if (
+        state.filteredProperties.length ===
+        0
+      ) {
+
+        mostrarEmpty();
+
+        return;
+
+      }
+
+
+      state.filteredProperties
+        .forEach(
+          (propiedad, index) => {
+
+            elements.propertiesContainer
+              .appendChild(
+                crearTarjeta(
+                  propiedad,
+                  index
+                )
+              );
+
+          }
+        );
+
+    }
+
+
+    /* =========================================================
+       CREAR TARJETA
+    ========================================================= */
+
+    function crearTarjeta(
+      propiedad,
+      index
+    ) {
+
+      const card =
+        document.createElement(
+          "article"
+        );
+
+
+      card.className =
+        "property-card";
+
+
+      /* =====================================================
+         IMAGEN
+      ===================================================== */
+
+      const imageContainer =
+        document.createElement(
+          "div"
+        );
+
+
+      imageContainer.className =
+        "property-image-container";
+
+
+      /*
+       * DISPONIBILIDAD
+       */
+
+      if (
+        propiedad.disponibilidad
+      ) {
+
+        const badge =
+          document.createElement(
+            "div"
+          );
+
+
+        badge.className =
+          "image-badge available";
+
+
+        badge.textContent =
+          propiedad.disponibilidad;
+
+
+        imageContainer.appendChild(
+          badge
+        );
+
+      }
+
+
+      /*
+       * IMAGEN
+       */
+
+      if (
+        propiedad.fotos.length > 0
+      ) {
+
+        const img =
+          document.createElement(
+            "img"
+          );
+
+
+        img.className =
+          "property-image";
+
+
+        img.src =
+          propiedad.fotos[0];
+
+
+        img.alt =
+          `Departamento en ${
+            propiedad.barrio ||
+            "alquiler"
+          }`;
+
+
+        img.loading =
+          index < 3
+            ? "eager"
+            : "lazy";
+
+
+        img.decoding =
+          "async";
+
+
+        img.onerror =
+          () => {
+
+            img.style.display =
+              "none";
+
+
+            const placeholder =
+              document.createElement(
+                "div"
+              );
+
+
+            placeholder.className =
+              "property-image-placeholder";
+
+
+            placeholder.innerHTML =
+              `
+                <div style="font-size:36px">
+                  🏠
+                </div>
+
+                <div>
+                  Imagen no disponible
+                </div>
+              `;
+
+
+            imageContainer
+              .appendChild(
+                placeholder
+              );
+
+          };
+
+
+        img.addEventListener(
+          "click",
+          () => {
+
+            abrirGaleria(
+              propiedad.fotos,
+              0
+            );
+
+          }
+        );
+
+
+        imageContainer.appendChild(
+          img
+        );
+
+
+        /*
+         * CANTIDAD DE FOTOS
+         */
+
+        if (
+          propiedad.fotos.length > 1
+        ) {
+
+          const photosBadge =
+            document.createElement(
+              "div"
+            );
+
+
+          photosBadge.className =
+            "photos-badge";
+
+
+          photosBadge.textContent =
+            `📷 ${
+              propiedad.fotos.length
+            } fotos`;
+
+
+          imageContainer
+            .appendChild(
+              photosBadge
+            );
+
+        }
+
+      }
+
+      else {
+
+        imageContainer.innerHTML =
+          `
+            <div
+              class="property-image-placeholder"
+            >
+
+              <div style="font-size:36px">
+                🏠
+              </div>
+
+              <div>
+                Sin imágenes
+              </div>
+
+            </div>
+          `;
+
+      }
+
+
+      card.appendChild(
+        imageContainer
+      );
+
+
+      /* =====================================================
+         CONTENT
+      ===================================================== */
+
+      const content =
+        document.createElement(
+          "div"
+        );
+
+
+      content.className =
+        "property-content";
+
+
+      /*
+       * BARRIO
+       */
+
+      if (
+        propiedad.barrio
+      ) {
+
+        const location =
+          document.createElement(
+            "div"
+          );
+
+
+        location.className =
+          "property-location";
+
+
+        location.innerHTML =
+          `
+            <span>📍</span>
+
+            <span>
+              ${escaparHTML(
+                propiedad.barrio
+              )}
+            </span>
+          `;
+
+
+        content.appendChild(
+          location
+        );
+
+      }
+
+
+      /*
+       * TITULO
+       */
+
+      const title =
+        document.createElement(
+          "h2"
+        );
+
+
+      title.className =
+        "property-title";
+
+
+      if (
+        propiedad.ambientes
+      ) {
+
+        const ambiente =
+          propiedad.ambientes;
+
+
+title.textContent =
+  normalizarTexto(ambiente).includes("amb")
+    ? ambiente
+    : (
+        normalizarTexto(ambiente) === "1"
+          ? "1 ambiente"
+          : `${ambiente} ambientes`
+      );
+
+      }
+
+      else {
+
+        title.textContent =
+          "Departamento";
+
+      }
+
+
+      content.appendChild(
+        title
+      );
+
+
+      /*
+       * DIRECCIÓN
+       */
+
+      if (
+        propiedad.direccion
+      ) {
+
+        const address =
+          document.createElement(
+            "div"
+          );
+
+
+        address.className =
+          "property-address";
+
+
+        address.textContent =
+          `📍 ${
+            propiedad.direccion
+          }`;
+
+
+        content.appendChild(
+          address
+        );
+
+      }
+
+
+      /*
+       * PRECIO
+       */
+
+      const price =
+        document.createElement(
+          "div"
+        );
+
+
+      price.className =
+        "property-price";
+
+
+      price.innerHTML =
+        `
+          <div>
+
+            <div class="price-label">
+              Valor mensual
+            </div>
+
+          </div>
+
+          <div class="price-value">
+            ${escaparHTML(
+              formatearPrecio(
+                propiedad.valor
+              )
+            )}
+          </div>
+        `;
+
+
+      content.appendChild(
+        price
+      );
+
+
+      /*
+       * EXPENSAS / GASTOS
+       */
+
+      if (
+        propiedad.expensas ||
+        propiedad.gastos
+      ) {
+
+        const costs =
+          document.createElement(
+            "div"
+          );
+
+
+        costs.className =
+          "property-costs";
+
+
+        if (
+          propiedad.expensas
+        ) {
+
+          costs.innerHTML +=
+            `
+              <div class="cost-box">
+
+                <span class="cost-label">
+                  Expensas
+                </span>
+
+                <span class="cost-value">
+                  ${escaparHTML(
+                    propiedad.expensas
+                  )}
+                </span>
+
+              </div>
+            `;
+
+        }
+
+
+        if (
+          propiedad.gastos
+        ) {
+
+          costs.innerHTML +=
+            `
+              <div class="cost-box">
+
+                <span class="cost-label">
+                  Gastos
+                </span>
+
+                <span class="cost-value">
+                  ${escaparHTML(
+                    propiedad.gastos
+                  )}
+                </span>
+
+              </div>
+            `;
+
+        }
+
+
+        content.appendChild(
+          costs
+        );
+
+      }
+
+
+      /*
+       * AMENITIES
+       */
+
+      const amenities = [];
+
+
+      if (
+        esVerdadero(
+          propiedad.perro
+        )
+      ) {
+
+        amenities.push(
+          "🐶 Apto perro"
+        );
+
+      }
+
+
+      if (
+        esVerdadero(
+          propiedad.gato
+        )
+      ) {
+
+        amenities.push(
+          "🐱 Apto gato"
+        );
+
+      }
+
+
+      if (
+        esVerdadero(
+          propiedad.lavado
+        )
+      ) {
+
+        amenities.push(
+          "🧺 Lavarropas"
+        );
+
+      }
+
+
+      if (
+        amenities.length > 0
+      ) {
+
+        const amenitiesContainer =
+          document.createElement(
+            "div"
+          );
+
+
+        amenitiesContainer.className =
+          "property-amenities";
+
+
+        amenities.forEach(
+          amenity => {
+
+            const chip =
+              document.createElement(
+                "span"
+              );
+
+
+            chip.className =
+              "amenity-chip";
+
+
+            chip.textContent =
+              amenity;
+
+
+            amenitiesContainer
+              .appendChild(
+                chip
+              );
+
+          }
+        );
+
+
+        content.appendChild(
+          amenitiesContainer
+        );
+
+      }
+
+
+      /*
+       * DESCRIPCIÓN
+       */
+
+      if (
+        propiedad.descripcion
+      ) {
+
+        const descriptionButton =
+          document.createElement(
+            "button"
+          );
+
+
+        descriptionButton.type =
+          "button";
+
+
+        descriptionButton.className =
+          "description-button";
+
+
+        descriptionButton.innerHTML =
+          `
+            <span>📄</span>
+
+            <span>
+              Ver descripción
+            </span>
+
+            <span>→</span>
+          `;
+
+
+        descriptionButton.addEventListener(
+          "click",
+          () => {
+
+            abrirDescripcion(
+              propiedad
+            );
+
+          }
+        );
+
+
+        content.appendChild(
+          descriptionButton
+        );
+
+      }
+
+
+      /*
+       * WHATSAPP
+       */
+
+      const actions =
+        document.createElement(
+          "div"
+        );
+
+
+      actions.className =
+        "property-actions";
+
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.type =
+        "button";
+
+
+      button.className =
+        "whatsapp-button";
+
+
+      button.innerHTML =
+        `
+          <span>💬</span>
+
+          <span>
+            Consultar por WhatsApp
+          </span>
+        `;
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          abrirWhatsApp(
+            propiedad
+          );
+
+        }
+      );
+
+
+      actions.appendChild(
+        button
+      );
+
+
+      content.appendChild(
+        actions
+      );
+
+
+      card.appendChild(
+        content
+      );
+
+
+      return card;
+
+    }
+
+
+    /* =========================================================
+       DESCRIPCIÓN
+    ========================================================= */
+
+    function abrirDescripcion(
+      propiedad
+    ) {
+
+      if (
+        !propiedad ||
+        !propiedad.descripcion
+      ) {
+
+        return;
+
+      }
+
+
+      state.description.property =
+        propiedad;
+
+
+      state.description.scrollPosition =
+        window.scrollY;
+
+
+      state.description.open =
+        true;
+
+
+      elements.descriptionModalTitle
+        .textContent =
+        propiedad.ambientes
+          ? (
+              normalizarTexto(
+                propiedad.ambientes
+              ).includes(
+                "amb"
+              )
+                ? propiedad.ambientes
+                : `${propiedad.ambientes} ambientes`
+            )
+          : "Departamento";
+
+
+      const ubicacion = [];
+
+
+      if (
+        propiedad.barrio
+      ) {
+
+        ubicacion.push(
+          propiedad.barrio
+        );
+
+      }
+
+
+      if (
+        propiedad.direccion
+      ) {
+
+        ubicacion.push(
+          propiedad.direccion
+        );
+
+      }
+
+
+      elements.descriptionModalLocation
+        .textContent =
+        ubicacion.join(
+          " · "
+        );
+
+
+      elements.descriptionModalText
+        .textContent =
+        propiedad.descripcion;
+
+
+      /*
+       * HISTORIAL
+       */
+
+      history.pushState(
+        {
+          description: true
+        },
+        "",
+        "#descripcion"
+      );
+
+
+      document.body.classList.add(
+        "modal-open"
+      );
+
+
+      elements.descriptionModal
+        .classList.add(
+          "active"
+        );
+
+
+      elements.descriptionModal
+        .setAttribute(
+          "aria-hidden",
+          "false"
+        );
+
+    }
+
+
+    function cerrarDescripcion(
+      usarHistorial = true
+    ) {
+
+      if (
+        !state.description.open
+      ) {
+
+        return;
+
+      }
+
+
+      state.description.open =
+        false;
+
+
+      state.description.property =
+        null;
+
+
+      document.body.classList.remove(
+        "modal-open"
+      );
+
+
+      elements.descriptionModal
+        .classList.remove(
+          "active"
+        );
+
+
+      elements.descriptionModal
+        .setAttribute(
+          "aria-hidden",
+          "true"
+        );
+
+
+      if (
+        usarHistorial &&
+        location.hash ===
+        "#descripcion"
+      ) {
+
+        history.back();
+
+      }
+
+
+      requestAnimationFrame(
+        () => {
+
+          window.scrollTo(
+            0,
+            state.description.scrollPosition
+          );
+
+        }
+      );
+
+    }
+
+
+    /* =========================================================
+       EMPTY
+    ========================================================= */
+
+    function mostrarEmpty() {
+
+      elements.propertiesContainer
+        .innerHTML =
+        `
+          <div class="empty-state">
+
+            <div class="empty-icon">
+              🔎
+            </div>
+
+            <div class="empty-title">
+              No encontramos departamentos
+            </div>
+
+            <div class="empty-text">
+              Probá modificando alguno
+              de los filtros.
+            </div>
+
+            <button
+              id="emptyClearButton"
+              class="clear-filters"
+              type="button"
+            >
+              Limpiar filtros
+            </button>
+
+          </div>
+        `;
+
+
+      document
+        .getElementById(
+          "emptyClearButton"
+        )
+        ?.addEventListener(
+          "click",
+          limpiarFiltros
+        );
+
+    }
+
+
+    /* =========================================================
+       LOADING
+    ========================================================= */
+
+    function mostrarLoading() {
+
+      elements.propertiesContainer
+        .innerHTML =
+        `
+          <div class="loading">
+
+            <div class="spinner"></div>
+
+            <div>
+              Cargando departamentos...
+            </div>
+
+          </div>
+        `;
+
+    }
+
+
+    /* =========================================================
+       ERROR
+    ========================================================= */
+
+    function mostrarError() {
+
+      elements.propertiesContainer
+        .innerHTML =
+        `
+          <div class="error-state">
+
+            <div
+              style="
+                font-size:38px;
+                margin-bottom:12px;
+              "
+            >
+              ⚠️
+            </div>
+
+            <strong>
+              No pudimos cargar
+              los departamentos.
+            </strong>
+
+            <p style="margin-top:8px;">
+              Revisá que la planilla
+              esté publicada correctamente
+              como CSV.
+            </p>
+
+            <button
+              class="retry-button"
+              onclick="location.reload()"
+            >
+              Reintentar
+            </button>
+
+          </div>
+        `;
+
+
+      elements.resultsCount.textContent =
+        "No se pudieron cargar las propiedades";
+
+    }
+
+
+    /* =========================================================
+       LIMPIAR FILTROS
+    ========================================================= */
+
+    function limpiarFiltros() {
+
+      state.selectedEnvironment =
+        "";
+
+      state.neighborhood =
+        "";
+
+      state.dog =
+        false;
+
+      state.cat =
+        false;
+
+      state.laundry =
+        false;
+
+
+      elements.neighborhoodSelect.value =
+        "";
+
+
+      elements.filterDog
+        .classList.remove(
+          "active"
+        );
+
+
+      elements.filterCat
+        .classList.remove(
+          "active"
+        );
+
+
+      elements.filterLaundry
+        .classList.remove(
+          "active"
+        );
+
+
+      actualizarBotonesAmbientes();
+
+      aplicarFiltros();
+
+    }
+
+
+    /* =========================================================
+       EVENTOS FILTROS
+    ========================================================= */
+
+    elements.neighborhoodSelect
+      .addEventListener(
+        "change",
+        event => {
+
+          state.neighborhood =
+            event.target.value;
+
+
+          aplicarFiltros();
+
+        }
+      );
+
+
+    elements.filterDog
+      .addEventListener(
+        "click",
+        () => {
+
+          state.dog =
+            !state.dog;
+
+
+          elements.filterDog
+            .classList.toggle(
+              "active",
+              state.dog
+            );
+
+
+          aplicarFiltros();
+
+        }
+      );
+
+
+    elements.filterCat
+      .addEventListener(
+        "click",
+        () => {
+
+          state.cat =
+            !state.cat;
+
+
+          elements.filterCat
+            .classList.toggle(
+              "active",
+              state.cat
+            );
+
+
+          aplicarFiltros();
+
+        }
+      );
+
+
+    elements.filterLaundry
+      .addEventListener(
+        "click",
+        () => {
+
+          state.laundry =
+            !state.laundry;
+
+
+          elements.filterLaundry
+            .classList.toggle(
+              "active",
+              state.laundry
+            );
+
+
+          aplicarFiltros();
+
+        }
+      );
+
+
+    elements.clearFilters
+      .addEventListener(
+        "click",
+        limpiarFiltros
+      );
+
+
+    /* =========================================================
+       GALERÍA
+    ========================================================= */
+
+    function abrirGaleria(
+      fotos,
+      indice = 0
+    ) {
+
+      if (
+        !fotos ||
+        fotos.length === 0
+      ) {
+
+        return;
+
+      }
+
+
+      state.gallery.images =
+        fotos;
+
+
+      state.gallery.index =
+        indice;
+
+
+      state.gallery.scrollPosition =
+        window.scrollY;
+
+
+      state.gallery.open =
+        true;
+
+
+      history.pushState(
+        {
+          gallery: true
+        },
+        "",
+        "#galeria"
+      );
+
+
+      document.body.classList.add(
+        "modal-open"
+      );
+
+
+      elements.gallery
+        .classList.add(
+          "active"
+        );
+
+
+      elements.gallery
+        .setAttribute(
+          "aria-hidden",
+          "false"
+        );
+
+
+      actualizarGaleria();
+
+    }
+
+
+    function cerrarGaleria(
+      usarHistorial = true
+    ) {
+
+      if (
+        !state.gallery.open
+      ) {
+
+        return;
+
+      }
+
+
+      state.gallery.open =
+        false;
+
+
+      document.body.classList.remove(
+        "modal-open"
+      );
+
+
+      elements.gallery
+        .classList.remove(
+          "active"
+        );
+
+
+      elements.gallery
+        .setAttribute(
+          "aria-hidden",
+          "true"
+        );
+
+
+      if (
+        usarHistorial &&
+        location.hash ===
+        "#galeria"
+      ) {
+
+        history.back();
+
+      }
+
+
+      requestAnimationFrame(
+        () => {
+
+          window.scrollTo(
+            0,
+            state.gallery.scrollPosition
+          );
+
+        }
+      );
+
+    }
+
+
+    function actualizarGaleria() {
+
+      const fotos =
+        state.gallery.images;
+
+
+      const indice =
+        state.gallery.index;
+
+
+      if (
+        !fotos.length
+      ) {
+
+        return;
+
+      }
+
+
+      elements.galleryImage.src =
+        fotos[indice];
+
+
+      elements.galleryImage.alt =
+        `Foto ${
+          indice + 1
+        } del departamento`;
+
+
+      elements.galleryCounter.textContent =
+        `${
+          indice + 1
+        } / ${
+          fotos.length
+        }`;
+
+
+      elements.galleryPrev.style.display =
+        fotos.length > 1
+          ? "block"
+          : "none";
+
+
+      elements.galleryNext.style.display =
+        fotos.length > 1
+          ? "block"
+          : "none";
+
+    }
+
+
+    function fotoAnterior() {
+
+      const cantidad =
+        state.gallery.images.length;
+
+
+      if (
+        cantidad <= 1
+      ) {
+
+        return;
+
+      }
+
+
+      state.gallery.index =
+        (
+          state.gallery.index -
+          1 +
+          cantidad
+        ) %
+        cantidad;
+
+
+      actualizarGaleria();
+
+    }
+
+
+    function fotoSiguiente() {
+
+      const cantidad =
+        state.gallery.images.length;
+
+
+      if (
+        cantidad <= 1
+      ) {
+
+        return;
+
+      }
+
+
+      state.gallery.index =
+        (
+          state.gallery.index +
+          1
+        ) %
+        cantidad;
+
+
+      actualizarGaleria();
+
+    }
+
+
+    /* =========================================================
+       EVENTOS GALERÍA
+    ========================================================= */
+
+    elements.galleryClose
+      .addEventListener(
+        "click",
+        () => {
+
+          cerrarGaleria(true);
+
+        }
+      );
+
+
+    elements.galleryPrev
+      .addEventListener(
+        "click",
+        fotoAnterior
+      );
+
+
+    elements.galleryNext
+      .addEventListener(
+        "click",
+        fotoSiguiente
+      );
+
+
+    elements.gallery
+      .addEventListener(
+        "click",
+        event => {
+
+          if (
+            event.target ===
+            elements.gallery
+          ) {
+
+            cerrarGaleria(true);
+
+          }
+
+        }
+      );
+
+
+    /* =========================================================
+       DESCRIPTION EVENTS
+    ========================================================= */
+
+    elements.descriptionClose
+      .addEventListener(
+        "click",
+        () => {
+
+          cerrarDescripcion(true);
+
+        }
+      );
+
+
+    elements.descriptionModal
+      .addEventListener(
+        "click",
+        event => {
+
+          if (
+            event.target ===
+            elements.descriptionModal
+          ) {
+
+            cerrarDescripcion(true);
+
+          }
+
+        }
+      );
+
+
+    /* =========================================================
+       TECLADO
+    ========================================================= */
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        /*
+         * DESCRIPCIÓN
+         */
+
+        if (
+          state.description.open
+        ) {
+
+          if (
+            event.key ===
+            "Escape"
+          ) {
+
+            cerrarDescripcion(true);
+
+          }
+
+          return;
+
+        }
+
+
+        /*
+         * GALERÍA
+         */
+
+        if (
+          !state.gallery.open
+        ) {
+
+          return;
+
+        }
+
+
+        if (
+          event.key ===
+          "Escape"
+        ) {
+
+          cerrarGaleria(true);
+
+        }
+
+
+        if (
+          event.key ===
+          "ArrowLeft"
+        ) {
+
+          fotoAnterior();
+
+        }
+
+
+        if (
+          event.key ===
+          "ArrowRight"
+        ) {
+
+          fotoSiguiente();
+
+        }
+
+      }
+    );
+
+
+    /* =========================================================
+       BOTÓN ATRÁS
+    ========================================================= */
+
+    window.addEventListener(
+      "popstate",
+      () => {
+
+        if (
+          state.gallery.open
+        ) {
+
+          cerrarGaleria(false);
+
+          return;
+
+        }
+
+
+        if (
+          state.description.open
+        ) {
+
+          cerrarDescripcion(false);
+
+          return;
+
+        }
+
+      }
+    );
+
+
+    /* =========================================================
+       SWIPE GALERÍA
+    ========================================================= */
+
+    let touchStartX =
+      0;
+
+
+    let touchEndX =
+      0;
+
+
+    elements.gallery
+      .addEventListener(
+        "touchstart",
+        event => {
+
+          touchStartX =
+            event.changedTouches[0]
+              .screenX;
+
+        },
+        {
+          passive: true
+        }
+      );
+
+
+    elements.gallery
+      .addEventListener(
+        "touchend",
+        event => {
+
+          touchEndX =
+            event.changedTouches[0]
+              .screenX;
+
+
+          const diferencia =
+            touchEndX -
+            touchStartX;
+
+
+          if (
+            Math.abs(
+              diferencia
+            ) < 50
+          ) {
+
+            return;
+
+          }
+
+
+          if (
+            diferencia > 0
+          ) {
+
+            fotoAnterior();
+
+          }
+
+          else {
+
+            fotoSiguiente();
+
+          }
+
+        },
+        {
+          passive: true
+        }
+      );
+
+
+    /* =========================================================
+       INICIALIZACIÓN
+    ========================================================= */
+
+    async function iniciar() {
+
+      await cargarConfiguracion();
+
+      await cargarPropiedades();
+
+      /*
+       * Asignamos data-value
+       * después de crear los botones.
+       */
+
+      prepararBotonesAmbientes();
+
+    }
+ 
+
+    iniciar();
+
+  </script>
+
+</body>
+</html>
