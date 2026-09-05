@@ -1770,7 +1770,7 @@ const CSV_URL =
 
 
 const WHATSAPP_GENERAL =
-"549XXXXXXXXXX";
+"5491168686694";
 
 
 /* =========================================================
@@ -3265,12 +3265,12 @@ function enviarConsultaGeneral(
         );
 
 
-    if(
-        !numero ||
-        WHATSAPP_GENERAL.includes(
-            "+5491168686694"
-        )
-    ){
+   if(!numero){
+    alert(
+        "No se pudo configurar el número de WhatsApp."
+    );
+    return;
+}
 
         alert(
             "Configurá el número de WhatsApp general en el código."
