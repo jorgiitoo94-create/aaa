@@ -3225,7 +3225,6 @@ function abrirConsultaGeneral(){
 
 }
 
-
 function enviarConsultaGeneral(
     event
 ){
@@ -3265,15 +3264,10 @@ function enviarConsultaGeneral(
         );
 
 
-   if(!numero){
-    alert(
-        "No se pudo configurar el número de WhatsApp."
-    );
-    return;
-}
+    if(!numero){
 
         alert(
-            "Configurá el número de WhatsApp general en el código."
+            "No se pudo configurar el número de WhatsApp."
         );
 
         return;
@@ -3303,8 +3297,7 @@ Vi @alquilar.temporario y me gustaría recibir opciones disponibles.
 ¡Muchas gracias!`;
 
 
-    window.open(
-
+    const url =
         "https://wa.me/"
         +
         numero
@@ -3313,10 +3306,12 @@ Vi @alquilar.temporario y me gustaría recibir opciones disponibles.
         +
         encodeURIComponent(
             mensaje
-        ),
+        );
 
+
+    window.open(
+        url,
         "_blank"
-
     );
 
 }
